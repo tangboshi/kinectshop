@@ -29,3 +29,6 @@ qtcAddDeployment()
 
 # QT SQL-Connection
 QT += sql
+
+HEADERS += \
+    sqlfunctions.h

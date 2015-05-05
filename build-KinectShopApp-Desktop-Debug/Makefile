@@ -369,7 +369,7 @@ qmake_all: FORCE
 
 dist: 
 	@test -d .tmp/KinectShopApp1.0.0 || mkdir -p .tmp/KinectShopApp1.0.0
-	$(COPY_FILE) --parents $(SOURCES) $(DIST) .tmp/KinectShopApp1.0.0/ && $(COPY_FILE) --parents ../KinectShopApp/html5applicationviewer/html5applicationviewer.h .tmp/KinectShopApp1.0.0/ && $(COPY_FILE) --parents ../KinectShopApp/main.cpp ../KinectShopApp/html5applicationviewer/html5applicationviewer.cpp .tmp/KinectShopApp1.0.0/ && (cd `dirname .tmp/KinectShopApp1.0.0` && $(TAR) KinectShopApp1.0.0.tar KinectShopApp1.0.0 && $(COMPRESS) KinectShopApp1.0.0.tar) && $(MOVE) `dirname .tmp/KinectShopApp1.0.0`/KinectShopApp1.0.0.tar.gz . && $(DEL_FILE) -r .tmp/KinectShopApp1.0.0
+	$(COPY_FILE) --parents $(SOURCES) $(DIST) .tmp/KinectShopApp1.0.0/ && $(COPY_FILE) --parents ../KinectShopApp/html5applicationviewer/html5applicationviewer.h ../KinectShopApp/sqlfunctions.h .tmp/KinectShopApp1.0.0/ && $(COPY_FILE) --parents ../KinectShopApp/main.cpp ../KinectShopApp/html5applicationviewer/html5applicationviewer.cpp .tmp/KinectShopApp1.0.0/ && (cd `dirname .tmp/KinectShopApp1.0.0` && $(TAR) KinectShopApp1.0.0.tar KinectShopApp1.0.0 && $(COMPRESS) KinectShopApp1.0.0.tar) && $(MOVE) `dirname .tmp/KinectShopApp1.0.0`/KinectShopApp1.0.0.tar.gz . && $(DEL_FILE) -r .tmp/KinectShopApp1.0.0
 
 
 clean:compiler_clean 

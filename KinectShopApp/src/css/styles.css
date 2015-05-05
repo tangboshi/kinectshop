@@ -76,6 +76,32 @@ body{
     padding:10px 20px;
 }
 
+#left-nav ul#left-nav-menu li:first-child{
+    -webkit-border-top-left-radius: 5px;
+    -webkit-border-top-right-radius: 5px;
+    -moz-border-radius-topleft: 5px;
+    -moz-border-radius-topright: 5px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+
+#left-nav ul#left-nav-menu li:last-child{
+    -webkit-border-bottom-right-radius: 5px;
+    -webkit-border-bottom-left-radius: 5px;
+    -moz-border-radius-bottomright: 5px;
+    -moz-border-radius-bottomleft: 5px;
+    border-bottom-right-radius: 5px;
+    border-bottom-left-radius: 5px;
+}
+
+#left-nav ul#left-nav-menu li:nth-child(odd){
+  background: rgba(220, 240, 255, 0.3);
+}
+
+#left-nav ul#left-nav-menu li:nth-child(even){
+  background: rgba(169, 218, 255, 0.3);
+}
+
 #content{
     margin:0;
     padding:20px 20px;
@@ -119,6 +145,7 @@ p{
     background:rgba(0,0,20,0.4);
     position:absolute;
     top:20px;
+    left:10px;
     font-family:"Indie Flower";
     font-weight:bold;
 }
@@ -150,11 +177,12 @@ thead tr th:last-child{
 }
 
 tbody tr:nth-child(even) td{
-    background: #dedede;
+    background:#555;
+    color:#fff;
 }
 
 tbody tr:nth-child(odd) td{
-    background: #f7f7f7;
+    background: #dedede;
 }
 
 /* Tabellen spezifisch */
