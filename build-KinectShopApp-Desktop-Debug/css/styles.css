@@ -16,13 +16,19 @@
     display:none;
 }
 
-.descending:after{
+.sortable th:not(.descending):not(.ascending):after {
+    margin-left:7px;
+    content:'\f0dc';
+    font-family:'FontAwesome';
+}
+
+.sortable .descending:after{
     margin-left:7px;
     content:'\f0dd';
     font-family:'FontAwesome';
 }
 
-.ascending:after{
+.sortable .ascending:after{
     margin-left:7px;
     content:'\f0de';
     font-family:'FontAwesome';
@@ -51,7 +57,7 @@ body{
 #left-nav, #content{
     display:inline-block;
     vertical-align:top;
-    height:600px;
+    height:700px;
 }
 
 #left-nav{
@@ -83,6 +89,7 @@ body{
 #header{
     height:100px;
     background:rgb(160,220,255);
+    background:url("../img/chocolate.jpg");
 }
 
 #footer{
