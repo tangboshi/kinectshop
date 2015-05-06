@@ -108,6 +108,10 @@ body{
     width:70%;
 }
 
+#content ol, #content ul{
+    margin: auto 30px;
+}
+
 #header{
     height:100px;
     background:rgb(160,220,255);
@@ -142,12 +146,13 @@ p{
     color:#fff;
     text-align:center;
     padding:10px;
-    background:rgba(0,0,20,0.4);
+    background:rgba(0,0,0,0.4);
     position:absolute;
     top:20px;
     left:10px;
     font-family:"Indie Flower";
     font-weight:bold;
+    border-radius:5px;
 }
 
 /* Tabellen allgemein */
@@ -189,6 +194,30 @@ tbody tr:nth-child(odd) td{
 
 #products{
     width: 100%;
+}
+
+/* Login */
+
+.input-prepend{
+    position:relative;
+    display:table;
+    border-collapse:separate;
+    margin:5px 0;
+}
+
+.input-prepend .fa{
+    padding: 10px 7px 10px 10px;
+    background: #fff;
+    background: rgba(255,255,255,0.6);
+    border-radius: 5px 0 0 5px;
+    color: #333;
+    height:40px;
+}
+
+.input-prepend input{
+    border:none;
+    height:40px;
+    line-height:40px;
 }
 
 /* *****************  END Styling  *************** */

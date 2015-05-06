@@ -1,6 +1,9 @@
 #include <QApplication>
+/*#include <QtWebKit>
+#include <QWebView>*/
 #include "html5applicationviewer.h"
 
+#include "sqlfunctions.h"
 #include <QtSql>
 
 int main(int argc, char *argv[])
@@ -18,6 +21,9 @@ int main(int argc, char *argv[])
     viewer.showExpanded();
     viewer.loadFile(QLatin1String("src/index.html"));
     viewer.setFixedSize(1200, 900);
-
+/*
+    sqlfunctions myObject;
+    app.desktop()->addToJavaScriptWindowObject("myObject", &myObject);
+*/
     return app.exec();
 }

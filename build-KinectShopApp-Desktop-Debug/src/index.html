@@ -44,6 +44,10 @@
                                 <span class="fa fa-shopping-cart"></span>
                                 Warenkorb
                             </li>
+                            <li title="kinect">
+                                <span class="fa fa-camera"></span>
+                                Kinect
+                            </li>
                         </ul>
 
                         <br>
@@ -56,9 +60,18 @@
                                     <span class="tab-text">Login</span>
                                 </label>
                                 <div id="tab-content1" class="tab-content">
-                                    <p>
-                                        Hier kommt der Login für Kunden und der Admins hin.
-                                    </p>
+                                    <div class="formbody">
+                                        <div class="input-prepend">
+                                            <span class="fa fa-user"></span>
+                                            <input type="text" name="username" placeholder="Benutzername" value required>
+                                        </div>
+                                        <div class="input-prepend">
+                                            <span class="fa fa-key"></span>
+                                            <input type="password" name="password" placeholder="Passwort" value required>
+                                        </div>
+
+                                        <input type="submit" value="anmelden" name="submit" id="login">
+                                    </div>
                                 </div>
                             </li>
 
@@ -80,9 +93,20 @@
                  --><div id="content">
                          <div class="section active" id="start">
                             <p>
-                                 Willkommen im Kinect Süßigkeiten Shop!<br>
-                                 Dies ist noch mehr Text, Blabla!<br>
-                                 Tangy :)
+                                Willkommen im Kinect-Süßigkeiten-Shop!<br>
+                                Fast alle Features müssen noch implementiert werden!
+                            </p>
+                            <p>
+                                <ol>Prioritäten:
+                                    <li>QWebkitBridge verstehen und benutzen</li>
+                                    <li>Verbindung zur SQL Datenbank herstellen, Tabellen mit jQuery+SQL oder QtWebkitBridge,C++ und SQL automatisch generieren</li>
+                                    <li>Funktionierendes Login-System (SQL, jQuery)</li>
+                                    <li>Funktionierendes Einkaufssystem per Klick</li>
+                                    <li>Funktionierendes Einkaufssystem via beliebiger Kinectfunktion</li>
+                                    <li>Kinect-Daten einbinden</li>
+                                    <li>Datenbank um weitere Spalten erweitern</li>
+                                    <li>Einkaufstatistiken mit SQL+flot (jQuery-Plugin)</li>
+                                </ol>
                             </p>
                          </div>
                          <div class="section inactive" id="products">
@@ -156,6 +180,11 @@
                                 Dies ist ihr Einkaufswagen.
                             </p>
                          </div>
+                         <div class="section inactive" id="kinect">
+                            <p>
+                                Ausgabe der Sensoren und Produkterkennung.
+                            </p>
+                        </div>
                     </div>
                 </div><!--
              --><footer id="footer">
