@@ -1,16 +1,16 @@
 # README
 Groß geschriebene Zeilen im Quelltext deuten auf noch nicht implementierte Features hin.
 
-# Momentaner Stand:
+# Momentaner Stand
+
 C++-Funktionen im Wesentlichen implementiert. Leider compiliert das Ganze aufgrund einiger Fehlerchen
 nicht, sind diesen aber auf den Versen.
 
-# Was fehlt:
-C++ >> Javascript
+# Was fehlt
 
-Javascript >> UI
-
-Teile des UI
+* C++ >> Javascript
+* Javascript >> UI
+* Teile des UI
 
 
 
