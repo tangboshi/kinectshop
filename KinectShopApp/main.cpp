@@ -5,7 +5,7 @@
 
 int main(int argc, char *argv[])
 {
-    sqlfunctions* obj = new sqlfunctions;
+    sqlfunctions obj;
 
     QApplication app(argc, argv);
 

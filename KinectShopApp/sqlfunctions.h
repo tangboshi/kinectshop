@@ -5,20 +5,22 @@
 #include <vector>
 #include <algorithm>
 
+#include <QSqlQuery>
 #include <QSql>
 #include <QSqlDatabase>
 #include <QDebug>
 #include <QMessageBox>
 #include <QObject>
-#include <string>
+#include <QString>
 
 #include "product.h"
 
+class product;
 using namespace std;
 
 typedef vector<product>::iterator iter;
 
-class sqlfunctions{ 
+class sqlfunctions:public QObject{
     Q_OBJECT
 
     public:
@@ -29,24 +31,33 @@ class sqlfunctions{
         void        adminLoggedIn();
 
     public slots:
+        // Warenmanagement
         product     isAlreadyInCart(product myProduct);
+        void        listAllProducts();
         void        addToCart(product myProduct);
-        void        removeFromCart(product myProduct);
         void        showCart();
         void        clearCart();
-        void        changeAmount(product myProduct, int newAmount);
-        bool        checkStock();
-        int         checkBalance();
+        void        changeAmount(product myProduct, string mode);
+        void        changeAmount(product myProduct, int diff, string mode);
+        int         checkStock();
+        double      checkBalance();
         void        purchase();
-        void        registerUser(string username, string password);
-        void        login(string username, string password);
+
+        // Usermanagement
+        void        registerUser(QString username, QString password);
+        void        login(QString username, QString password);
         void        empowerUser();
+        void        disempowerUser();
+        void        listAllUsers();
+        void        refillBalance(int amount);
 
     private:
+        // Accountmanagement
         vector<product>     cart;
         bool                isLogin;
         bool                isAdminLoggedIn;
         int                 uid;
+        QSqlDatabase        db;
 };
 
 #endif // SQLFUNCTIONS_H
