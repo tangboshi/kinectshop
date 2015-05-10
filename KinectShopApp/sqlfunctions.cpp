@@ -26,6 +26,7 @@ void sqlfunctions::listAllProducts(){
     query.exec();
 
     // FEHLT Tabllen-Umgebung: nachträglich einfügen!!
+    // Übernehme dazu den Quelltext aus der HTML-Datei
     int pid, stock;
     string title;
     double price;
@@ -89,7 +90,8 @@ void sqlfunctions::clearCart(){
     }
 }
 
-// Überladene Funktion, entspricht eigtl. removeFromCart(myProduct)
+// Wenn man unzufrieden ist mit der Menge an eingekauften Waren, kann man diese ändern.
+// Überladene Funktion
 void sqlfunctions::changeAmount(product myProduct, string mode){
         if(mode=="clear"){
             iter cursor = find(cart.begin(), cart.end(), myProduct.getPid());
@@ -97,7 +99,6 @@ void sqlfunctions::changeAmount(product myProduct, string mode){
         }
 }
 
-// Wenn man unzufrieden ist mit der Menge an eingekauften Waren, kann man diese ändern.
 void sqlfunctions::changeAmount(product myProduct, int diff, string mode){
     if(mode=="add"){
         myProduct.setAmount(myProduct.getAmount()+diff);
