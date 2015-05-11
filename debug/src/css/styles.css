@@ -1,0 +1,235 @@
+/*Nachher noch normalize.css einbinden*/
+
+/* ***************** BEGIN Global *************** */
+
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+.active{
+    display:block;
+}
+
+.inactive{
+    display:none;
+}
+
+.sortable th:not(.descending):not(.ascending):after {
+    margin-left:7px;
+    content:'\f0dc';
+    font-family:'FontAwesome';
+}
+
+.sortable .descending:after{
+    margin-left:7px;
+    content:'\f0dd';
+    font-family:'FontAwesome';
+}
+
+.sortable .ascending:after{
+    margin-left:7px;
+    content:'\f0de';
+    font-family:'FontAwesome';
+}
+
+/* *****************  END Global  *************** */
+
+/* ***************** BEGIN Struktur *************** */
+body{
+    background:#fff;
+}
+
+#wrapper{
+}
+
+#main{
+}
+
+#content-wrapper{
+    display:inline-block;
+    margin:0;
+    width:100%;
+    background:#fff;
+}
+
+#left-nav, #content{
+    display:inline-block;
+    vertical-align:top;
+    height:700px;
+}
+
+#left-nav{
+    width:30%;
+    border-radius:5px;
+}
+
+#left-nav ul#left-nav-menu{
+    margin:0;
+    padding:10px 10px;
+
+    list-style-type:none;
+}
+
+#left-nav ul#left-nav-menu li{
+    padding:10px 20px;
+}
+
+#left-nav ul#left-nav-menu li:first-child{
+    -webkit-border-top-left-radius: 5px;
+    -webkit-border-top-right-radius: 5px;
+    -moz-border-radius-topleft: 5px;
+    -moz-border-radius-topright: 5px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+
+#left-nav ul#left-nav-menu li:last-child{
+    -webkit-border-bottom-right-radius: 5px;
+    -webkit-border-bottom-left-radius: 5px;
+    -moz-border-radius-bottomright: 5px;
+    -moz-border-radius-bottomleft: 5px;
+    border-bottom-right-radius: 5px;
+    border-bottom-left-radius: 5px;
+}
+
+#left-nav ul#left-nav-menu li:nth-child(odd){
+  background: rgba(220, 240, 255, 0.3);
+}
+
+#left-nav ul#left-nav-menu li:nth-child(even){
+  background: rgba(169, 218, 255, 0.3);
+}
+
+#content{
+    margin:0;
+    padding:20px 20px;
+    width:70%;
+}
+
+#content ol, #content ul{
+    margin: auto 30px;
+}
+
+#header{
+    height:100px;
+    background:rgb(160,220,255);
+    background:url("../img/chocolate.jpg");
+    position:relative;
+}
+
+#footer{
+    padding:10px 10px;
+    height:100px;
+    background:#555;
+    color:#fff;
+}
+
+#quit{
+    float:right;
+    text-align: right;
+}
+
+/* *****************  END Struktur  *************** */
+
+/* ***************** BEGIN Styling *************** */
+
+/* Text allgemein */
+p{
+    margin: 0 0 0.5em 0;
+}
+
+/* Text spezifisch */
+
+#title{
+    color:#fff;
+    text-align:center;
+    padding:10px;
+    background:rgba(0,0,0,0.4);
+    position:absolute;
+    top:20px;
+    left:10px;
+    font-family:"Indie Flower";
+    font-weight:bold;
+    border-radius:5px;
+}
+
+/* Tabellen allgemein */
+table{
+    border-collapse:collapse;
+}
+
+td, th{
+    padding:7px 14px;
+}
+
+thead tr{
+    background:#002;
+    color:#fff;
+}
+
+thead tr th:first-child{
+    -webkit-border-top-left-radius: 5px;
+    -moz-border-radius-topleft: 5px;
+    border-top-left-radius: 5px;
+}
+
+thead tr th:last-child{
+    -webkit-border-top-right-radius: 5px;
+    -moz-border-radius-topright: 5px;
+    border-top-right-radius: 5px;
+}
+
+tbody tr:nth-child(even) td{
+    background:#555;
+    color:#fff;
+}
+
+tbody tr:nth-child(odd) td{
+    background: #fff;
+}
+
+/* Tabellen spezifisch */
+
+#products{
+    width: 100%;
+}
+
+/* Login */
+
+.input-prepend{
+    position:relative;
+    display:table;
+    border-collapse:separate;
+    margin:5px 0;
+}
+
+.input-prepend .fa{
+    padding: 10px 7px 10px 10px;
+    background: #fff;
+    background: rgba(255,255,255,0.6);
+    border-radius: 5px 0 0 5px;
+    color: #333;
+    height:40px;
+    width:35px;
+}
+
+.input-prepend input{
+    border:none;
+    height:40px;
+    line-height:40px;
+    border-radius: 0 5px 5px 0;
+}
+
+#login{
+    padding:7px 14px;
+    border-radius:5px;
+    color:#fff;
+    box-shadow: inset 0px 1px 0px 0px rgb(4,192,239);
+    border: 1px solid #222760;
+    background: rgb(3,113,168);
+    background: linear-gradient(to bottom, rgba(3,113,168,1) 0%,rgba(2,96,142,1) 43%,rgba(0,71,107,1) 100%);
+}
+
+/* *****************  END Styling  *************** */
