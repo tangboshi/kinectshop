@@ -3,7 +3,7 @@ $(document).ready(function(){
     // Verlassen-Button
     $("#quit").click(Qt.quit);
     $("#login").click(function(){
-      alert("Noch zu implementieren, QWebkitBridge muss erst verstanden werden!");
+        mySqlObj.testJs();
     });
 });
 

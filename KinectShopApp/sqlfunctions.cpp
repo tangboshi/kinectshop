@@ -353,3 +353,12 @@ void sqlfunctions::login(QString username, QString password){
     }
 }
 
+// ----------------------------------------------------------------------------------
+// -----------------------------------------TEST-------------------------------------
+// ----------------------------------------------------------------------------------
+
+void sqlfunctions::testJs(){
+    QMessageBox msgBox;
+    msgBox.setText("Diese Funktion wird in Kürze zur Verfügung stehen!");
+    msgBox.exec();
+}

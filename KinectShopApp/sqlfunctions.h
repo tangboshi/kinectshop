@@ -51,6 +51,9 @@ class sqlfunctions:public QObject{
         void        listAllUsers();
         void        refillBalance(int amount);
 
+        // Testfunktion
+        void        testJs();
+
     private:
         // Accountmanagement
         vector<product>     cart;
