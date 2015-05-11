@@ -1,5 +1,3 @@
-# kinectshop
-
 # Aktueller Stand
 
 Nächste Schritte:
