@@ -5,9 +5,9 @@
 
 int main(int argc, char *argv[])
 {
-    sqlfunctions obj;
-
     QApplication app(argc, argv);
+
+    sqlfunctions obj;
 
     Html5ApplicationViewer viewer;
     viewer.setOrientation(Html5ApplicationViewer::ScreenOrientationAuto);

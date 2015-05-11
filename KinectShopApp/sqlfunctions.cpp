@@ -7,7 +7,17 @@ sqlfunctions::sqlfunctions(){
     db.setUserName("kinectshopClient");
     db.setPassword("lfb-student2015");
     db.setPort(3306);
-    qDebug()<<db.open();
+
+    if(!db.open()){
+        QMessageBox msgBox;
+        msgBox.setText("Es konnte leider keine Verbindung zur SQL-Datenbank hergestellt werden!");
+        msgBox.exec();
+    }
+    else{
+        QMessageBox msgBox;
+        msgBox.setText("Die Verbindung zu " + db.hostName() + " wurde hergestellt.");
+        msgBox.exec();
+    }
 
     isLogin = false;
     isAdminLoggedIn = false;

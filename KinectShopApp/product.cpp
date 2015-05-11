@@ -43,7 +43,6 @@ void product::operator =(const product &theProduct){
     this->title = theProduct.title;
 }
 
-//Operator um zwei Produkte zu vergleichen, liefert true falls gleich
-bool product::operator == (const product& theProduct) const{
-    return true;
+bool product::operator == (const int theProduct) const{
+    return (pid == theProduct);
 }

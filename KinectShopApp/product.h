@@ -19,7 +19,7 @@ class product{
         void setTitle(string newTitle);
         void setPrice(int newPrice);
 
-        bool operator == (const product& theProduct) const;
+        bool operator == (const int theProduct) const;
         void operator = (const product &theProduct);
 
     private:
