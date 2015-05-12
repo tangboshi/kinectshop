@@ -3,7 +3,21 @@ $(document).ready(function(){
     // Verlassen-Button
     $("#quit").click(Qt.quit);
     $("#login").click(function(){
-        mySqlObj.testJs();
+        var username = $("#username").val();
+        var password = $("#password").val();
+        alert("Der eingegebene Username war: "+username+" Das eingegebene Passwort war: "+password);
+        mySqlObj.login(username, password);
+        if(mySqlObj.getLogin()){
+           $("#login-form").toggleClass("active inactive");
+           $("#logout-form").toggleClass("active inactive");
+        }
+    });
+    $("#logout").click(function(){
+        mySqlObj.logout();
+        if(!mySqlObj.getLogin()){
+           $("#login-form").toggleClass("active inactive");
+           $("#logout-form").toggleClass("active inactive");
+        }
     });
 });
 

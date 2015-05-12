@@ -61,16 +61,21 @@
                                 </label>
                                 <div id="tab-content1" class="tab-content">
                                     <div class="formbody">
-                                        <div class="input-prepend">
-                                            <span class="fa fa-user"></span>
-                                            <input type="text" name="username" placeholder="Benutzername" value required>
-                                        </div>
-                                        <div class="input-prepend">
-                                            <span class="fa fa-key"></span>
-                                            <input type="password" name="password" placeholder="Passwort" value required>
-                                        </div>
+                                        <div id="login-form" class="active">
+                                            <div class="input-prepend">
+                                                <span class="fa fa-user"></span>
+                                                <input id="username" type="text" name="username" placeholder="Benutzername" value required>
+                                            </div>
+                                            <div class="input-prepend">
+                                                <span class="fa fa-key"></span>
+                                                <input id="password" type="password" name="password" placeholder="Passwort" value required>
+                                            </div>
 
-                                        <input type="submit" value="anmelden" name="submit" id="login">
+                                            <input type="submit" value="anmelden" name="submit" id="login">
+                                        </div>
+                                        <div id="logout-form" class="inactive">
+                                            <input type="submit" value="abmelden" name="submit" id="logout">
+                                        </div>
                                     </div>
                                 </div>
                             </li>

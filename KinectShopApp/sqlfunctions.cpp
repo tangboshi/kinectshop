@@ -12,15 +12,17 @@ sqlfunctions::sqlfunctions(){
         QMessageBox msgBox;
         msgBox.setText("Es konnte leider keine Verbindung zur SQL-Datenbank hergestellt werden!");
         msgBox.exec();
-    }
+    }// Ausgeben wenn Verbindung hergestellt wurde
+    /*
     else{
         QMessageBox msgBox;
         msgBox.setText("Die Verbindung zu " + db.hostName() + " wurde hergestellt.");
         msgBox.exec();
-    }
+    }*/
 
     isLogin = false;
     isAdminLoggedIn = false;
+    uid = -1;
 }
 
 // ----------------------------------------------------------------------------------
@@ -312,31 +314,47 @@ void sqlfunctions::empowerUser(){
 void sqlfunctions::disempowerUser(){
 }
 
+bool sqlfunctions::getLogin(){
+    return isLogin;
+}
+
+// Diese Funktion wurde ausführlich getestet und funktioniert einwandfrei!
 void sqlfunctions::login(QString username, QString password){
     // Prüfen, ob Username-Password-Kombination existiert
     // TIMEOUT BEI MEHRFACH FALSCHER EINGABE EINFÜGEN
     QSqlQuery query;
-    bool accountExists = query.prepare("SELECT username FROM users WHERE password = :password");
+    query.prepare("SELECT username FROM users WHERE password = :password");
     query.bindValue(":password", password);
-    query.exec();
+    bool accountExists = query.exec();
+    query.next();
     QString receivedUsername = query.value(0).toString();
     bool credentialsMatch = false;
     if(receivedUsername.toStdString() == username.toStdString()){
         credentialsMatch = true;
     }
-    if(accountExists&&credentialsMatch){
+    // Überprüft ob Account existiert, Passwort/Benutzername-Kombination stimmt
+    // und ob ein nicht leerer Benutzername eingegeben wurde.
+    if(accountExists && credentialsMatch && username.toStdString()!=""){
         // Member uid für Einkauf setzen
         query.prepare("SELECT id FROM users WHERE username =:username");
         query.bindValue(":username", username);
-        query.exec();
+        if(query.exec()){
+            emit userLoggedIn();
+            isLogin = true;
+        }
         query.next();
         uid = query.value(0).toInt();
+
+        // Um Funktionalität zu überprüfen!
+        QMessageBox msgBox;
+        msgBox.setText("Der eingeloggte User hat die ID "+QString::number(uid));
+        msgBox.exec();
 
         // Prüfen ob ein Admin eingeloggt ist
         // Setze entsprechend isAdminLoggedIn auf true bzw. false
         // Wenn ja sende Signal adminLoggedIn aus
         // Gib Admin-Rechte.
-        QSqlQuery query;
+
         query.prepare("SELECT isAdmin FROM users WHERE id = :uid");
         query.bindValue(":uid", uid);
         query.exec();
@@ -344,6 +362,15 @@ void sqlfunctions::login(QString username, QString password){
         bool userIsAdmin = query.value(0).toBool();
         if(userIsAdmin){
             emit adminLoggedIn();
+            isAdminLoggedIn = true;
+            QMessageBox msgBox;
+            msgBox.setText("Der eingeloggte wurde als Admin erkannt. Das Admin-Flag ist auf "+QString::number(isAdminLoggedIn)+".");
+            msgBox.exec();
+        }
+        else{
+            QMessageBox msgBox;
+            msgBox.setText("Der eingeloggte wurde als Kunde erkannt. Das Admin-Flag ist auf "+QString::number(isAdminLoggedIn)+".");
+            msgBox.exec();
         }
     }
     else{
@@ -351,6 +378,33 @@ void sqlfunctions::login(QString username, QString password){
         msgBox.setText("Benutzername oder Passwort inkorrekt!");
         msgBox.exec();
     }
+}
+
+// User ausloggen
+void sqlfunctions::logout(){
+    /* USER FRAGEN, OB ER SICH WIRKLICH AUSLOGGEN WILL, DA SEIN WARENKORB GELÖSCHT WIRD!
+    bool areYouSure = false;
+    QMessageBox msgBox;
+    QAbstractButton button;
+    msgBox.addButton(button, );
+    msgBox.setText("Logout vom User abgebrochen.");
+    msgBox.exec();
+
+    if(!areYouSure){
+        msgBox.setText("Logout vom User abgebrochen.");
+        msgBox.exec();
+        return;
+    }
+    */
+
+    // Auslog-Funktionalität
+    isLogin = false;
+    isAdminLoggedIn = false;
+    uid = -1;
+    clearCart();
+    QMessageBox msgBox;
+    msgBox.setText("Logout erfolgreich!");
+    msgBox.exec();
 }
 
 // ----------------------------------------------------------------------------------

@@ -29,6 +29,7 @@ class sqlfunctions:public QObject{
     signals:
         void        purchaseDone(vector<product> cart);
         void        adminLoggedIn();
+        void        userLoggedIn();
 
     public slots:
         // Warenmanagement
@@ -46,10 +47,13 @@ class sqlfunctions:public QObject{
         // Usermanagement
         void        registerUser(QString username, QString password);
         void        login(QString username, QString password);
+        void        logout();
         void        empowerUser();
         void        disempowerUser();
         void        listAllUsers();
         void        refillBalance(int amount);
+
+        bool        getLogin();
 
         // Testfunktion
         void        testJs();
