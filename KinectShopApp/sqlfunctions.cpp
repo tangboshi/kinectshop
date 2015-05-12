@@ -373,7 +373,7 @@ void sqlfunctions::login(QString username, QString password){
 
         // Um Funktionalität zu überprüfen!
         QMessageBox msgBox;
-        msgBox.setText("Der eingeloggte User hat die ID "+QString::number(uid));
+        msgBox.setText("Der eingeloggte User hat die ID "+QString::number(uid)+".");
         msgBox.exec();
 
         // Prüfen ob ein Admin eingeloggt ist
@@ -390,12 +390,12 @@ void sqlfunctions::login(QString username, QString password){
             emit adminLoggedIn();
             isAdminLoggedIn = true;
             QMessageBox msgBox;
-            msgBox.setText("Der eingeloggte wurde als Admin erkannt. Das Admin-Flag ist auf "+QString::number(isAdminLoggedIn)+".");
+            msgBox.setText("User als Admin erkannt. Das Admin-Flag ist auf "+QString::number(isAdminLoggedIn)+".");
             msgBox.exec();
         }
         else{
             QMessageBox msgBox;
-            msgBox.setText("Der eingeloggte wurde als Kunde erkannt. Das Admin-Flag ist auf "+QString::number(isAdminLoggedIn)+".");
+            msgBox.setText("User als Kunde erkannt. Das Admin-Flag ist auf "+QString::number(isAdminLoggedIn)+".");
             msgBox.exec();
         }
     }

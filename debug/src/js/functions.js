@@ -3,7 +3,6 @@ $(document).ready(function(){
     // Verlassen-Button
     $("#quit").click(Qt.quit);
     $("#login").click(function(){
-        mySqlObj.testJs();
         var username = $("#username").val();
         var password = $("#password").val();
         // Testfunktion
