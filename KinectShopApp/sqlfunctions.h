@@ -2,6 +2,7 @@
 #define SQLFUNCTIONS_H
 
 #include <iostream>
+#include <sstream>
 #include <vector>
 #include <algorithm>
 
@@ -34,9 +35,9 @@ class sqlfunctions:public QObject{
     public slots:
         // Warenmanagement
         product     isAlreadyInCart(product myProduct);
-        void        listAllProducts();
+        QString     listAllProducts();
         void        addToCart(product myProduct);
-        void        showCart();
+        string      showCart();
         void        clearCart();
         void        changeAmount(product myProduct, string mode);
         void        changeAmount(product myProduct, int diff, string mode);

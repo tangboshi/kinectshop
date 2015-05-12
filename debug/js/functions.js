@@ -1,11 +1,13 @@
-// Qt-Funktionen
+// Click-Events
 $(document).ready(function(){
     // Verlassen-Button
     $("#quit").click(Qt.quit);
     $("#login").click(function(){
+        mySqlObj.testJs();
         var username = $("#username").val();
         var password = $("#password").val();
-        alert("Der eingegebene Username war: "+username+" Das eingegebene Passwort war: "+password);
+        // Testfunktion
+        // alert("Der eingegebene Username war: "+username+" Das eingegebene Passwort war: "+password);
         mySqlObj.login(username, password);
         if(mySqlObj.getLogin()){
            $("#login-form").toggleClass("active inactive");
@@ -19,20 +21,21 @@ $(document).ready(function(){
            $("#logout-form").toggleClass("active inactive");
         }
     });
-});
-
-// UI-Funktionen
-$(document).ready(function() {
     // Nur ausgewählten Menüpunkt anzeigen
-    $("#left-nav ul li[title]").click(function() {
+    $("#left-nav ul li[title]").click(function(){
       var x = $(this).attr("title");
-      $(".active").toggleClass("active inactive");
+      $("#content .section.active").toggleClass("active inactive");
       $("#" + x).toggleClass("active inactive");
     });
 });
 
-// Hilfsfunktionen
 
+/*Javascript Insertion
+$(document).ready(function(){
+
+});*/
+
+// Hilfsfunktionen
 // Sortierfunktionen
 $(document).ready(function(){
     // Verschiedene Datentypen miteinander vergleichen

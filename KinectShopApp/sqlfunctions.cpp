@@ -30,20 +30,30 @@ sqlfunctions::sqlfunctions(){
 // ----------------------------------------------------------------------------------
 
 // Zeige die im Shop verfügbaren Produkte an
-void sqlfunctions::listAllProducts(){
+QString sqlfunctions::listAllProducts(){
     QSqlQuery query;
 
     // Alles Abfragen
     query.prepare("SELECT * FROM products");
     query.exec();
 
-    // FEHLT Tabllen-Umgebung: nachträglich einfügen!!
-    // Übernehme dazu den Quelltext aus der HTML-Datei
     int pid, stock;
     string title;
     double price;
 
+    stringstream buffer;
+
     // Alles darstellen
+    cout    <<  "<table id='productList'>"
+            <<  "<thead>"
+            <<  "<th>"      <<  "Produkt-ID"    <<  "</th>"
+            <<  "<th>"      <<  "Produktname"   <<  "</th>"
+            <<  "<th>"      <<  "Preis"         <<  "</th>"
+            <<  "<th>"      <<  "Verfügbar"     <<  "</th>"
+            <<  "</thead>"
+            <<  "<tbody>"
+            <<  endl;
+
     while(query.next()){
         pid = query.value(0).toInt();
         title = query.value(1).toString().toStdString();
@@ -54,9 +64,17 @@ void sqlfunctions::listAllProducts(){
                 <<  "<td>"      <<  title     <<    "</td>"
                 <<  "<td>"      <<  price     <<    "</td>"
                 <<  "<td>"      <<  stock     <<    "</td>"
-                <<  "</tr>"     <<  endl;
+                <<  "</tr>"
+                <<  endl;
     }
 
+    cout    <<  "</tbody>"
+            <<  "</table>"  <<  endl;
+
+    streambuf *old = cout.rdbuf(buffer.rdbuf());
+    QString htmlOutput = QString::fromStdString(buffer.str());
+
+    return htmlOutput;
 }
 
 // Füge Element in den Warenkorb ein
@@ -79,7 +97,9 @@ product sqlfunctions::isAlreadyInCart(product myProduct){
 
 // Gibt den Inhalt des Einkaufswagens aus, bereits HTML
 // Überarbeiten! Verwende <thead><th><tbody> !!!
-void sqlfunctions::showCart(){
+string sqlfunctions::showCart(){
+
+    stringstream buffer;
 
     cout    <<  "<table id='cart'>"   << endl;
     for(iter cursor = cart.begin();cursor!=cart.end();cursor++){
@@ -91,6 +111,10 @@ void sqlfunctions::showCart(){
     }
     cout    <<  "</table>"   << endl;
 
+    streambuf *old = cout.rdbuf(buffer.rdbuf());
+    string htmlOutput = buffer.str();
+
+    return htmlOutput;
 }
 
 // Leert den Einkaufswagen
@@ -249,7 +273,7 @@ void sqlfunctions::purchase(){
 // ---------------------------------------USERMGMT-----------------------------------
 // ----------------------------------------------------------------------------------
 
-
+// erfordert auf Javascript-Seite noch einiges an Arbeit!
 void sqlfunctions::registerUser(QString username, QString password){
     // Überprüfen, ob User in DB vorhanden ist
     QSqlQuery query;
@@ -318,10 +342,12 @@ bool sqlfunctions::getLogin(){
     return isLogin;
 }
 
-// Diese Funktion wurde ausführlich getestet und funktioniert einwandfrei!
+// funktioniert einwandfrei!
 void sqlfunctions::login(QString username, QString password){
     // Prüfen, ob Username-Password-Kombination existiert
+
     // TIMEOUT BEI MEHRFACH FALSCHER EINGABE EINFÜGEN
+
     QSqlQuery query;
     query.prepare("SELECT username FROM users WHERE password = :password");
     query.bindValue(":password", password);
@@ -413,6 +439,6 @@ void sqlfunctions::logout(){
 
 void sqlfunctions::testJs(){
     QMessageBox msgBox;
-    msgBox.setText("Diese Funktion wird in Kürze zur Verfügung stehen!");
+    msgBox.setText(listAllProducts());
     msgBox.exec();
 }

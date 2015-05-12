@@ -42,9 +42,9 @@ QT_MOC_LITERAL(9, 99, 9),
 QT_MOC_LITERAL(10, 109, 15),
 QT_MOC_LITERAL(11, 125, 9),
 QT_MOC_LITERAL(12, 135, 8),
-QT_MOC_LITERAL(13, 144, 9),
-QT_MOC_LITERAL(14, 154, 12),
-QT_MOC_LITERAL(15, 167, 6),
+QT_MOC_LITERAL(13, 144, 6),
+QT_MOC_LITERAL(14, 151, 9),
+QT_MOC_LITERAL(15, 161, 12),
 QT_MOC_LITERAL(16, 174, 4),
 QT_MOC_LITERAL(17, 179, 4),
 QT_MOC_LITERAL(18, 184, 10),
@@ -67,7 +67,7 @@ QT_MOC_LITERAL(32, 331, 6)
     "cart\0adminLoggedIn\0userLoggedIn\0"
     "isAlreadyInCart\0product\0myProduct\0"
     "listAllProducts\0addToCart\0showCart\0"
-    "clearCart\0changeAmount\0string\0mode\0"
+    "string\0clearCart\0changeAmount\0mode\0"
     "diff\0checkStock\0checkBalance\0purchase\0"
     "registerUser\0username\0password\0login\0"
     "logout\0empowerUser\0disempowerUser\0"
@@ -99,9 +99,9 @@ static const uint qt_meta_data_sqlfunctions[] = {
       10,    0,  132,    2, 0x0a,
       11,    1,  133,    2, 0x0a,
       12,    0,  136,    2, 0x0a,
-      13,    0,  137,    2, 0x0a,
-      14,    2,  138,    2, 0x0a,
-      14,    3,  143,    2, 0x0a,
+      14,    0,  137,    2, 0x0a,
+      15,    2,  138,    2, 0x0a,
+      15,    3,  143,    2, 0x0a,
       18,    0,  150,    2, 0x0a,
       19,    0,  151,    2, 0x0a,
       20,    0,  152,    2, 0x0a,
@@ -122,12 +122,12 @@ static const uint qt_meta_data_sqlfunctions[] = {
 
  // slots: parameters
     0x80000000 | 8, 0x80000000 | 8,    9,
-    QMetaType::Void,
+    QMetaType::QString,
     QMetaType::Void, 0x80000000 | 8,    9,
+    0x80000000 | 13,
     QMetaType::Void,
-    QMetaType::Void,
-    QMetaType::Void, 0x80000000 | 8, 0x80000000 | 15,    9,   16,
-    QMetaType::Void, 0x80000000 | 8, QMetaType::Int, 0x80000000 | 15,    9,   17,   16,
+    QMetaType::Void, 0x80000000 | 8, 0x80000000 | 13,    9,   16,
+    QMetaType::Void, 0x80000000 | 8, QMetaType::Int, 0x80000000 | 13,    9,   17,   16,
     QMetaType::Int,
     QMetaType::Double,
     QMetaType::Void,
@@ -154,9 +154,11 @@ void sqlfunctions::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id
         case 2: _t->userLoggedIn(); break;
         case 3: { product _r = _t->isAlreadyInCart((*reinterpret_cast< product(*)>(_a[1])));
             if (_a[0]) *reinterpret_cast< product*>(_a[0]) = _r; }  break;
-        case 4: _t->listAllProducts(); break;
+        case 4: { QString _r = _t->listAllProducts();
+            if (_a[0]) *reinterpret_cast< QString*>(_a[0]) = _r; }  break;
         case 5: _t->addToCart((*reinterpret_cast< product(*)>(_a[1]))); break;
-        case 6: _t->showCart(); break;
+        case 6: { string _r = _t->showCart();
+            if (_a[0]) *reinterpret_cast< string*>(_a[0]) = _r; }  break;
         case 7: _t->clearCart(); break;
         case 8: _t->changeAmount((*reinterpret_cast< product(*)>(_a[1])),(*reinterpret_cast< string(*)>(_a[2]))); break;
         case 9: _t->changeAmount((*reinterpret_cast< product(*)>(_a[1])),(*reinterpret_cast< int(*)>(_a[2])),(*reinterpret_cast< string(*)>(_a[3]))); break;
