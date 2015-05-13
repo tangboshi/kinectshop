@@ -41,15 +41,17 @@ QString sqlfunctions::listAllProducts(){
     string title;
     double price;
 
-    stringstream buffer;
+    stringstream stream;
 
     // Alles darstellen
-    cout    <<  "<table id='productList'>"
+    stream  <<  "<table id='productList' class='sortable'>"
             <<  "<thead>"
+            <<  "<tr>"
             <<  "<th>"      <<  "Produkt-ID"    <<  "</th>"
             <<  "<th>"      <<  "Produktname"   <<  "</th>"
             <<  "<th>"      <<  "Preis"         <<  "</th>"
             <<  "<th>"      <<  "Verfügbar"     <<  "</th>"
+            <<  "</tr>"
             <<  "</thead>"
             <<  "<tbody>"
             <<  endl;
@@ -59,7 +61,7 @@ QString sqlfunctions::listAllProducts(){
         title = query.value(1).toString().toStdString();
         price = query.value(2).toDouble();
         stock = query.value(4).toInt();
-        cout    <<  "<tr>"
+        stream  <<  "<tr>"
                 <<  "<td>"      <<  pid       <<    "</td>"
                 <<  "<td>"      <<  title     <<    "</td>"
                 <<  "<td>"      <<  price     <<    "</td>"
@@ -68,11 +70,18 @@ QString sqlfunctions::listAllProducts(){
                 <<  endl;
     }
 
-    cout    <<  "</tbody>"
+    stream  <<  "</tbody>"
             <<  "</table>"  <<  endl;
 
-    streambuf *old = cout.rdbuf(buffer.rdbuf());
-    QString htmlOutput = QString::fromStdString(buffer.str());
+    string s = stream.str();
+
+    QString htmlOutput = QString::fromStdString(s);
+
+    /* // Test
+    QMessageBox msgBox;
+    msgBox.setText(htmlOutput);
+    msgBox.exec();
+    */
 
     return htmlOutput;
 }
@@ -97,11 +106,11 @@ product sqlfunctions::isAlreadyInCart(product myProduct){
 
 // Gibt den Inhalt des Einkaufswagens aus, bereits HTML
 // Überarbeiten! Verwende <thead><th><tbody> !!!
-string sqlfunctions::showCart(){
+QString sqlfunctions::showCart(){
 
-    stringstream buffer;
+    // stringstream buffer;
 
-    cout    <<  "<table id='cart'>"   << endl;
+    cout    <<  "<table id='cartContent' class='sortable'>"   << endl;
     for(iter cursor = cart.begin();cursor!=cart.end();cursor++){
         cout    <<  "<tr> "     << endl;
         cout    <<  "<td>"      <<  "Produkt-ID: "      << cursor->getPid()       << "</td>"      << endl;
@@ -111,10 +120,10 @@ string sqlfunctions::showCart(){
     }
     cout    <<  "</table>"   << endl;
 
-    streambuf *old = cout.rdbuf(buffer.rdbuf());
-    string htmlOutput = buffer.str();
+    // streambuf *old = cout.rdbuf(buffer.rdbuf());
+    //QString htmlOutput = QString::fromStdString(buffer.str());
 
-    return htmlOutput;
+    return "a"; //htmlOutput;
 }
 
 // Leert den Einkaufswagen

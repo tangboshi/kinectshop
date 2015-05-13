@@ -42,7 +42,7 @@ class sqlfunctions:public QObject{
         product     isAlreadyInCart(product myProduct);
         QString     listAllProducts();
         void        addToCart(product myProduct);
-        string      showCart();
+        QString     showCart();
         void        clearCart();
         void        changeAmount(product myProduct, string mode);
         void        changeAmount(product myProduct, int diff, string mode);

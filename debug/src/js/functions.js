@@ -5,6 +5,10 @@ $(document).ready(function(){
      * connect() purchase() mit getBalance();
     */
 
+    /* Cleaner Code:
+     * js-Update von #acc-balance über signal balanceChanged()
+     */
+
     // Verlassen-Button
     $("#quit").click(Qt.quit);
 
@@ -16,7 +20,6 @@ $(document).ready(function(){
         // alert("Der eingegebene Username war: "+username+" Das eingegebene Passwort war: "+password);
         mySqlObj.login(username, password);
         if(mySqlObj.getLogin()){
-           alert("Login successful!");
            $("#login-form").toggleClass("active inactive");
            $("#logout-form").toggleClass("active inactive");
            $("#acc-username .accdd").html(mySqlObj.getUsername());
@@ -70,11 +73,11 @@ $(document).ready(function(){
 });
 
 
-/*Javascript Insertion
-  // unter anderem listAllProducts() und showCart()
+//Javascript Insertion
+// unter anderem listAllProducts() und showCart()
 $(document).ready(function(){
-
-});*/
+    $("#shop").append(mySqlObj.listAllProducts());
+});
 
 // Hilfsfunktionen
 // Sortierfunktionen

@@ -45,9 +45,9 @@ QT_MOC_LITERAL(12, 135, 9),
 QT_MOC_LITERAL(13, 145, 15),
 QT_MOC_LITERAL(14, 161, 9),
 QT_MOC_LITERAL(15, 171, 8),
-QT_MOC_LITERAL(16, 180, 6),
-QT_MOC_LITERAL(17, 187, 9),
-QT_MOC_LITERAL(18, 197, 12),
+QT_MOC_LITERAL(16, 180, 9),
+QT_MOC_LITERAL(17, 190, 12),
+QT_MOC_LITERAL(18, 203, 6),
 QT_MOC_LITERAL(19, 210, 4),
 QT_MOC_LITERAL(20, 215, 4),
 QT_MOC_LITERAL(21, 220, 10),
@@ -79,15 +79,14 @@ QT_MOC_LITERAL(44, 453, 1)
     "cart\0balanceChanged\0amount\0adminLoggedIn\0"
     "userLoggedIn\0userLoggedOut\0isAlreadyInCart\0"
     "product\0myProduct\0listAllProducts\0"
-    "addToCart\0showCart\0string\0clearCart\0"
-    "changeAmount\0mode\0diff\0checkStock\0"
-    "checkBalance\0purchase\0registerUser\0"
-    "username\0password\0repeatedPassword\0"
-    "login\0logout\0empowerUser\0disempowerUser\0"
-    "listAllUsers\0refillBalance\0getLogin\0"
-    "getIsAdminLoggedIn\0getUid\0getUsername\0"
-    "getBalance\0testJs\0testCpp\0testSql\0a\0"
-    "b\0c\0"
+    "addToCart\0showCart\0clearCart\0changeAmount\0"
+    "string\0mode\0diff\0checkStock\0checkBalance\0"
+    "purchase\0registerUser\0username\0password\0"
+    "repeatedPassword\0login\0logout\0empowerUser\0"
+    "disempowerUser\0listAllUsers\0refillBalance\0"
+    "getLogin\0getIsAdminLoggedIn\0getUid\0"
+    "getUsername\0getBalance\0testJs\0testCpp\0"
+    "testSql\0a\0b\0c\0"
 };
 #undef QT_MOC_LITERAL
 
@@ -116,9 +115,9 @@ static const uint qt_meta_data_sqlfunctions[] = {
       13,    0,  176,    2, 0x0a,
       14,    1,  177,    2, 0x0a,
       15,    0,  180,    2, 0x0a,
-      17,    0,  181,    2, 0x0a,
-      18,    2,  182,    2, 0x0a,
-      18,    3,  187,    2, 0x0a,
+      16,    0,  181,    2, 0x0a,
+      17,    2,  182,    2, 0x0a,
+      17,    3,  187,    2, 0x0a,
       21,    0,  194,    2, 0x0a,
       22,    0,  195,    2, 0x0a,
       23,    0,  196,    2, 0x0a,
@@ -149,10 +148,10 @@ static const uint qt_meta_data_sqlfunctions[] = {
     0x80000000 | 11, 0x80000000 | 11,   12,
     QMetaType::QString,
     QMetaType::Void, 0x80000000 | 11,   12,
-    0x80000000 | 16,
+    QMetaType::QString,
     QMetaType::Void,
-    QMetaType::Void, 0x80000000 | 11, 0x80000000 | 16,   12,   19,
-    QMetaType::Void, 0x80000000 | 11, QMetaType::Int, 0x80000000 | 16,   12,   20,   19,
+    QMetaType::Void, 0x80000000 | 11, 0x80000000 | 18,   12,   19,
+    QMetaType::Void, 0x80000000 | 11, QMetaType::Int, 0x80000000 | 18,   12,   20,   19,
     QMetaType::Int,
     QMetaType::Double,
     QMetaType::Void,
@@ -191,8 +190,8 @@ void sqlfunctions::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id
         case 6: { QString _r = _t->listAllProducts();
             if (_a[0]) *reinterpret_cast< QString*>(_a[0]) = _r; }  break;
         case 7: _t->addToCart((*reinterpret_cast< product(*)>(_a[1]))); break;
-        case 8: { string _r = _t->showCart();
-            if (_a[0]) *reinterpret_cast< string*>(_a[0]) = _r; }  break;
+        case 8: { QString _r = _t->showCart();
+            if (_a[0]) *reinterpret_cast< QString*>(_a[0]) = _r; }  break;
         case 9: _t->clearCart(); break;
         case 10: _t->changeAmount((*reinterpret_cast< product(*)>(_a[1])),(*reinterpret_cast< string(*)>(_a[2]))); break;
         case 11: _t->changeAmount((*reinterpret_cast< product(*)>(_a[1])),(*reinterpret_cast< int(*)>(_a[2])),(*reinterpret_cast< string(*)>(_a[3]))); break;
