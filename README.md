@@ -7,6 +7,7 @@ Liste der noch möglichen noch zu implementierenden Features (nicht vollständig
 * Login: Timout bei mehrfacher falscher Eingabe, Passwort ändern, Passwort vergessen
 * Account (löschen, bearbeiten, Profil anlegen, ändern)
 * Registrierung: Passwortsichherheit fordern
+* Buchung: Unterscheiden zwischen Buchungs-ID und Buchungsgegeständen je Buchung (bid und iid)
 * Einkaufssystem: anzeigen der Produkte, input-Felder mit id, oder name *+pid der Produkte, für amount
 * Produktbeschreibungen nach Vorbild eines Templates von codrops
 * Warenstatistiken (Umsatz der User/ beliebteste Produkte/Userdatenauswertung)
