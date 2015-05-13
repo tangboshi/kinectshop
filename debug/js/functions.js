@@ -39,7 +39,7 @@ $(document).ready(function(){
     $("#refillBalance").click(function(){
         var amount = $("#amount").val();
         // Testfunktion
-        alert("Der eingegebene Betrag war: "+amount+".");
+        // alert("Der eingegebene Betrag war: "+amount+".");
         mySqlObj.refillBalance(amount);
     });
 
@@ -53,6 +53,7 @@ $(document).ready(function(){
 
 
 /*Javascript Insertion
+  // unter anderem listAllProducts() und showCart()
 $(document).ready(function(){
 
 });*/

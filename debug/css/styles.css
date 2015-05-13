@@ -232,4 +232,17 @@ tbody tr:nth-child(odd) td{
     background: linear-gradient(to bottom, rgba(3,113,168,1) 0%,rgba(2,96,142,1) 43%,rgba(0,71,107,1) 100%);
 }
 
+/* Footer */
+
+#account-data{
+}
+
+.account-data-block{
+    display:inline-block;
+    height:50px;
+    line-height:50px;
+    font-size:25px;
+    padding: 0 15px;
+}
+
 /* *****************  END Styling  *************** */
