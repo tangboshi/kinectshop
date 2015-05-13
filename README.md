@@ -5,11 +5,12 @@ Nächste Schritte:
 
 Liste der noch möglichen noch zu implementierenden Features (nicht vollständig, **nicht** nach Prioritäten:)
 * Login: Timout bei mehrfacher falscher Eingabe, Passwort ändern, Passwort vergessen
-* Account löschen
+* Account (löschen, bearbeiten, Profil anlegen, ändern)
 * Registrierung: Passwortsichherheit fordern
 * Einkaufssystem: anzeigen der Produkte, input-Felder mit id, oder name *+pid der Produkte, für amount
 * Produktbeschreibungen nach Vorbild eines Templates von codrops
-* Warenstatistiken mit JSON und flot
+* Warenstatistiken (Umsatz der User/ beliebteste Produkte/Userdatenauswertung)
+* Warenstatistiken grafisch darstellen mit JSON und flot
 * Kinect: Kinect Farbbild, Kinect Tiefenbild, Kinect Ton
 * Interface mit Lokalisierung:  Markieren des übergebenen Bildausschnitts
 * Interface mit Klassifizierung:  Anzeigen des identifizierten Produkts
