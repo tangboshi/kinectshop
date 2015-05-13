@@ -381,8 +381,34 @@ bool sqlfunctions::getLogin(){
     return isLogin;
 }
 
+bool sqlfunctions::getIsAdminLoggedIn(){
+    return isAdminLoggedIn;
+}
+
+int sqlfunctions::getUid(){
+    return uid;
+}
+
+QString sqlfunctions::getUsername(){
+    QSqlQuery query;
+    query.prepare("SELECT username FROM users WHERE id = :uid");
+    query.bindValue(":uid", uid);
+    query.exec();
+    query.next();
+    return query.value(0).toString();
+}
+
+double sqlfunctions::getBalance(){
+    QSqlQuery query;
+    query.prepare("SELECT balance FROM users WHERE id =:uid");
+    query.bindValue(":uid", uid);
+    query.exec();
+    query.next();
+    return query.value(0).toDouble();
+}
+
 // funktioniert einwandfrei!
-void sqlfunctions::login(QString username, QString password){
+bool sqlfunctions::login(QString username, QString password){
     // Prüfen, ob Username-Password-Kombination existiert
 
     // TIMEOUT BEI MEHRFACH FALSCHER EINGABE EINFÜGEN
@@ -436,17 +462,20 @@ void sqlfunctions::login(QString username, QString password){
             QMessageBox msgBox;
             msgBox.setText("User als Kunde erkannt. Das Admin-Flag ist auf "+QString::number(isAdminLoggedIn)+".");
             msgBox.exec();
+            return false;
         }
+        return true;
     }
     else{
         QMessageBox msgBox;
         msgBox.setText("Benutzername oder Passwort inkorrekt!");
         msgBox.exec();
+        return false;
     }
 }
 
 // User ausloggen
-void sqlfunctions::logout(){
+bool sqlfunctions::logout(){
     /* USER FRAGEN, OB ER SICH WIRKLICH AUSLOGGEN WILL, DA SEIN WARENKORB GELÖSCHT WIRD!
     bool areYouSure = false;
     QMessageBox msgBox;
@@ -458,7 +487,7 @@ void sqlfunctions::logout(){
     if(!areYouSure){
         msgBox.setText("Logout vom User abgebrochen.");
         msgBox.exec();
-        return;
+        return false;
     }
     */
 
@@ -472,6 +501,7 @@ void sqlfunctions::logout(){
     QMessageBox msgBox;
     msgBox.setText("Logout erfolgreich!");
     msgBox.exec();
+    return true;
 }
 
 // ----------------------------------------------------------------------------------

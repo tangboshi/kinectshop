@@ -52,14 +52,18 @@ class sqlfunctions:public QObject{
 
         // Usermanagement
         void        registerUser(QString username, QString password, QString repeatedPassword);
-        void        login(QString username, QString password);
-        void        logout();
+        bool        login(QString username, QString password);
+        bool        logout();
         void        empowerUser();
         void        disempowerUser();
         void        listAllUsers();
         void        refillBalance(double amount);
 
         bool        getLogin();
+        bool        getIsAdminLoggedIn();
+        int         getUid();
+        QString     getUsername();
+        double      getBalance();
 
         // Testfunktionen
         void        testJs();

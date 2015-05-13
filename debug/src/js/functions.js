@@ -1,5 +1,10 @@
 // Click-Events
 $(document).ready(function(){
+
+    /* Noch zu erledigen:
+     * connect() purchase() mit getBalance();
+    */
+
     // Verlassen-Button
     $("#quit").click(Qt.quit);
 
@@ -11,8 +16,17 @@ $(document).ready(function(){
         // alert("Der eingegebene Username war: "+username+" Das eingegebene Passwort war: "+password);
         mySqlObj.login(username, password);
         if(mySqlObj.getLogin()){
+           alert("Login successful!");
            $("#login-form").toggleClass("active inactive");
            $("#logout-form").toggleClass("active inactive");
+           $("#acc-username .accdd").html(mySqlObj.getUsername());
+           $("#acc-balance .accdd").html(mySqlObj.getBalance());
+           if(mySqlObj.getIsAdminLoggedIn()){
+               $("#acc-isAdmin .accdd").html("Admin");
+           }
+           else{
+               $("#acc-isAdmin .accdd").html("Kunde");
+           }
         }
     });
 
@@ -22,6 +36,9 @@ $(document).ready(function(){
         if(!mySqlObj.getLogin()){
            $("#login-form").toggleClass("active inactive");
            $("#logout-form").toggleClass("active inactive");
+           $("#acc-username .accdd").html(" --- ");
+           $("#acc-balance .accdd").html(" --- ");
+           $("#acc-isAdmin .accdd").html(" --- ");
         }
     });
 
