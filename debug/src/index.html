@@ -71,10 +71,10 @@
                                                 <input id="password" type="password" name="password" placeholder="Passwort" value required>
                                             </div>
 
-                                            <input type="submit" value="anmelden" name="submit" id="login">
+                                            <input type="submit" value="anmelden" id="login" class="blue-button">
                                         </div>
                                         <div id="logout-form" class="inactive">
-                                            <input type="submit" value="abmelden" name="submit" id="logout">
+                                            <input type="submit" value="abmelden" id="logout" class="blue-button">
                                         </div>
                                     </div>
                                 </div>
@@ -84,12 +84,39 @@
                                 <input type="radio" name="tabs" id="tab2">
                                 <label for="tab2">
                                     <span class="fa fa-gear"></span>
-                                    <span class="tab-text">Was anderes</span>
+                                    <span class="tab-text">Accountverwaltung</span>
                                 </label>
                                 <div id="tab-content1" class="tab-content">
-                                    <p>
-                                        Mal sehen, was hier hinkommt.
-                                    </p>
+                                    <div id="register-form" class="active">
+                                        <div class="input-prepend">
+                                            <span class="fa fa-user"></span>
+                                            <input id="rUsername" type="text" name="username" placeholder="Benutzername" value required>
+                                        </div>
+                                        <div class="input-prepend">
+                                            <span class="fa fa-key"></span>
+                                            <input id="rPassword" type="password" name="password" placeholder="Passwort" value required>
+                                        </div>
+                                        <div class="input-prepend">
+                                            <span class="fa fa-key"></span>
+                                            <input id="rPasswordRepeated" type="password" name="password" placeholder="Passwort wiederholen" value required>
+                                        </div>
+
+                                        <button class="blue-button" id="register">
+                                            Registrieren
+                                        </button>
+                                    </div>
+
+                                    <br>
+
+                                    <div id="refillBalance-form">
+                                        <div class="input-prepend">
+                                            <span class="fa fa-money"></span>
+                                            <input id="amount" type="text" placeholder="Betrag" value required>
+                                        </div>
+                                        <button class="blue-button" id="refillBalance">
+                                            Guthaben aufladen
+                                        </button>
+                                    </div>
                                 </div>
                             </li>
                         </ul>
@@ -103,11 +130,9 @@
                             </p>
                             <p>
                                 <ol>Prioritäten:
-                                    <li>Funktionierendes Login-System (SQL, jQuery)</li>
                                     <li>Funktionierendes Einkaufssystem per Klick</li>
                                     <li>Funktionierendes Einkaufssystem via beliebiger Kinectfunktion</li>
                                     <li>Kinect-Daten einbinden</li>
-                                    <li>Datenbank um weitere Spalten erweitern</li>
                                     <li>Einkaufstatistiken mit SQL+flot (jQuery-Plugin)</li>
                                 </ol>
                             </p>

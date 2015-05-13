@@ -2,6 +2,8 @@
 $(document).ready(function(){
     // Verlassen-Button
     $("#quit").click(Qt.quit);
+
+    // Login
     $("#login").click(function(){
         var username = $("#username").val();
         var password = $("#password").val();
@@ -13,6 +15,8 @@ $(document).ready(function(){
            $("#logout-form").toggleClass("active inactive");
         }
     });
+
+    // Logout
     $("#logout").click(function(){
         mySqlObj.logout();
         if(!mySqlObj.getLogin()){
@@ -20,6 +24,25 @@ $(document).ready(function(){
            $("#logout-form").toggleClass("active inactive");
         }
     });
+
+    // User registrieren
+    $("#register").click(function(){
+        var username = $("#rUsername").val();
+        var password = $("#rPassword").val();
+        var repeatedPassword = $("#rPasswordRepeated").val();
+        // Testfunktion
+        // alert("Der eingegebene Username war: "+username+" Das eingegebene Passwort war: "+password+" Das wiederholte Passwort war: "+repeatedPassword);
+        mySqlObj.registerUser(username, password, repeatedPassword);
+    });
+
+    // Guthaben aufladen
+    $("#refillBalance").click(function(){
+        var amount = $("#amount").val();
+        // Testfunktion
+        alert("Der eingegebene Betrag war: "+amount+".");
+        mySqlObj.refillBalance(amount);
+    });
+
     // Nur ausgewählten Menüpunkt anzeigen
     $("#left-nav ul li[title]").click(function(){
       var x = $(this).attr("title");

@@ -222,7 +222,7 @@ tbody tr:nth-child(odd) td{
     border-radius: 0 5px 5px 0;
 }
 
-#login, #logout{
+.blue-button{
     padding:7px 14px;
     border-radius:5px;
     color:#fff;

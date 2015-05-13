@@ -186,10 +186,15 @@ void sqlfunctions::purchase(){
             // Überprüfe, ob genug waren vorhanden sind.
             int diff = checkStock();
             if(diff >= 0){
-                for(iter cursor = cart.begin(); cursor != cart.end(); ++cursor){
 
-                    int pid = cursor->getPid();
-                    int amount = cursor->getAmount();
+                int pid, amount, insertId, stock;
+                double price, cost, balance, total = 0;
+
+                for(iter cursor = cart.begin(); cursor != cart.end(); ++cursor){
+                    // Variablen cost usw. brauchen nicht ressetet zu werden, da sie jedes mal neu ausgerechnet werden.
+
+                    pid = cursor->getPid();
+                    amount = cursor->getAmount();
 
                     // SQL-Befehle für den Bezahlvorgang
                     // Buchungstabelle
@@ -197,7 +202,7 @@ void sqlfunctions::purchase(){
                     query.prepare("SELECT MAX(id) FROM bookings");
                     query.exec();
                     query.next();
-                    int insertId = query.value(0).toInt();
+                    insertId = query.value(0).toInt();
                     // Buchungsnummer um 1 erhöhen
                     insertId++;
                     query.prepare("INSERT INTO bookings (id,uid,pid,amount) VALUES (:id, :uid, :pid, :amount)");
@@ -213,15 +218,16 @@ void sqlfunctions::purchase(){
                     query.exec();
 
                     query.next();
-                    double price = query.value(0).toDouble();
-                    double cost = (double)amount*price;
+                    price = query.value(0).toDouble();
+                    cost = (double)amount*price;
 
                     query.prepare("SELECT balance FROM users WHERE id = :uid");
                     query.bindValue(":uid", uid);
                     query.exec();
                     query.next();
-                    double balance = query.value(0).toDouble();
+                    balance = query.value(0).toDouble();
                     balance -= cost;
+                    total += cost;
 
                     // Userguthaben abbuchen
                     query.prepare("UPDATE users SET balance=:newBalance WHERE id =:uid");
@@ -234,7 +240,7 @@ void sqlfunctions::purchase(){
                     query.bindValue(":pid", pid);
                     query.exec();
                     query.next();
-                    int stock = query.value(0).toInt();
+                    stock = query.value(0).toInt();
                     stock -= amount;
 
                     query.prepare("UPDATE products SET stock=:newStock WHERE id=:pid");
@@ -244,6 +250,7 @@ void sqlfunctions::purchase(){
                 }
                 // Signal: Einkauf abgeschlossen, Einkaufswagen leeren
                 emit purchaseDone(cart);
+                emit balanceChanged((-1)*total);
                 clearCart();
             }
             else{
@@ -274,16 +281,32 @@ void sqlfunctions::purchase(){
 // ----------------------------------------------------------------------------------
 
 // erfordert auf Javascript-Seite noch einiges an Arbeit!
-void sqlfunctions::registerUser(QString username, QString password){
+void sqlfunctions::registerUser(QString username, QString password, QString repeatedPassword){
+
+    if(password.toStdString() == "" || username.toStdString() == "" || repeatedPassword.toStdString() == ""){
+        QMessageBox msgBox;
+        msgBox.setText("Ihre Angaben sind unvollständig!");
+        msgBox.exec();
+        return;
+    }
+
+    if(password.toStdString() != repeatedPassword.toStdString()){
+        QMessageBox msgBox;
+        msgBox.setText("Die Passwörter stimmen nicht überein!");
+        msgBox.exec();
+        return;
+    }
+
+    // Check erfolgreich
     // Überprüfen, ob User in DB vorhanden ist
     QSqlQuery query;
-    query.prepare("SELECT :username FROM users");
+    query.prepare("SELECT username FROM users WHERE username = :username");
     query.bindValue(":username", username);
     query.exec();
     query.next();
-    QString newUsername = query.value(0).toString();
+    QString dbUsername = query.value(0).toString();
     // Wenn ja, trage in DB ein und gebe Erfolgsmeldung aus.
-    if(username.toStdString() == newUsername.toStdString()){
+    if(username.toStdString() != dbUsername.toStdString()){
         // Maximale Usernummer herausfinden
         query.prepare("SELECT MAX(id) FROM users");
         query.exec();
@@ -291,26 +314,34 @@ void sqlfunctions::registerUser(QString username, QString password){
         int insertId = query.value(0).toInt();
         // Usernummer um 1 erhöhen
         insertId++;
-        query.prepare("INSERT INTO users(id, username, password, balance, isAdmin) VALUES(:id :username :pasword :balance :isAdmin)");
+        query.prepare("INSERT INTO users (id, username, password, balance, isAdmin) VALUES (:insertId, :username, :password, :balance, :isAdmin)");
         query.bindValue(":id", insertId);
         query.bindValue(":username", username);
-        query.bindValue(":username", password);
+        query.bindValue(":password", password);
         query.bindValue(":balance", 0);
         query.bindValue(":isAdmin", 0);
         query.exec();
         QMessageBox msgBox;
         msgBox.setText("Herzlichen Dank für Ihre Registrierung.");
+        msgBox.exec();
     }
 
     // Wenn nicht, gib Fehlermeldung aus.
     else{
         QMessageBox msgBox;
         msgBox.setText("Das hat leider nicht funktioniert. Es gibt bereits einen Benutzer mit diesem Namen.");
+        msgBox.exec();
     }
 }
 
 // Geld auf User-Account laden
-void sqlfunctions::refillBalance(int amount){
+void sqlfunctions::refillBalance(double amount){
+    if(!isLogin){
+        QMessageBox msgBox;
+        msgBox.setText("Es ist kein User eingeloggt!");
+        msgBox.exec();
+        return;
+    }
     QSqlQuery query;
     query.prepare("SELECT balance FROM users WHERE id = :uid");
     query.bindValue(":uid", uid);
@@ -322,6 +353,14 @@ void sqlfunctions::refillBalance(int amount){
     query.bindValue(":newBalance", balance);
     query.bindValue(":uid", uid);
     query.exec();
+
+    QMessageBox msgBox;
+    msgBox.setText("Ihr Guthaben wurde erfolgreich um "+QString::number(amount)+" aufgelden. Es beträgt nun insgesamt "+QString::number(balance)+".");
+    msgBox.exec();
+
+    emit balanceChanged(amount);
+
+    return;
 }
 
 // GIBT TABELLE MIT ALLEN USERN AUS
@@ -428,6 +467,8 @@ void sqlfunctions::logout(){
     isAdminLoggedIn = false;
     uid = -1;
     clearCart();
+    emit userLoggedOut();
+
     QMessageBox msgBox;
     msgBox.setText("Logout erfolgreich!");
     msgBox.exec();
@@ -440,5 +481,17 @@ void sqlfunctions::logout(){
 void sqlfunctions::testJs(){
     QMessageBox msgBox;
     msgBox.setText(listAllProducts());
+    msgBox.exec();
+}
+
+void sqlfunctions::testCpp(){
+    QMessageBox msgBox;
+    msgBox.setText("Dieser Code wurde ausgeführt!");
+    msgBox.exec();
+}
+
+void sqlfunctions::testSql(QString a, QString b, QString c){
+    QMessageBox msgBox;
+    msgBox.setText("Erstes Argument: "+a +"\nZweites Argument: "+b + "\nDrittes Argument: "+c);
     msgBox.exec();
 }

@@ -29,8 +29,13 @@ class sqlfunctions:public QObject{
 
     signals:
         void        purchaseDone(vector<product> cart);
+
+        // Nimmt insbesondere auch negative Werte an!
+        double      balanceChanged(double amount);
+
         void        adminLoggedIn();
         void        userLoggedIn();
+        void        userLoggedOut();
 
     public slots:
         // Warenmanagement
@@ -46,18 +51,20 @@ class sqlfunctions:public QObject{
         void        purchase();
 
         // Usermanagement
-        void        registerUser(QString username, QString password);
+        void        registerUser(QString username, QString password, QString repeatedPassword);
         void        login(QString username, QString password);
         void        logout();
         void        empowerUser();
         void        disempowerUser();
         void        listAllUsers();
-        void        refillBalance(int amount);
+        void        refillBalance(double amount);
 
         bool        getLogin();
 
-        // Testfunktion
+        // Testfunktionen
         void        testJs();
+        void        testCpp();
+        void        testSql(QString a, QString b, QString c);
 
     private:
         // Accountmanagement
