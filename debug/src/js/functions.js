@@ -58,6 +58,7 @@ $(document).ready(function(){
         // Testfunktion
         // alert("Der eingegebene Betrag war: "+amount+".");
         mySqlObj.refillBalance(amount);
+        $("#acc-balance .accdd").html(mySqlObj.getBalance());
     });
 
     // Nur ausgewählten Menüpunkt anzeigen
