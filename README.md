@@ -23,6 +23,5 @@ Liste der implementierten Features:
 * Funktionierende Guthabenverwaltung
 
 Momentane technische Schwierigkeiten:
-* C++ String an Javascript übergeben (stream cout in buffer geleitet --> string liest aus stream)
 * Kinect-Daten auslesen und darstellen in Qt
 * JSON mit QT
