@@ -15,6 +15,21 @@ $(document).ready(function(){
      * js-Update von #acc-balance über signal balanceChanged()
      */
 
+    //mySqlObj.cartChanged.connect(showCart());
+
+    $("#showCart").click(function(){
+        // Testfunktion
+        // alert("Yay, diese Funktion wurde aufgerufen!");
+        $("#product-display").html(mySqlObj.showCart());
+    });
+
+    $("#purchase").click(function(){
+        // Testfunktion
+        // alert("Yay, diese Funktion wurde aufgerufen!");
+        mySqlObj.purchase();
+        $("#acc-balance .accdd").html(mySqlObj.getBalance());
+    });
+
     // Produkt in den Warenkorb legen
     $("[id^=buyCartItem]").on('click', function(){
         var pid = $(this).attr("id").slice(11);
@@ -31,6 +46,24 @@ $(document).ready(function(){
         }
     });
 
+    // Produktanzahl im Warenkorb reduzieren
+    $("#product-display").on('click', '[id^=removeItem]', function(){
+        alert("Yay!");
+        var pid = $(this).attr("id").slice(10);
+        var diff =  $("#itemAmount"+pid).val();
+        var mode = "sub";
+        if(diff > 0){
+            alert(pid+" "+diff+" "+mode);
+            mySqlObj.changeAmount(pid, diff, mode);
+             $("#product-display").html(mySqlObj.showCart());
+            // Testfunktion
+            alert("\nDie Produkt ID ist: "+pid+"\nDie Menge ist: "+diff+"\nDer Modus ist: "+mode);
+        }
+        else{
+            alert("Die zu entfernende Menge muss größer als 0 sein.");
+        }
+    });
+
     // Verlassen-Button
     $("#quit").click(Qt.quit);
 
@@ -39,7 +72,7 @@ $(document).ready(function(){
         var username = $("#username").val();
         var password = $("#password").val();
         // Testfunktion
-         alert("Der eingegebene Username war: "+username+" Das eingegebene Passwort war: "+password);
+        // alert("Der eingegebene Username war: "+username+" Das eingegebene Passwort war: "+password);
         mySqlObj.login(username, password);
         if(mySqlObj.getLogin()){
            $("#login-form").toggleClass("active inactive");

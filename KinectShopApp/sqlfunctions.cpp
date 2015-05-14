@@ -21,8 +21,12 @@ sqlfunctions::sqlfunctions(){
     }*/
 
     isLogin = false;
-    isAdminLoggedIn = false;
+    isAdminLoggedIn = false;  
     uid = -1;
+
+    badTries = 0;
+    allowedAgain = 0;
+    timeNow = time(0);
 }
 
 // ----------------------------------------------------------------------------------
@@ -82,7 +86,7 @@ QString sqlfunctions::listAllProducts(){
     string s = stream.str();
 
     // Testfunktion
-    cout    << s    << endl;
+    // cout    << s    << endl;
 
     QString htmlOutput = QString::fromStdString(s);
 
@@ -112,6 +116,7 @@ void sqlfunctions::addToCart(int pid, int amount, double price, QString title){
     msgBox.setText(QString::number(myProduct.getAmount()));
     msgBox.exec();
     */
+    emit cartChanged();
 }
 
 // Überprüft, ob ein Element bereits im Warenkorb ist, falls ja erhöhe nur die Menge
@@ -135,27 +140,64 @@ product sqlfunctions::isAlreadyInCart(int pid, int amount, double price, QString
 
 // Gibt den Inhalt des Einkaufswagens aus, bereits HTML
 // Überarbeiten! Verwende <thead><th><tbody> !!!
-/*
+
 QString sqlfunctions::showCart(){
 
-    // stringstream buffer;
+    stringstream stream;
 
-    cout    <<  "<table id='cartContent' class='sortable'>"   << endl;
+    // Alles darstellen
+    stream  <<  "<table id='productList' class='sortable'>"
+            <<  "<thead>"
+            <<  "<tr>"
+            <<  "<th data-sort='number'>"      <<  "Produkt-ID"     <<  "</th>"
+            <<  "<th data-sort='name'>"        <<  "Produktname"    <<  "</th>"
+            <<  "<th data-sort='number'>"      <<  "Preis"          <<  "</th>"
+            <<  "<th data-sort='number'>"      <<  "Bestellmenge"   <<  "</th>"
+            <<  "<th data-sort='number'>"      <<   "Gesamtpeis"    <<  "</th>"
+            <<  "</tr>"
+            <<  "</thead>"
+            <<  "<tbody>"
+            <<  endl;
+
+    int pid, amount;
+    string title;
+    double price, total;
+
     for(iter cursor = cart.begin();cursor!=cart.end();cursor++){
-        cout    <<  "<tr> "     <<   endl;
-        cout    <<  "<td>"      <<  "Produkt-ID: "      << cursor->getPid()       << "</td>"      << endl;
-        cout    <<  "<td>"      <<  "Produktname: "     << cursor->getTitle()     << "</td>"      << endl;
-        cout    <<  "<td>"      <<  "Menge: "           << cursor->getAmount()    << "</td>"      << endl;
-        cout    <<  "</tr> "    <<  endl;
+        pid = cursor->getPid();
+        title = cursor->getTitle().toStdString();
+        price = cursor->getPrice();
+        amount = cursor->getAmount();
+        total = price*amount;
+
+        stream  <<  "<tr>"
+                <<  "<td>"      <<  pid       <<    "</td>"
+                <<  "<td>"      <<  title     <<    "</td>"
+                <<  "<td>"      <<  price     <<    "</td>"
+                <<  "<td>"      <<  amount
+                <<  "<input type='text' value='0' id='itemAmount"  <<   pid  <<  "'>"
+                <<  "<button class='orange-button' id='removeItem" <<   pid  <<  "'>"
+                <<  "entfernen aus <span class='fa fa-shopping-cart'></span></button>"
+                <<  "</td>"
+                <<  "<td>"      <<  total     <<    "</td>"
+                <<  "</tr>"
+                <<  endl;
     }
-    cout    <<  "</table>"   << endl;
+
+    stream  <<  "</tbody>"
+            <<  "</table>"  <<  endl;
 
     // streambuf *old = cout.rdbuf(buffer.rdbuf());
     //QString htmlOutput = QString::fromStdString(buffer.str());
 
-    return "a"; //htmlOutput;
+    string s = stream.str();
+
+    cout << s << endl;
+
+    QString htmlOutput = QString::fromStdString(s);
+    return htmlOutput;
 }
-*/
+
 
 // Leert den Einkaufswagen
 void sqlfunctions::clearCart(){
@@ -164,24 +206,38 @@ void sqlfunctions::clearCart(){
         cart.pop_back();
         --size;
     }
+    emit cartChanged();
 }
 
 // Wenn man unzufrieden ist mit der Menge an eingekauften Waren, kann man diese ändern.
 // Überladene Funktion
-void sqlfunctions::changeAmount(product myProduct, string mode){
+void sqlfunctions::changeAmount(int pid, QString mode){
         if(mode=="clear"){
-            iter cursor = find(cart.begin(), cart.end(), myProduct.getPid());
+            iter cursor = find(cart.begin(), cart.end(), pid);
             cart.erase(cursor);
         }
+        emit cartChanged();
 }
 
-void sqlfunctions::changeAmount(product myProduct, int diff, string mode){
+void sqlfunctions::changeAmount(int pid, int diff, QString modeQString){
+    /*iter cursor = cart.begin();
+    while((cursor!= cart.end())&& (cursor->getPid() != pid)){
+        ++cursor;
+    }*/
+
+    string mode = modeQString.toStdString();
+
+    testCpp();
+
+    iter cursor = find(cart.begin(), cart.end(), pid);
+
     if(mode=="add"){
-        myProduct.setAmount(myProduct.getAmount()+diff);
+        cursor->setAmount(cursor->getAmount()+diff);
     }
     else if(mode=="sub"){
-        myProduct.setAmount(myProduct.getAmount()-diff);
+        cursor->setAmount(cursor->getAmount()-diff);
     }
+    emit cartChanged();
 }
 
 // Prüft für jede Ware im Warenkorb, ob noch genug Waren vorhanden sind
@@ -210,13 +266,21 @@ double sqlfunctions::checkBalance(){
     // Vergleiche Guthaben mit Gesamtkosten
     query.prepare("SELECT balance FROM users WHERE id = :uid");
     query.bindValue(":uid", uid);
+    query.exec();
     query.next();
     double balance = query.value(0).toDouble();
+
+    /* // Testfunktion
+    QMessageBox msgBox;
+    msgBox.setText(QString::number(balance)+" "+QString::number(uid));
+    msgBox.exec(); */
+
     return balance - total;
 }
 
 // Die Bezahlfunktion
 void sqlfunctions::purchase(){
+
     QSqlQuery query;
     // Überprüfe, ob User eingeloogt ist.
     if(isLogin){
@@ -449,11 +513,18 @@ double sqlfunctions::getBalance(){
 
 // funktioniert einwandfrei!
 bool sqlfunctions::login(QString username, QString password){
-    // Prüfen, ob Username-Password-Kombination existiert
-
-    // TIMEOUT BEI MEHRFACH FALSCHER EINGABE EINFÜGEN
+    // Timeout bei mehrfach falscher Eingabe
+    timeNow = time(0);
+    if(allowedAgain > timeNow && badTries > 2){
+        time_t difference = allowedAgain - timeNow;
+        QMessageBox msgBox;
+        msgBox.setText("Zuviele ("+QString::number(badTries)+") Fehlversuche! Sie dürfen sich in "+QString::number(difference)+" Sekunden wieder einloggen.");
+        msgBox.exec();
+        return false;
+    }
 
     QSqlQuery query;
+    // Prüfen, ob Username-Password-Kombination existiert
     query.prepare("SELECT username FROM users WHERE password = :password");
     query.bindValue(":password", password);
     bool accountExists = query.exec();
@@ -462,6 +533,10 @@ bool sqlfunctions::login(QString username, QString password){
     bool credentialsMatch = false;
     if(receivedUsername.toStdString() == username.toStdString()){
         credentialsMatch = true;
+    }
+    else{
+       badTries++;
+       timeout();
     }
     // Überprüft ob Account existiert, Passwort/Benutzername-Kombination stimmt
     // und ob ein nicht leerer Benutzername eingegeben wurde.
@@ -476,10 +551,10 @@ bool sqlfunctions::login(QString username, QString password){
         query.next();
         uid = query.value(0).toInt();
 
-        // Um Funktionalität zu überprüfen!
+        /*// Testfunktion
         QMessageBox msgBox;
         msgBox.setText("Der eingeloggte User hat die ID "+QString::number(uid)+".");
-        msgBox.exec();
+        msgBox.exec();*/
 
         // Prüfen ob ein Admin eingeloggt ist
         // Setze entsprechend isAdminLoggedIn auf true bzw. false
@@ -494,15 +569,19 @@ bool sqlfunctions::login(QString username, QString password){
         if(userIsAdmin){
             emit adminLoggedIn();
             isAdminLoggedIn = true;
+            /* // Testfunktion
             QMessageBox msgBox;
             msgBox.setText("User als Admin erkannt. Das Admin-Flag ist auf "+QString::number(isAdminLoggedIn)+".");
-            msgBox.exec();
+            msgBox.exec();*/
         }
         else{
+            /* // Testfunktion
             QMessageBox msgBox;
             msgBox.setText("User als Kunde erkannt. Das Admin-Flag ist auf "+QString::number(isAdminLoggedIn)+".");
-            msgBox.exec();        
+            msgBox.exec();
+            */
         }
+
         return true;
     }
     else{
@@ -511,6 +590,11 @@ bool sqlfunctions::login(QString username, QString password){
         msgBox.exec();
         return false;
     }
+}
+
+// Login-Strafe ausrechnen
+void sqlfunctions::timeout(){
+    allowedAgain = 30*(badTries-2) + time(0);
 }
 
 // User ausloggen
@@ -564,3 +648,12 @@ void sqlfunctions::testSql(QString a, QString b, QString c){
     msgBox.setText("Erstes Argument: "+a +"\nZweites Argument: "+b + "\nDrittes Argument: "+c);
     msgBox.exec();
 }
+
+// ----------------------------------------------------------------------------------
+// ---------------------------------------SIGNALE------------------------------------
+// ----------------------------------------------------------------------------------
+/*
+void sqlfunctions::cartChanged(){
+    return;
+}
+*/

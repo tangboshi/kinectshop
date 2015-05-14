@@ -5,6 +5,7 @@
 #include <sstream>
 #include <vector>
 #include <algorithm>
+#include <time.h>
 
 #include <QSqlQuery>
 #include <QSql>
@@ -32,6 +33,7 @@ class sqlfunctions:public QObject{
 
         // Nimmt insbesondere auch negative Werte an!
         double      balanceChanged(double amount);
+        void        cartChanged();
 
         void        adminLoggedIn();
         void        userLoggedIn();
@@ -42,10 +44,10 @@ class sqlfunctions:public QObject{
         product     isAlreadyInCart(int pid, int amount, double price, QString title);
         QString     listAllProducts();
         void        addToCart(int pid, int amount, double price, QString title);
-        //QString     showCart();
+        QString     showCart();
         void        clearCart();
-        void        changeAmount(product myProduct, string mode);
-        void        changeAmount(product myProduct, int diff, string mode);
+        void        changeAmount(int pid, QString mode);
+        void        changeAmount(int pid, int diff, QString mode);
         int         checkStock();
         double      checkBalance();
         void        purchase();
@@ -58,6 +60,7 @@ class sqlfunctions:public QObject{
         void        disempowerUser();
         void        listAllUsers();
         void        refillBalance(double amount);
+        void        timeout();
 
         bool        getLogin();
         bool        getIsAdminLoggedIn();
@@ -77,6 +80,10 @@ class sqlfunctions:public QObject{
         bool                isAdminLoggedIn;
         int                 uid;
         QSqlDatabase        db;
+        int                 badTries;
+        time_t              timeNow;
+        time_t              lastTry;
+        time_t              allowedAgain;
 };
 
 #endif // SQLFUNCTIONS_H

@@ -242,16 +242,24 @@ tbody tr:nth-child(odd) td{
     background: rgb(230,120,60);
 }
 
-input[id^=cartItemAmount]{
+input[id^=cartItemAmount], input[id^=itemAmount]{
     width:50px;
     height:30px;
     margin:0 5px;
     vertical-align:middle;
 }
 
-button[id^=buyCartItem]{
+input[id^=itemAmount]{
+    margin:auto auto auto 15px;
+}
+
+button[id^=buyCartItem], button[id^=removeItem]{
     height:30px;
     vertical-align:middle;
+}s
+
+#product-display{
+    margin: 10px 0;
 }
 
 /* Footer */
