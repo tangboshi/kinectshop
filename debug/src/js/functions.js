@@ -20,7 +20,7 @@ $(document).ready(function(){
     });
     */
 
-    $("#purchase").click(function(){
+    $("#purchase").on('click', function(){
         if(mySqlObj.purchase()){
             $("#acc-balance .accdd").html(mySqlObj.getBalance());
             $("#product-display").html(mySqlObj.showCart());
@@ -29,7 +29,7 @@ $(document).ready(function(){
     });
 
     // Produkt in den Warenkorb legen
-    $("[id^=buyCartItem]").on('click', function(){
+    $("#shop-items").on('click', '[id^=buyCartItem]', function(){
         var pid = $(this).attr("id").slice(11);
         var amount =  $("#cartItemAmount"+pid).val();
         var price = $(this).parent().siblings().eq(2).text();
