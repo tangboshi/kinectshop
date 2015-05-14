@@ -1,43 +1,42 @@
 //Javascript Insertion
 // unter anderem listAllProducts() und showCart()
 $(document).ready(function(){
-    $("#shop").append(mySqlObj.listAllProducts());
+    $("#shop-items").html(mySqlObj.listAllProducts());
+    $("#product-display").html(mySqlObj.showCart());
 });
 
 // Click-Events
 $(document).ready(function(){
 
-    /* Noch zu erledigen:
-     * connect() purchase() mit getBalance();
-    */
-
     /* Cleaner Code:
-     * js-Update von #acc-balance über signal balanceChanged()
+     * mySqlObj.balanceChanged.connect($("#acc-balance .accdd").html(mySqlObj.getBalance()));
+     * mySqlObj.purchaseDone.connect(getBalance());
+     * mySqlObj.cartChanged.connect(showCart());
      */
 
-    //mySqlObj.cartChanged.connect(showCart());
-
+    /* // nicht mehr benötigt
     $("#showCart").click(function(){
-        // Testfunktion
-        // alert("Yay, diese Funktion wurde aufgerufen!");
         $("#product-display").html(mySqlObj.showCart());
     });
+    */
 
     $("#purchase").click(function(){
-        // Testfunktion
-        // alert("Yay, diese Funktion wurde aufgerufen!");
-        mySqlObj.purchase();
-        $("#acc-balance .accdd").html(mySqlObj.getBalance());
+        if(mySqlObj.purchase()){
+            $("#acc-balance .accdd").html(mySqlObj.getBalance());
+            $("#product-display").html(mySqlObj.showCart());
+            $("#shop-items").html(mySqlObj.listAllProducts());
+        }
     });
 
     // Produkt in den Warenkorb legen
     $("[id^=buyCartItem]").on('click', function(){
         var pid = $(this).attr("id").slice(11);
         var amount =  $("#cartItemAmount"+pid).val();
-        var price = 3;
-        var title = "testObj";
+        var price = $(this).parent().siblings().eq(2).text();
+        var title = $(this).parent().siblings().eq(1).text();
         if(amount > 0){
             mySqlObj.addToCart(pid, amount, price, title);
+            $("#product-display").html(mySqlObj.showCart());
             // Testfunktion
             alert("Das Produkt ist: "+title+"\nDie Produkt ID ist: "+pid+"\nDie Menge ist: "+amount+"\nDer Preis pro Stück ist: "+price);
         }
@@ -48,7 +47,6 @@ $(document).ready(function(){
 
     // Produktanzahl im Warenkorb reduzieren
     $("#product-display").on('click', '[id^=removeItem]', function(){
-        alert("Yay!");
         var pid = $(this).attr("id").slice(10);
         var diff =  $("#itemAmount"+pid).val();
         var mode = "sub";

@@ -256,9 +256,10 @@ input[id^=itemAmount]{
 button[id^=buyCartItem], button[id^=removeItem]{
     height:30px;
     vertical-align:middle;
-}s
+}
 
-#product-display{
+#productList, #cartList{
+    width:100%;
     margin: 10px 0;
 }
 
@@ -279,8 +280,6 @@ button[id^=buyCartItem], button[id^=removeItem]{
 
 /* ******************  BEGIN Test  *************** */
 
-#productList{
-    width:100%;
-}
+
 
 /* *******************  END Test  **************** */

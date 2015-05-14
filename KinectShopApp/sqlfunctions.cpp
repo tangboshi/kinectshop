@@ -26,7 +26,6 @@ sqlfunctions::sqlfunctions(){
 
     badTries = 0;
     allowedAgain = 0;
-    timeNow = time(0);
 }
 
 // ----------------------------------------------------------------------------------
@@ -48,7 +47,7 @@ QString sqlfunctions::listAllProducts(){
     stringstream stream;
 
     // Alles darstellen
-    stream  <<  "<table id='productList' class='sortable'>"
+    stream  <<  "<table id='cartList' class='sortable'>"
             <<  "<thead>"
             <<  "<tr>"
             <<  "<th data-sort='number'>"      <<  "Produkt-ID"    <<  "</th>"
@@ -153,7 +152,7 @@ QString sqlfunctions::showCart(){
             <<  "<th data-sort='name'>"        <<  "Produktname"    <<  "</th>"
             <<  "<th data-sort='number'>"      <<  "Preis"          <<  "</th>"
             <<  "<th data-sort='number'>"      <<  "Bestellmenge"   <<  "</th>"
-            <<  "<th data-sort='number'>"      <<   "Gesamtpeis"    <<  "</th>"
+            <<  "<th data-sort='number'>"      <<  "Gesamtpeis"     <<  "</th>"
             <<  "</tr>"
             <<  "</thead>"
             <<  "<tbody>"
@@ -187,12 +186,10 @@ QString sqlfunctions::showCart(){
     stream  <<  "</tbody>"
             <<  "</table>"  <<  endl;
 
-    // streambuf *old = cout.rdbuf(buffer.rdbuf());
-    //QString htmlOutput = QString::fromStdString(buffer.str());
-
     string s = stream.str();
 
-    cout << s << endl;
+    // Testfunnktion
+    // cout << s << endl;
 
     QString htmlOutput = QString::fromStdString(s);
     return htmlOutput;
@@ -279,7 +276,8 @@ double sqlfunctions::checkBalance(){
 }
 
 // Die Bezahlfunktion
-void sqlfunctions::purchase(){
+// BUG: nach abgeschlossenem Kauf funktioniert diese Funktion nicht mehr !!!
+bool sqlfunctions::purchase(){
 
     QSqlQuery query;
     // Überprüfe, ob User eingeloogt ist.
@@ -355,7 +353,14 @@ void sqlfunctions::purchase(){
                 // Signal: Einkauf abgeschlossen, Einkaufswagen leeren
                 emit purchaseDone(cart);
                 emit balanceChanged((-1)*total);
+
+                QMessageBox msgBox;
+                QString thankYou ="<p><b> Vielen Dank für Ihren Einkauf! Sie kauften: </b><br></p>";
+                msgBox.setText(thankYou+showCart());
+                msgBox.exec();
+
                 clearCart();
+                return true;
             }
             else{
                 // Ausgabe falls nicht genug Waren zur Verfügung stehen.
@@ -363,6 +368,7 @@ void sqlfunctions::purchase(){
                 QMessageBox msgBox;
                 msgBox.setText("Es sind nicht genug Waren vorhanden. Verringern Sie ihre Bestellung um "+QString::number(diff*(-1))+" Einheiten.");
                 msgBox.exec();
+                return false;
             }
         }
         else{
@@ -371,12 +377,14 @@ void sqlfunctions::purchase(){
             QMessageBox msgBox;
             msgBox.setText("Sie haben nicht genug Guthaben. Ihnen fehlen "+QString::number(hasEnoughMoney*(-1))+" Geldeinheiten.");
             msgBox.exec();
+            return false;
         }
     }
     else{
         QMessageBox msgBox;
         msgBox.setText("Loggen Sie sich bitte ein, um zu bezahlen!");
         msgBox.exec();
+        return false;
     }
 }
 
@@ -511,10 +519,9 @@ double sqlfunctions::getBalance(){
     return query.value(0).toDouble();
 }
 
-// funktioniert einwandfrei!
 bool sqlfunctions::login(QString username, QString password){
     // Timeout bei mehrfach falscher Eingabe
-    timeNow = time(0);
+    time_t timeNow = time(0);
     if(allowedAgain > timeNow && badTries > 2){
         time_t difference = allowedAgain - timeNow;
         QMessageBox msgBox;

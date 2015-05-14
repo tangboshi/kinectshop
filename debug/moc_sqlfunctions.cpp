@@ -161,7 +161,7 @@ static const uint qt_meta_data_sqlfunctions[] = {
     QMetaType::Void, QMetaType::Int, QMetaType::Int, QMetaType::QString,   13,   22,   21,
     QMetaType::Int,
     QMetaType::Double,
-    QMetaType::Void,
+    QMetaType::Bool,
     QMetaType::Void, QMetaType::QString, QMetaType::QString, QMetaType::QString,   27,   28,   29,
     QMetaType::Bool, QMetaType::QString, QMetaType::QString,   27,   28,
     QMetaType::Bool,
@@ -208,7 +208,8 @@ void sqlfunctions::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id
             if (_a[0]) *reinterpret_cast< int*>(_a[0]) = _r; }  break;
         case 14: { double _r = _t->checkBalance();
             if (_a[0]) *reinterpret_cast< double*>(_a[0]) = _r; }  break;
-        case 15: _t->purchase(); break;
+        case 15: { bool _r = _t->purchase();
+            if (_a[0]) *reinterpret_cast< bool*>(_a[0]) = _r; }  break;
         case 16: _t->registerUser((*reinterpret_cast< QString(*)>(_a[1])),(*reinterpret_cast< QString(*)>(_a[2])),(*reinterpret_cast< QString(*)>(_a[3]))); break;
         case 17: { bool _r = _t->login((*reinterpret_cast< QString(*)>(_a[1])),(*reinterpret_cast< QString(*)>(_a[2])));
             if (_a[0]) *reinterpret_cast< bool*>(_a[0]) = _r; }  break;

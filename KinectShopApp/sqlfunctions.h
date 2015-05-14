@@ -50,7 +50,7 @@ class sqlfunctions:public QObject{
         void        changeAmount(int pid, int diff, QString mode);
         int         checkStock();
         double      checkBalance();
-        void        purchase();
+        bool        purchase();
 
         // Usermanagement
         void        registerUser(QString username, QString password, QString repeatedPassword);
@@ -81,7 +81,6 @@ class sqlfunctions:public QObject{
         int                 uid;
         QSqlDatabase        db;
         int                 badTries;
-        time_t              timeNow;
         time_t              lastTry;
         time_t              allowedAgain;
 };
