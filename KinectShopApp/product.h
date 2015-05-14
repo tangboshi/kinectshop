@@ -1,7 +1,7 @@
 #ifndef PRODUCT_H
 #define PRODUCT_H
 
-#include <string>
+#include <QString>
 
 using namespace std;
 
@@ -12,11 +12,11 @@ class product{
         int getPid();
         int getAmount();
         int getPrice();
-        string getTitle();
+        QString getTitle();
 
         void setPid(int newPid);
         void setAmount(int newAmount);
-        void setTitle(string newTitle);
+        void setTitle(QString newTitle);
         void setPrice(int newPrice);
 
         bool operator == (const int theProduct) const;
@@ -26,7 +26,7 @@ class product{
         int pid;
         int amount;
         int price;
-        string title;
+        QString title;
 };
 
 #endif // PRODUCT_H

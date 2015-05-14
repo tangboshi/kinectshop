@@ -11,7 +11,7 @@ int product::getPid(){
     return pid;
 }
 
-string product::getTitle(){
+QString product::getTitle(){
     return title;
 }
 
@@ -27,7 +27,7 @@ void product::setPid(int newPid){
     pid = newPid;
 }
 
-void product::setTitle(string newTitle){
+void product::setTitle(QString newTitle){
     title = newTitle;
 }
 

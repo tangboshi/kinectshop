@@ -1,3 +1,9 @@
+//Javascript Insertion
+// unter anderem listAllProducts() und showCart()
+$(document).ready(function(){
+    $("#shop").append(mySqlObj.listAllProducts());
+});
+
 // Click-Events
 $(document).ready(function(){
 
@@ -9,6 +15,21 @@ $(document).ready(function(){
      * js-Update von #acc-balance über signal balanceChanged()
      */
 
+    // Produkt in den Warenkorb legen
+    $("[id^=buyCartItem]").on('click', function(){
+        var pid = $(this).attr("id").slice(11);
+        var amount =  $("#cartItemAmount"+pid).val();
+        var price = 3;
+        var title = "testObj";
+        if(amount > 0){
+            mySqlObj.addToCart(pid, amount, price, title);
+            alert("Das Produkt ist; "+title+"\nDie Produkt ID ist: "+pid+"\nDie Menge ist: "+amount+"\nDer Preis pro Stück ist: "+price);
+        }
+        else{
+            alert("Die eingekaufte Menge muss größer als 0 sein.");
+        }
+    });
+
     // Verlassen-Button
     $("#quit").click(Qt.quit);
 
@@ -17,7 +38,7 @@ $(document).ready(function(){
         var username = $("#username").val();
         var password = $("#password").val();
         // Testfunktion
-        // alert("Der eingegebene Username war: "+username+" Das eingegebene Passwort war: "+password);
+         alert("Der eingegebene Username war: "+username+" Das eingegebene Passwort war: "+password);
         mySqlObj.login(username, password);
         if(mySqlObj.getLogin()){
            $("#login-form").toggleClass("active inactive");
@@ -72,13 +93,6 @@ $(document).ready(function(){
     });
 });
 
-
-//Javascript Insertion
-// unter anderem listAllProducts() und showCart()
-$(document).ready(function(){
-    $("#shop").append(mySqlObj.listAllProducts());
-});
-
 // Hilfsfunktionen
 // Sortierfunktionen
 $(document).ready(function(){
@@ -94,7 +108,10 @@ $(document).ready(function(){
         },
         number: function(a, b){
             return a-b;
-        }
+        }/*,
+        inputval: function(a, b){
+            return a-b;
+        }*/
     }
 
     // Sortierfunktion
@@ -122,6 +139,10 @@ $(document).ready(function(){
                     rows.sort(function(a,b){
                       a = $(a).find("td").eq(column).text();
                       b = $(b).find("td").eq(column).text();
+                      /*if(order == "inputval"){
+                          a = $(a).find("td").eq(column).$("[id^=cartItemAmount]").val();
+                          b = $(b).find("td").eq(column).$("[id^=cartItemAmount]").val();
+                      }*/
                       return compare[order](a,b);
                     });
 

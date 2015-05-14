@@ -39,10 +39,10 @@ class sqlfunctions:public QObject{
 
     public slots:
         // Warenmanagement
-        product     isAlreadyInCart(product myProduct);
+        product     isAlreadyInCart(int pid, int amount, double price, QString title);
         QString     listAllProducts();
-        void        addToCart(product myProduct);
-        QString     showCart();
+        void        addToCart(int pid, int amount, double price, QString title);
+        //QString     showCart();
         void        clearCart();
         void        changeAmount(product myProduct, string mode);
         void        changeAmount(product myProduct, int diff, string mode);

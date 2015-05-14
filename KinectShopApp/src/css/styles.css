@@ -222,6 +222,8 @@ tbody tr:nth-child(odd) td{
     border-radius: 0 5px 5px 0;
 }
 
+/* Sonstiges */
+
 .blue-button{
     padding:7px 14px;
     border-radius:5px;
@@ -229,7 +231,27 @@ tbody tr:nth-child(odd) td{
     box-shadow: inset 0px 1px 0px 0px rgb(4,192,239);
     border: 1px solid #222760;
     background: rgb(3,113,168);
-    background: linear-gradient(to bottom, rgba(3,113,168,1) 0%,rgba(2,96,142,1) 43%,rgba(0,71,107,1) 100%);
+}
+
+.orange-button{
+    padding:7px 14px;
+    border-radius:5px;
+    color:#fff;
+    box-shadow: inset 0px 1px 0px 0px rgb(255,160,80);
+    border: 1px solid rgb(150,70,30);
+    background: rgb(230,120,60);
+}
+
+input[id^=cartItemAmount]{
+    width:50px;
+    height:30px;
+    margin:0 5px;
+    vertical-align:middle;
+}
+
+button[id^=buyCartItem]{
+    height:30px;
+    vertical-align:middle;
 }
 
 /* Footer */

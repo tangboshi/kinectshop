@@ -48,9 +48,10 @@ QString sqlfunctions::listAllProducts(){
             <<  "<thead>"
             <<  "<tr>"
             <<  "<th data-sort='number'>"      <<  "Produkt-ID"    <<  "</th>"
-            <<  "<th data.sort='name'>"        <<  "Produktname"   <<  "</th>"
+            <<  "<th data-sort='name'>"        <<  "Produktname"   <<  "</th>"
             <<  "<th data-sort='number'>"      <<  "Preis"         <<  "</th>"
             <<  "<th data-sort='number'>"      <<  "Verfügbar"     <<  "</th>"
+            <<  "<th data-sort='inputval'>"    <<  "Menge"         <<  "</th>"
             <<  "</tr>"
             <<  "</thead>"
             <<  "<tbody>"
@@ -66,14 +67,22 @@ QString sqlfunctions::listAllProducts(){
                 <<  "<td>"      <<  title     <<    "</td>"
                 <<  "<td>"      <<  price     <<    "</td>"
                 <<  "<td>"      <<  stock     <<    "</td>"
+                <<  "<td>"      <<  "<input type='text' value='0' id='cartItemAmount"  <<   pid  <<  "'>"
+                <<  "<button class='orange-button' id='buyCartItem"                    <<   pid  <<  "'>"
+                <<  "in den <span class='fa fa-shopping-cart'></span></button>"        <<   "</td>"
                 <<  "</tr>"
                 <<  endl;
+        // Das funktioniert nur, weil alle ItemIds ab 1 vorkommen
+        // und die SQL-Tabelle genau in dieser Reihenfolge sortiert ist.
     }
 
     stream  <<  "</tbody>"
             <<  "</table>"  <<  endl;
 
     string s = stream.str();
+
+    // Testfunktion
+    cout    << s    << endl;
 
     QString htmlOutput = QString::fromStdString(s);
 
@@ -87,14 +96,34 @@ QString sqlfunctions::listAllProducts(){
 }
 
 // Füge Element in den Warenkorb ein
-void sqlfunctions::addToCart(product myProduct){
-    product newProduct = isAlreadyInCart(myProduct);
+void sqlfunctions::addToCart(int pid, int amount, double price, QString title){
+
+    product myProduct;
+    myProduct.setAmount(amount);
+    myProduct.setPid(pid);
+    myProduct.setPrice(price);
+    myProduct.setTitle(title);
+
+    product newProduct = isAlreadyInCart(pid, amount, price, title);
     cart.push_back(newProduct);
+
+    /* Testfunktion ob JS-Übergabe funktioniert hat
+    QMessageBox msgBox;
+    msgBox.setText(QString::number(myProduct.getAmount()));
+    msgBox.exec();
+    */
 }
 
 // Überprüft, ob ein Element bereits im Warenkorb ist, falls ja erhöhe nur die Menge
 // Gibt hinzuzufügendes Produkt an addToCart() zurück.
-product sqlfunctions::isAlreadyInCart(product myProduct){
+product sqlfunctions::isAlreadyInCart(int pid, int amount, double price, QString title){
+
+    product myProduct;
+    myProduct.setAmount(amount);
+    myProduct.setPid(pid);
+    myProduct.setPrice(price);
+    myProduct.setTitle(title);
+
     iter cursor = find(cart.begin(), cart.end(), myProduct.getPid());
     if(cursor!=cart.end()){
         int newAmount = myProduct.getAmount() + cursor->getAmount();
@@ -106,13 +135,14 @@ product sqlfunctions::isAlreadyInCart(product myProduct){
 
 // Gibt den Inhalt des Einkaufswagens aus, bereits HTML
 // Überarbeiten! Verwende <thead><th><tbody> !!!
+/*
 QString sqlfunctions::showCart(){
 
     // stringstream buffer;
 
     cout    <<  "<table id='cartContent' class='sortable'>"   << endl;
     for(iter cursor = cart.begin();cursor!=cart.end();cursor++){
-        cout    <<  "<tr> "     << endl;
+        cout    <<  "<tr> "     <<   endl;
         cout    <<  "<td>"      <<  "Produkt-ID: "      << cursor->getPid()       << "</td>"      << endl;
         cout    <<  "<td>"      <<  "Produktname: "     << cursor->getTitle()     << "</td>"      << endl;
         cout    <<  "<td>"      <<  "Menge: "           << cursor->getAmount()    << "</td>"      << endl;
@@ -125,6 +155,7 @@ QString sqlfunctions::showCart(){
 
     return "a"; //htmlOutput;
 }
+*/
 
 // Leert den Einkaufswagen
 void sqlfunctions::clearCart(){
@@ -470,8 +501,7 @@ bool sqlfunctions::login(QString username, QString password){
         else{
             QMessageBox msgBox;
             msgBox.setText("User als Kunde erkannt. Das Admin-Flag ist auf "+QString::number(isAdminLoggedIn)+".");
-            msgBox.exec();
-            return false;
+            msgBox.exec();        
         }
         return true;
     }
