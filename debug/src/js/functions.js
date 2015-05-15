@@ -51,11 +51,12 @@ $(document).ready(function(){
         var diff =  $("#itemAmount"+pid).val();
         var mode = "sub";
         if(diff > 0){
-            alert(pid+" "+diff+" "+mode);
+            // Testfunktion
+            // alert(pid+" "+diff+" "+mode);
             mySqlObj.changeAmount(pid, diff, mode);
              $("#product-display").html(mySqlObj.showCart());
             // Testfunktion
-            alert("\nDie Produkt ID ist: "+pid+"\nDie Menge ist: "+diff+"\nDer Modus ist: "+mode);
+            // alert("\nDie Produkt ID ist: "+pid+"\nDie Menge ist: "+diff+"\nDer Modus ist: "+mode);
         }
         else{
             alert("Die zu entfernende Menge muss größer als 0 sein.");
