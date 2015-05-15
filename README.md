@@ -1,7 +1,11 @@
-# Aktueller Stand
+# Aktueller Stand  
+
+Version:
+0.9a
 
 Nächste Schritte:
---- in Planung
+
+--- in Planung ---
 
 Liste der noch möglichen noch zu implementierenden Features (nicht vollständig, **nicht** nach Prioritäten):
 * Login: Passwort ändern, Passwort vergessen
