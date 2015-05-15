@@ -107,6 +107,7 @@ $(document).ready(function(){
 
            if(mySqlObj.getIsAdminLoggedIn()){
                $("#acc-isAdmin .accdd").html("Admin");
+               $("li[title='admin-area']").toggleClass("active inactive");
            }
            else{
                $("#acc-isAdmin .accdd").html("Kunde");
@@ -123,6 +124,10 @@ $(document).ready(function(){
            $("#acc-username .accdd").html(" --- ");
            $("#acc-balance .accdd").html(" --- ");
            $("#acc-isAdmin .accdd").html(" --- ");
+
+            // Nicht toggle, weil nicht klar ist ob Kunde oder Admin eingeloogt war
+           $("li[title='admin-area']").addClass("inactive");
+           $("li[title='admin-area']").removeClass("active");
         }
     });
 
@@ -142,7 +147,15 @@ $(document).ready(function(){
         // Testfunktion
         // alert("Der eingegebene Betrag war: "+amount+".");
         mySqlObj.refillBalance(amount);
-        $("#acc-balance .accdd").html(mySqlObj.getBalance());
+        var currentCartValue = mySqlObj.getCurrentCartValue();
+        var balance = mySqlObj.getBalance();
+        if(balance < currentCartValue){
+            $("#acc-cart .accdd").addClass("red-font");
+        }
+        else{
+            $("#acc-cart .accdd").removeClass("red-font");
+        }
+        $("#acc-balance .accdd").html(balance);
     });
 
     // Nur ausgewählten Menüpunkt anzeigen
