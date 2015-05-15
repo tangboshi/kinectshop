@@ -1,12 +1,22 @@
 #include "sqlfunctions.h"
 
 sqlfunctions::sqlfunctions(){
+    // LfB-Datenbank
     db = QSqlDatabase::addDatabase("QMYSQL");
     db.setHostName("kinectsrv.lfb.rwth-aachen.de");
     db.setDatabaseName("kinectshop2015");
     db.setUserName("kinectshopClient");
     db.setPassword("lfb-student2015");
     db.setPort(3306);
+
+    /* // lokale Datenbank
+    db = QSqlDatabase::addDatabase("QMYSQL");
+    db.setHostName("localhost");
+    db.setDatabaseName("kinectshop2015");
+    db.setUserName("root");
+    db.setPassword("");
+    db.setPort(3305);
+    */
 
     if(!db.open()){
         QMessageBox msgBox;
@@ -26,6 +36,8 @@ sqlfunctions::sqlfunctions(){
 
     badTries = 0;
     allowedAgain = 0;
+
+    currentCartValue = 0;
 }
 
 // ----------------------------------------------------------------------------------
@@ -160,14 +172,16 @@ QString sqlfunctions::showCart(){
 
     int pid, amount;
     string title;
-    double price, total;
+    double price, subtotal;
+    currentCartValue = 0;
 
     for(iter cursor = cart.begin();cursor!=cart.end();cursor++){
         pid = cursor->getPid();
         title = cursor->getTitle().toStdString();
         price = cursor->getPrice();
         amount = cursor->getAmount();
-        total = price*amount;
+        subtotal = price*amount;
+        currentCartValue += subtotal;
 
         stream  <<  "<tr>"
                 <<  "<td>"      <<  pid       <<    "</td>"
@@ -178,12 +192,16 @@ QString sqlfunctions::showCart(){
                 <<  "<button class='orange-button' id='removeItem" <<   pid  <<  "'>"
                 <<  "entfernen aus <span class='fa fa-shopping-cart'></span></button>"
                 <<  "</td>"
-                <<  "<td>"      <<  total     <<    "</td>"
+                <<  "<td>"      <<  subtotal     <<    "</td>"
                 <<  "</tr>"
                 <<  endl;
     }
 
-    stream  <<  "</tbody>"
+    stream  <<  "<tr id='total-preview'>"
+            <<  "<td colspan='4' style='text-align:right'>"       <<  "Gesamtpreis "      <<  "</td>"
+            <<  "<td>"                                            <<  currentCartValue    <<  "</td>"
+            <<  "</tr>"
+            <<  "</tbody>"
             <<  "</table>"  <<  endl;
 
     string s = stream.str();
@@ -211,6 +229,8 @@ void sqlfunctions::clearCart(){
 void sqlfunctions::changeAmount(int pid, QString mode){
         if(mode=="clear"){
             iter cursor = find(cart.begin(), cart.end(), pid);
+            double value = (cursor->getAmount())*(cursor->getPrice());
+            currentCartValue -= value;
             cart.erase(cursor);
         }
         emit cartChanged();
@@ -230,9 +250,11 @@ void sqlfunctions::changeAmount(int pid, int diff, QString modeQString){
 
     if(mode=="add"){
         cursor->setAmount(cursor->getAmount()+diff);
+        currentCartValue += diff*(cursor->getAmount())*(cursor->getPrice());
     }
     else if(mode=="sub"){
         cursor->setAmount(cursor->getAmount()-diff);
+        currentCartValue -= diff*(cursor->getAmount())*(cursor->getPrice());
     }
     emit cartChanged();
 }
@@ -290,7 +312,7 @@ bool sqlfunctions::purchase(){
             if(diff >= 0){
 
                 int pid, amount, insertId, stock;
-                double price, cost, balance, total = 0;
+                double balance;
 
                 for(iter cursor = cart.begin(); cursor != cart.end(); ++cursor){
                     // Variablen cost usw. brauchen nicht ressetet zu werden, da sie jedes mal neu ausgerechnet werden.
@@ -314,29 +336,6 @@ bool sqlfunctions::purchase(){
                     query.bindValue(":amount", amount);
                     query.exec();
 
-                    // Kosten ausrechnen
-                    query.prepare("SELECT price FROM products WHERE id =:pid");
-                    query.bindValue(":pid", pid);
-                    query.exec();
-
-                    query.next();
-                    price = query.value(0).toDouble();
-                    cost = (double)amount*price;
-
-                    query.prepare("SELECT balance FROM users WHERE id = :uid");
-                    query.bindValue(":uid", uid);
-                    query.exec();
-                    query.next();
-                    balance = query.value(0).toDouble();
-                    balance -= cost;
-                    total += cost;
-
-                    // Userguthaben abbuchen
-                    query.prepare("UPDATE users SET balance=:newBalance WHERE id =:uid");
-                    query.bindValue(":newBalance", balance);
-                    query.bindValue(":uid", uid);
-                    query.exec();
-
                     // Produktvorrat reduzieren
                     query.prepare("SELECT stock FROM products WHERE id = :pid");
                     query.bindValue(":pid", pid);
@@ -350,15 +349,31 @@ bool sqlfunctions::purchase(){
                     query.bindValue(":pid", pid);
                     query.exec();
                 }
+
+                // Geld von Useraccount abheben
+                query.prepare("SELECT balance FROM users WHERE id = :uid");
+                query.bindValue(":uid", uid);
+                query.exec();
+                query.next();
+                balance = query.value(0).toDouble();
+                balance -= currentCartValue;
+
+                // Userguthaben abbuchen
+                query.prepare("UPDATE users SET balance=:newBalance WHERE id =:uid");
+                query.bindValue(":newBalance", balance);
+                query.bindValue(":uid", uid);
+                query.exec();
+
                 // Signal: Einkauf abgeschlossen, Einkaufswagen leeren
                 emit purchaseDone(cart);
-                emit balanceChanged((-1)*total);
+                emit balanceChanged((-1)*currentCartValue);
 
                 QMessageBox msgBox;
                 QString thankYou ="<p><b> Vielen Dank für Ihren Einkauf! Sie kauften: </b><br></p>";
                 msgBox.setText(thankYou+showCart());
                 msgBox.exec();
 
+                currentCartValue = 0;
                 clearCart();
                 return true;
             }
@@ -487,6 +502,10 @@ void sqlfunctions::empowerUser(){
 // NIMMT USER ADMIN-PRIVILLEGIEN
 // Auswirkung: Verstecke Admin-Menüpunkte und Optionen in App
 void sqlfunctions::disempowerUser(){
+}
+
+double sqlfunctions::getCurrentCartValue(){
+    return currentCartValue;
 }
 
 bool sqlfunctions::getLogin(){

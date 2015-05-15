@@ -23,6 +23,7 @@ $(document).ready(function(){
     $("#purchase").on('click', function(){
         if(mySqlObj.purchase()){
             $("#acc-balance .accdd").html(mySqlObj.getBalance());
+            $("#acc-cart .accdd").html(mySqlObj.getCurrentCartValue());
             $("#product-display").html(mySqlObj.showCart());
             $("#shop-items").html(mySqlObj.listAllProducts());
         }
@@ -37,6 +38,7 @@ $(document).ready(function(){
         if(amount > 0){
             mySqlObj.addToCart(pid, amount, price, title);
             $("#product-display").html(mySqlObj.showCart());
+            $("#acc-cart .accdd").html(mySqlObj.getCurrentCartValue());
             // Testfunktion
             alert("Das Produkt ist: "+title+"\nDie Produkt ID ist: "+pid+"\nDie Menge ist: "+amount+"\nDer Preis pro Stück ist: "+price);
         }
@@ -55,6 +57,7 @@ $(document).ready(function(){
             // alert(pid+" "+diff+" "+mode);
             mySqlObj.changeAmount(pid, diff, mode);
              $("#product-display").html(mySqlObj.showCart());
+            $("#acc-cart .accdd").html(mySqlObj.getCurrentCartValue());
             // Testfunktion
             // alert("\nDie Produkt ID ist: "+pid+"\nDie Menge ist: "+diff+"\nDer Modus ist: "+mode);
         }
@@ -74,6 +77,7 @@ $(document).ready(function(){
         // alert("Der eingegebene Username war: "+username+" Das eingegebene Passwort war: "+password);
         mySqlObj.login(username, password);
         if(mySqlObj.getLogin()){
+           $("#acc-cart .accdd").html(mySqlObj.getCurrentCartValue());
            $("#login-form").toggleClass("active inactive");
            $("#logout-form").toggleClass("active inactive");
            $("#acc-username .accdd").html(mySqlObj.getUsername());

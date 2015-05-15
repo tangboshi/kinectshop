@@ -19,8 +19,8 @@
 
 QT_BEGIN_MOC_NAMESPACE
 struct qt_meta_stringdata_sqlfunctions_t {
-    QByteArrayData data[48];
-    char stringdata[475];
+    QByteArrayData data[49];
+    char stringdata[495];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -66,17 +66,18 @@ QT_MOC_LITERAL(33, 337, 14),
 QT_MOC_LITERAL(34, 352, 12),
 QT_MOC_LITERAL(35, 365, 13),
 QT_MOC_LITERAL(36, 379, 7),
-QT_MOC_LITERAL(37, 387, 8),
-QT_MOC_LITERAL(38, 396, 18),
-QT_MOC_LITERAL(39, 415, 6),
-QT_MOC_LITERAL(40, 422, 11),
-QT_MOC_LITERAL(41, 434, 10),
-QT_MOC_LITERAL(42, 445, 6),
-QT_MOC_LITERAL(43, 452, 7),
-QT_MOC_LITERAL(44, 460, 7),
-QT_MOC_LITERAL(45, 468, 1),
-QT_MOC_LITERAL(46, 470, 1),
-QT_MOC_LITERAL(47, 472, 1)
+QT_MOC_LITERAL(37, 387, 19),
+QT_MOC_LITERAL(38, 407, 8),
+QT_MOC_LITERAL(39, 416, 18),
+QT_MOC_LITERAL(40, 435, 6),
+QT_MOC_LITERAL(41, 442, 11),
+QT_MOC_LITERAL(42, 454, 10),
+QT_MOC_LITERAL(43, 465, 6),
+QT_MOC_LITERAL(44, 472, 7),
+QT_MOC_LITERAL(45, 480, 7),
+QT_MOC_LITERAL(46, 488, 1),
+QT_MOC_LITERAL(47, 490, 1),
+QT_MOC_LITERAL(48, 492, 1)
     },
     "sqlfunctions\0purchaseDone\0\0vector<product>\0"
     "cart\0balanceChanged\0amount\0cartChanged\0"
@@ -88,9 +89,10 @@ QT_MOC_LITERAL(47, 472, 1)
     "registerUser\0username\0password\0"
     "repeatedPassword\0login\0logout\0empowerUser\0"
     "disempowerUser\0listAllUsers\0refillBalance\0"
-    "timeout\0getLogin\0getIsAdminLoggedIn\0"
-    "getUid\0getUsername\0getBalance\0testJs\0"
-    "testCpp\0testSql\0a\0b\0c\0"
+    "timeout\0getCurrentCartValue\0getLogin\0"
+    "getIsAdminLoggedIn\0getUid\0getUsername\0"
+    "getBalance\0testJs\0testCpp\0testSql\0a\0"
+    "b\0c\0"
 };
 #undef QT_MOC_LITERAL
 
@@ -100,7 +102,7 @@ static const uint qt_meta_data_sqlfunctions[] = {
        7,       // revision
        0,       // classname
        0,    0, // classinfo
-      32,   14, // methods
+      33,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -108,40 +110,41 @@ static const uint qt_meta_data_sqlfunctions[] = {
        6,       // signalCount
 
  // signals: name, argc, parameters, tag, flags
-       1,    1,  174,    2, 0x06,
-       5,    1,  177,    2, 0x06,
-       7,    0,  180,    2, 0x06,
-       8,    0,  181,    2, 0x06,
-       9,    0,  182,    2, 0x06,
-      10,    0,  183,    2, 0x06,
+       1,    1,  179,    2, 0x06,
+       5,    1,  182,    2, 0x06,
+       7,    0,  185,    2, 0x06,
+       8,    0,  186,    2, 0x06,
+       9,    0,  187,    2, 0x06,
+      10,    0,  188,    2, 0x06,
 
  // slots: name, argc, parameters, tag, flags
-      11,    4,  184,    2, 0x0a,
-      16,    0,  193,    2, 0x0a,
-      17,    4,  194,    2, 0x0a,
-      18,    0,  203,    2, 0x0a,
-      19,    0,  204,    2, 0x0a,
-      20,    2,  205,    2, 0x0a,
-      20,    3,  210,    2, 0x0a,
-      23,    0,  217,    2, 0x0a,
-      24,    0,  218,    2, 0x0a,
-      25,    0,  219,    2, 0x0a,
-      26,    3,  220,    2, 0x0a,
-      30,    2,  227,    2, 0x0a,
-      31,    0,  232,    2, 0x0a,
-      32,    0,  233,    2, 0x0a,
-      33,    0,  234,    2, 0x0a,
-      34,    0,  235,    2, 0x0a,
-      35,    1,  236,    2, 0x0a,
-      36,    0,  239,    2, 0x0a,
-      37,    0,  240,    2, 0x0a,
-      38,    0,  241,    2, 0x0a,
-      39,    0,  242,    2, 0x0a,
-      40,    0,  243,    2, 0x0a,
-      41,    0,  244,    2, 0x0a,
-      42,    0,  245,    2, 0x0a,
-      43,    0,  246,    2, 0x0a,
-      44,    3,  247,    2, 0x0a,
+      11,    4,  189,    2, 0x0a,
+      16,    0,  198,    2, 0x0a,
+      17,    4,  199,    2, 0x0a,
+      18,    0,  208,    2, 0x0a,
+      19,    0,  209,    2, 0x0a,
+      20,    2,  210,    2, 0x0a,
+      20,    3,  215,    2, 0x0a,
+      23,    0,  222,    2, 0x0a,
+      24,    0,  223,    2, 0x0a,
+      25,    0,  224,    2, 0x0a,
+      26,    3,  225,    2, 0x0a,
+      30,    2,  232,    2, 0x0a,
+      31,    0,  237,    2, 0x0a,
+      32,    0,  238,    2, 0x0a,
+      33,    0,  239,    2, 0x0a,
+      34,    0,  240,    2, 0x0a,
+      35,    1,  241,    2, 0x0a,
+      36,    0,  244,    2, 0x0a,
+      37,    0,  245,    2, 0x0a,
+      38,    0,  246,    2, 0x0a,
+      39,    0,  247,    2, 0x0a,
+      40,    0,  248,    2, 0x0a,
+      41,    0,  249,    2, 0x0a,
+      42,    0,  250,    2, 0x0a,
+      43,    0,  251,    2, 0x0a,
+      44,    0,  252,    2, 0x0a,
+      45,    3,  253,    2, 0x0a,
 
  // signals: parameters
     QMetaType::Void, 0x80000000 | 3,    4,
@@ -170,6 +173,7 @@ static const uint qt_meta_data_sqlfunctions[] = {
     QMetaType::Void,
     QMetaType::Void, QMetaType::Double,    6,
     QMetaType::Void,
+    QMetaType::Double,
     QMetaType::Bool,
     QMetaType::Bool,
     QMetaType::Int,
@@ -177,7 +181,7 @@ static const uint qt_meta_data_sqlfunctions[] = {
     QMetaType::Double,
     QMetaType::Void,
     QMetaType::Void,
-    QMetaType::Void, QMetaType::QString, QMetaType::QString, QMetaType::QString,   45,   46,   47,
+    QMetaType::Void, QMetaType::QString, QMetaType::QString, QMetaType::QString,   46,   47,   48,
 
        0        // eod
 };
@@ -220,19 +224,21 @@ void sqlfunctions::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id
         case 21: _t->listAllUsers(); break;
         case 22: _t->refillBalance((*reinterpret_cast< double(*)>(_a[1]))); break;
         case 23: _t->timeout(); break;
-        case 24: { bool _r = _t->getLogin();
-            if (_a[0]) *reinterpret_cast< bool*>(_a[0]) = _r; }  break;
-        case 25: { bool _r = _t->getIsAdminLoggedIn();
-            if (_a[0]) *reinterpret_cast< bool*>(_a[0]) = _r; }  break;
-        case 26: { int _r = _t->getUid();
-            if (_a[0]) *reinterpret_cast< int*>(_a[0]) = _r; }  break;
-        case 27: { QString _r = _t->getUsername();
-            if (_a[0]) *reinterpret_cast< QString*>(_a[0]) = _r; }  break;
-        case 28: { double _r = _t->getBalance();
+        case 24: { double _r = _t->getCurrentCartValue();
             if (_a[0]) *reinterpret_cast< double*>(_a[0]) = _r; }  break;
-        case 29: _t->testJs(); break;
-        case 30: _t->testCpp(); break;
-        case 31: _t->testSql((*reinterpret_cast< QString(*)>(_a[1])),(*reinterpret_cast< QString(*)>(_a[2])),(*reinterpret_cast< QString(*)>(_a[3]))); break;
+        case 25: { bool _r = _t->getLogin();
+            if (_a[0]) *reinterpret_cast< bool*>(_a[0]) = _r; }  break;
+        case 26: { bool _r = _t->getIsAdminLoggedIn();
+            if (_a[0]) *reinterpret_cast< bool*>(_a[0]) = _r; }  break;
+        case 27: { int _r = _t->getUid();
+            if (_a[0]) *reinterpret_cast< int*>(_a[0]) = _r; }  break;
+        case 28: { QString _r = _t->getUsername();
+            if (_a[0]) *reinterpret_cast< QString*>(_a[0]) = _r; }  break;
+        case 29: { double _r = _t->getBalance();
+            if (_a[0]) *reinterpret_cast< double*>(_a[0]) = _r; }  break;
+        case 30: _t->testJs(); break;
+        case 31: _t->testCpp(); break;
+        case 32: _t->testSql((*reinterpret_cast< QString(*)>(_a[1])),(*reinterpret_cast< QString(*)>(_a[2])),(*reinterpret_cast< QString(*)>(_a[3]))); break;
         default: ;
         }
     } else if (_c == QMetaObject::IndexOfMethod) {
@@ -302,13 +308,13 @@ int sqlfunctions::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 32)
+        if (_id < 33)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 32;
+        _id -= 33;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 32)
+        if (_id < 33)
             *reinterpret_cast<int*>(_a[0]) = -1;
-        _id -= 32;
+        _id -= 33;
     }
     return _id;
 }

@@ -155,6 +155,12 @@ p{
     border-radius:5px;
 }
 
+#total-preview td{
+    background: rgb(230,120,60);
+    color:#fff;
+    font-weight:bold;
+}
+
 /* Tabellen allgemein */
 table{
     border-collapse:collapse;
@@ -215,11 +221,23 @@ tbody tr:nth-child(odd) td{
     width:35px;
 }
 
+.input-prepend.gray{
+    border-radius:5px;
+    border: 1px solid #333;
+}
+
+.input-prepend.gray .fa{
+    background:rgb(235,235,235);
+    border:none;
+    margin:0;
+}
+
 .input-prepend input{
     border:none;
     height:40px;
     line-height:40px;
     border-radius: 0 5px 5px 0;
+    padding: 3px 7px;
 }
 
 /* Sonstiges */

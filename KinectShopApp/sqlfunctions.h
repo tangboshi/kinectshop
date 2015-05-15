@@ -31,7 +31,6 @@ class sqlfunctions:public QObject{
     signals:
         void        purchaseDone(vector<product> cart);
 
-        // Nimmt insbesondere auch negative Werte an!
         double      balanceChanged(double amount);
         void        cartChanged();
 
@@ -51,6 +50,7 @@ class sqlfunctions:public QObject{
         int         checkStock();
         double      checkBalance();
         bool        purchase();
+        // bool     isCartEmpty();
 
         // Usermanagement
         void        registerUser(QString username, QString password, QString repeatedPassword);
@@ -62,6 +62,8 @@ class sqlfunctions:public QObject{
         void        refillBalance(double amount);
         void        timeout();
 
+        // Getter-Funktionen
+        double      getCurrentCartValue();
         bool        getLogin();
         bool        getIsAdminLoggedIn();
         int         getUid();
@@ -83,6 +85,7 @@ class sqlfunctions:public QObject{
         int                 badTries;
         time_t              lastTry;
         time_t              allowedAgain;
+        double              currentCartValue;
 };
 
 #endif // SQLFUNCTIONS_H
