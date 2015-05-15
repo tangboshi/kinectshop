@@ -25,9 +25,11 @@ Liste der implementierten Features:
 * Funktionierender Logout
 * Funktionierende Registrierung
 * Funktionierende Guthabenverwaltung
-* Funktionierendes Einkaufssystem (BUG: nur ein Einkauf pro Sitzung BEHEBEN!!!)
+* Funktionierendes Einkaufssystem
 
 Liste der zu lernenden/zum Laufen zu bringenden Techniken/Technologien/Sprachen:
+* QThreads
+* Qt Kinect Wrapper
 * JSON + flot
 * libfreenect
 
