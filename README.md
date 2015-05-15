@@ -1,26 +1,31 @@
 # Aktueller Stand
 
 Nächste Schritte:
-* programmierte C++ Funktionen nun mit Javascript ausführen und ans UI binden.
+--- in Planung
 
-Liste der noch möglichen noch zu implementierenden Features (nicht vollständig, **nicht** nach Prioritäten:)
-* Login: Timout bei mehrfacher falscher Eingabe, Passwort ändern, Passwort vergessen
+Liste der noch möglichen noch zu implementierenden Features (nicht vollständig, **nicht** nach Prioritäten):
+* Login: Passwort ändern, Passwort vergessen
 * Account (löschen, bearbeiten, Profil anlegen, ändern)
 * Registrierung: Passwortsichherheit fordern
 * Buchung: Unterscheiden zwischen Buchungs-ID und Buchungsgegeständen je Buchung (bid und iid)
-* Einkaufssystem: anzeigen der Produkte, input-Felder mit id, oder name *+pid der Produkte, für amount
 * Produktbeschreibungen nach Vorbild eines Templates von codrops
 * Warenstatistiken (Umsatz der User/ beliebteste Produkte/Userdatenauswertung)
-* Warenstatistiken grafisch darstellen mit JSON und flot
+* Warenstatistiken grafisch darstellen
 * Kinect: Kinect Farbbild, Kinect Tiefenbild, Kinect Ton
 * Interface mit Lokalisierung:  Markieren des übergebenen Bildausschnitts
 * Interface mit Klassifizierung:  Anzeigen des identifizierten Produkts
 
 Liste der implementierten Features:
-* Funktionierender Login
+* Funktionierender Login 
+  * Timeout bei mehrfach falscher Eingabe
 * Funktionierender Logout
 * Funktionierende Registrierung
 * Funktionierende Guthabenverwaltung
+* Funktionierendes Einkaufssystem (BUG: nur ein Einkauf pro Sitzung BEHEBEN!!!)
+
+Liste der zu lernenden/zum Laufen zu bringenden Techniken/Technologien/Sprachen:
+* JSON + flot
+* libfreenect
 
 Momentane technische Schwierigkeiten:
 * Kinect-Daten auslesen und darstellen in Qt
