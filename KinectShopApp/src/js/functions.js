@@ -1,7 +1,9 @@
-//Javascript Insertion
-// unter anderem listAllProducts() und showCart()
+// Wird beim Start des Programms ausgeführt
 $(document).ready(function(){
+    // Liste alle Produkte im Shop auf
     $("#shop-items").html(mySqlObj.listAllProducts());
+
+    // Inititalisiere leeren Warenkorb
     $("#product-display").html(mySqlObj.showCart());
 });
 

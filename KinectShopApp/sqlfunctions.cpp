@@ -49,7 +49,7 @@ QString sqlfunctions::listAllProducts(){
     QSqlQuery query;
 
     // Alles Abfragen
-    query.prepare("SELECT * FROM products");
+    query.prepare("SELECT * FROM products ORDER BY products.id ASC");
     query.exec();
 
     int pid, stock;
@@ -62,11 +62,11 @@ QString sqlfunctions::listAllProducts(){
     stream  <<  "<table id='cartList' class='sortable'>"
             <<  "<thead>"
             <<  "<tr>"
-            <<  "<th data-sort='number'>"      <<  "Produkt-ID"    <<  "</th>"
-            <<  "<th data-sort='name'>"        <<  "Produktname"   <<  "</th>"
-            <<  "<th data-sort='number'>"      <<  "Preis"         <<  "</th>"
-            <<  "<th data-sort='number'>"      <<  "Verfügbar"     <<  "</th>"
-            <<  "<th data-sort='inputval'>"    <<  "Menge"         <<  "</th>"
+            <<  "<th data-sort='number'     class='sortByPid ascending'>"      <<  "Produkt-ID"    <<  "</th>"
+            <<  "<th data-sort='name'       class='sortByName'>"     <<  "Produktname"   <<  "</th>"
+            <<  "<th data-sort='number'     class='sortByPrice'>"    <<  "Preis"         <<  "</th>"
+            <<  "<th data-sort='number'     class='sortByStock'>"    <<  "Verfügbar"     <<  "</th>"
+            <<  "<th data-sort='inputval'   class='sortByAmount'>"   <<  "Menge"         <<  "</th>"
             <<  "</tr>"
             <<  "</thead>"
             <<  "<tbody>"
@@ -160,11 +160,11 @@ QString sqlfunctions::showCart(){
     stream  <<  "<table id='productList' class='sortable'>"
             <<  "<thead>"
             <<  "<tr>"
-            <<  "<th data-sort='number'>"      <<  "Produkt-ID"     <<  "</th>"
-            <<  "<th data-sort='name'>"        <<  "Produktname"    <<  "</th>"
-            <<  "<th data-sort='number'>"      <<  "Preis"          <<  "</th>"
-            <<  "<th data-sort='number'>"      <<  "Bestellmenge"   <<  "</th>"
-            <<  "<th data-sort='number'>"      <<  "Gesamtpeis"     <<  "</th>"
+            <<  "<th data-sort='number' class='sortByPid'>"         <<  "Produkt-ID"     <<  "</th>"
+            <<  "<th data-sort='name'   class='sortByName'>"        <<  "Produktname"    <<  "</th>"
+            <<  "<th data-sort='number' class='sortByPrice'>"       <<  "Preis"          <<  "</th>"
+            <<  "<th data-sort='number' class='sortByAmount'>"      <<  "Bestellmenge"   <<  "</th>"
+            <<  "<th data-sort='number' class='sortByTotal'>"       <<  "Gesamtpeis"     <<  "</th>"
             <<  "</tr>"
             <<  "</thead>"
             <<  "<tbody>"
@@ -237,14 +237,8 @@ void sqlfunctions::changeAmount(int pid, QString mode){
 }
 
 void sqlfunctions::changeAmount(int pid, int diff, QString modeQString){
-    /*iter cursor = cart.begin();
-    while((cursor!= cart.end())&& (cursor->getPid() != pid)){
-        ++cursor;
-    }*/
 
     string mode = modeQString.toStdString();
-
-    testCpp();
 
     iter cursor = find(cart.begin(), cart.end(), pid);
 
@@ -253,6 +247,21 @@ void sqlfunctions::changeAmount(int pid, int diff, QString modeQString){
         currentCartValue += diff*(cursor->getAmount())*(cursor->getPrice());
     }
     else if(mode=="sub"){
+        // guckt, ob der Kunde überhaupt soviel im Warenkorb hat
+        if(cursor->getAmount() < diff){
+            QMessageBox msgBox;
+            msgBox.setText("Sie können maximal " + QString::number(cursor->getAmount()) + " aus dem Warenkorb entfernen.");
+            msgBox.exec();
+            return;
+        }
+
+        // guckt, ob nach der Entferung noch etwas von der Waren übrig ist
+        // falls nein
+        if(cursor->getAmount() == diff){
+            changeAmount(pid, "clear");
+            return;
+        }
+        // falls ja
         cursor->setAmount(cursor->getAmount()-diff);
         currentCartValue -= diff*(cursor->getAmount())*(cursor->getPrice());
     }
