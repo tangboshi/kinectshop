@@ -191,8 +191,9 @@ $(document).ready(function(){
     $(".sortable").each(function(){
         var $table = $(this);
         var $tbody = $table.find("tbody");
-        var $controls = $table.find("th");
-        var rows = $tbody.find("tr").toArray();
+        var $controls = $table.find("th[data-sort]");
+        var rows = $tbody.find("tr:not(.no-sort)").toArray();
+        var rest = $tbody.find("tr.no-sort").toArray();
 
         $controls.click(function(){
             var $header = $(this);
@@ -212,10 +213,6 @@ $(document).ready(function(){
                     rows.sort(function(a,b){
                       a = $(a).find("td").eq(column).text();
                       b = $(b).find("td").eq(column).text();
-                      /*if(order == "inputval"){
-                          a = $(a).find("td").eq(column).$("[id^=cartItemAmount]").val();
-                          b = $(b).find("td").eq(column).$("[id^=cartItemAmount]").val();
-                      }*/
                       return compare[order](a,b);
                     });
 

@@ -66,7 +66,7 @@ QString sqlfunctions::listAllProducts(){
             <<  "<th data-sort='name'       class='sortByName'>"     <<  "Produktname"   <<  "</th>"
             <<  "<th data-sort='number'     class='sortByPrice'>"    <<  "Preis"         <<  "</th>"
             <<  "<th data-sort='number'     class='sortByStock'>"    <<  "Verfügbar"     <<  "</th>"
-            <<  "<th data-sort='inputval'   class='sortByAmount'>"   <<  "Menge"         <<  "</th>"
+            <<  "<th class='no-sort'>"   <<  "Menge"         <<  "</th>"
             <<  "</tr>"
             <<  "</thead>"
             <<  "<tbody>"
@@ -163,7 +163,7 @@ QString sqlfunctions::showCart(){
             <<  "<th data-sort='number' class='sortByPid'>"         <<  "Produkt-ID"     <<  "</th>"
             <<  "<th data-sort='name'   class='sortByName'>"        <<  "Produktname"    <<  "</th>"
             <<  "<th data-sort='number' class='sortByPrice'>"       <<  "Preis"          <<  "</th>"
-            <<  "<th data-sort='number' class='sortByAmount'>"      <<  "Bestellmenge"   <<  "</th>"
+            <<  "<th class='no-sort'>"      <<  "Bestellmenge"      <<  "</th>"
             <<  "<th data-sort='number' class='sortByTotal'>"       <<  "Gesamtpeis"     <<  "</th>"
             <<  "</tr>"
             <<  "</thead>"
@@ -197,7 +197,7 @@ QString sqlfunctions::showCart(){
                 <<  endl;
     }
 
-    stream  <<  "<tr id='total-preview'>"
+    stream  <<  "<tr id='total-preview' class='no-sort'>"
             <<  "<td colspan='4' style='text-align:right'>"       <<  "Gesamtpreis "      <<  "</td>"
             <<  "<td>"                                            <<  currentCartValue    <<  "</td>"
             <<  "</tr>"
@@ -306,9 +306,25 @@ double sqlfunctions::checkBalance(){
     return balance - total;
 }
 
+bool sqlfunctions::isCartEmpty(){
+    if(cart.empty()){
+        return true;
+    }
+    else{
+        return false;
+    }
+}
+
 // Die Bezahlfunktion
 // BUG: nach abgeschlossenem Kauf funktioniert diese Funktion nicht mehr !!!
 bool sqlfunctions::purchase(){
+
+    if(isCartEmpty()){
+       QMessageBox msgBox;
+        msgBox.setText("Der Einkaufswagen ist leer!");
+        msgBox.exec();
+        return false;
+    }
 
     QSqlQuery query;
     // Überprüfe, ob User eingeloogt ist.
@@ -500,7 +516,14 @@ void sqlfunctions::refillBalance(double amount){
 }
 
 // GIBT TABELLE MIT ALLEN USERN AUS
-void sqlfunctions::listAllUsers(){
+QString sqlfunctions::listAllUsers(){
+    stringstream stream;
+
+    stream << "abc";
+
+    string s = stream.str();
+    QString htmlOutput = QString::fromStdString(s);
+    return htmlOutput;
 }
 
 // GIBT USER ADMIN-PRIVILLEGIEN

@@ -50,17 +50,19 @@ class sqlfunctions:public QObject{
         int         checkStock();
         double      checkBalance();
         bool        purchase();
-        // bool     isCartEmpty();
+        bool        isCartEmpty();
 
         // Usermanagement
         void        registerUser(QString username, QString password, QString repeatedPassword);
         bool        login(QString username, QString password);
         bool        logout();
-        void        empowerUser();
-        void        disempowerUser();
-        void        listAllUsers();
         void        refillBalance(double amount);
         void        timeout();
+
+        // Shopmanagement
+        void        empowerUser();
+        void        disempowerUser();
+        QString     listAllUsers();
 
         // Getter-Funktionen
         double      getCurrentCartValue();
@@ -76,7 +78,7 @@ class sqlfunctions:public QObject{
         void        testSql(QString a, QString b, QString c);
 
     private:
-        // Accountmanagement
+        // Accountmanagement --- des eingeloggten Users
         vector<product>     cart;
         bool                isLogin;
         bool                isAdminLoggedIn;

@@ -16,7 +16,7 @@
     display:none;
 }
 
-.sortable th:not(.descending):not(.ascending):after {
+.sortable th:not(.descending):not(.ascending):not(.no-sort):after {
     margin-left:7px;
     content:'\f0dc';
     font-family:'FontAwesome';
@@ -225,15 +225,16 @@ tbody tr:nth-child(odd) td{
     width:35px;
 }
 
-.input-prepend.gray{
+.input-prepend.orange{
+    border: 1px solid rgb(230,120,60);
     border-radius:5px;
-    border: 1px solid #333;
 }
 
-.input-prepend.gray .fa{
-    background:rgb(235,235,235);
+.input-prepend.orange .fa{
+    background: rgb(230,120,60);
     border:none;
     margin:0;
+    color:#fff;
 }
 
 .input-prepend input{
