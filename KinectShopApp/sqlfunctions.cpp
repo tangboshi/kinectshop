@@ -149,9 +149,7 @@ product sqlfunctions::isAlreadyInCart(int pid, int amount, double price, QString
     return myProduct;
 }
 
-// Gibt den Inhalt des Einkaufswagens aus, bereits HTML
-// Überarbeiten! Verwende <thead><th><tbody> !!!
-
+// Gibt den Inhalt des Einkaufswagens aus
 QString sqlfunctions::showCart(){
 
     stringstream stream;
@@ -163,8 +161,8 @@ QString sqlfunctions::showCart(){
             <<  "<th data-sort='number' class='sortByPid'>"         <<  "Produkt-ID"     <<  "</th>"
             <<  "<th data-sort='name'   class='sortByName'>"        <<  "Produktname"    <<  "</th>"
             <<  "<th data-sort='number' class='sortByPrice'>"       <<  "Preis"          <<  "</th>"
-            <<  "<th class='no-sort'>"      <<  "Bestellmenge"      <<  "</th>"
-            <<  "<th data-sort='number' class='sortByTotal'>"       <<  "Gesamtpeis"     <<  "</th>"
+            <<  "<th class='no-sort'>"                              <<  "Bestellmenge"   <<  "</th>"
+            <<  "<th data-sort='number' class='sortByTotal'>"       <<  "Gesamtpreis"    <<  "</th>"
             <<  "</tr>"
             <<  "</thead>"
             <<  "<tbody>"
@@ -316,7 +314,7 @@ bool sqlfunctions::isCartEmpty(){
 }
 
 // Die Bezahlfunktion
-// BUG: nach abgeschlossenem Kauf funktioniert diese Funktion nicht mehr !!!
+// zu checken: User eingeloggt, Einkaufswagen nicht leer, genug Waren vorhanden, genug Guthaben
 bool sqlfunctions::purchase(){
 
     if(isCartEmpty()){
@@ -511,8 +509,6 @@ void sqlfunctions::refillBalance(double amount){
     msgBox.exec();
 
     emit balanceChanged(amount);
-
-    return;
 }
 
 // GIBT TABELLE MIT ALLEN USERN AUS
