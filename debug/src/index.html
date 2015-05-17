@@ -211,7 +211,7 @@
 
                                  <li>
                                      <input type="radio" name="tabs2" id="tab6">
-                                     <label for="tab6">
+                                     <label for="tab6" id="listAllUsers">
                                          <span class="fa fa-pencil"></span>
                                          <span class="tab-text">UVerw</span>
                                      </label>
@@ -224,23 +224,114 @@
                                          </div>
                                          <div id="user-administration-options">
                                             <h2> Account </h2>
-                                            <p> Account terminieren, blocken, temporär blocken, erstellen, Adminrechte geben/entziehen, Profilinformationen ändern </p>
-                                            <p> Account Terminierung meint unwiderrufliche Löschung </p>
-                                            <p> Account Blockung meint widerrufliche Deaktivierung </p>
-                                            <p> Account temporär Blocken meint eine Verhinderung des Einloggens bis zu einem Datum </p>
-                                            <p> Profilinformationen: Geschlecht, Umsatz durch User, Gewinn durch User, weitere... </p>
+                                            <h3> Accounts anlegen, bearbeiten </h3>
+                                            <button class="blue-button" id="createAccount">
+                                                <span class="fa fa-user-plus"></span>
+                                                anlegen
+                                            </button>
+                                            <button class="blue-button" id="editAccount">
+                                                <span class="fa fa-edit"></span>
+                                                bearbeiten
+                                            </button>
+
+                                            <h3> Accounts Adminrechte gewähren, entziehen </h3>
+                                            <button class="blue-button" id="empowerUser">
+                                                <span class="fa fa-level-up"></span>
+                                                befördern
+                                            </button>
+                                            <button class="blue-button" id="disempowerUser">
+                                                <span class="fa fa-level-down"></span>
+                                                degradieren
+                                            </button>
+
+                                            <h3> Accounts blocken, terminieren </h3>
+                                            <button class="blue-button" id="blockAccount">
+                                                <span class="fa fa-lock"></span>
+                                                für
+                                                <select id="acc-admin-duration" name="acc-admin-duration">
+                                                    <option value="1">1 Stunde </option
+                                                    <option value="12">12 Stunden</option>
+                                                    <option value="12">24 Stunden</option>
+                                                    <option value="12">72 Stunden</option>
+                                                    <option value="12">144 Stunden</option>
+                                                    <option value="permanent">permanent</option>
+                                                </select>
+                                                blocken
+                                            </button>
+                                            <button class="blue-button" id="terminateAccount">
+                                                <span class="fa fa-user-times"></span>
+                                                terminieren
+                                            </button>
 
                                             <h2> Guthaben </h2>
-                                            <p> setzen auf, erhöhen um, verringern um </p>
+                                            <table>
+                                                <thead>
+                                                    <tr>
+                                                        <th> Modus </th>
+                                                        <th> arithmetischer Ausdruck </th>
+                                                        <th> ausführen </th>
+                                                    </tr>
+                                                 </thead>
+                                                 <tbody>
+                                                    <tr class="orange">
+                                                        <td>
+                                                            <select id="balance-admin-mode" name="id="balance-admin-mode">
+                                                                <option value="add">addieren</option>
+                                                                <option value="set">setzen</option>
+                                                                <option value="scale">skalieren</option>
+                                                            </select>
+                                                        </td>
+                                                        <td>
+                                                            <div class="input-prepend">
+                                                                <span class="fa fa-money"></span>
+                                                                <input type="text" id="balance-admin-amount" name="balance-admin-amount">
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <button class="blue-button" id="changeBalance">
+                                                                <span class="fa fa-chevron-right"></span>
+                                                                ausführen
+                                                            </button>
+                                                        </td>
+                                                    </tr>
+                                                 </tbody>
+                                            </table>
 
                                             <h2> Passwort </h2>
-                                            <p> setzen auf, aufordern zur Änderung, zwingen zu ändern</p>
+                                            <table>
+                                                <thead>
+                                                    <tr>
+                                                        <th> Modus </th>
+                                                        <th> ggf. Passswort setzen </th>
+                                                        <th> ausführen </th>
+                                                    </tr>
+                                                 </thead>
+                                                 <tbody>
+                                                    <tr class="orange">
+                                                        <td>
+                                                            <select id="balance-admin-mode" name="id="balance-admin-mode">
+                                                                <option value="request">auffordern</option>
+                                                                <option value="force">zwingen</option>
+                                                                <option value="set">setzen</option>
+                                                            </select>
+                                                        </td>
+                                                        <td>
+                                                            <div class="input-prepend">
+                                                                <span class="fa fa-key"></span>
+                                                                <input type="text" id="password-admin-set" name="password-admin-set">
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <button class="blue-button" id="changePassword">
+                                                                <span class="fa fa-chevron-right"></span>
+                                                                ausführen
+                                                            </button>
+                                                        </td>
+                                                    </tr>
+                                                 </tbody>
+                                            </table>
 
                                          </div>
-                                         <button class="blue-button" id="listAllUsers">
-                                             <span class="fa fa-user"></span>
-                                             User anzeigen
-                                         </button>
                                      </div>
                                  </li>
                              </ul>
