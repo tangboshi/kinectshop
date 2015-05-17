@@ -560,7 +560,7 @@ QString sqlfunctions::listAllUsers(){
     stream  <<   "</tbody>"
             <<   "</table>"
             <<   "<p>"
-            <<   "<input type='checkbox' name='userSelect' class='selectAll'>"
+            <<   "<input type='checkbox' id='userSelect' class='selectAll'>"
             <<   "Alle auswählen </p>"
             <<   endl;
 

@@ -164,9 +164,18 @@ $(document).ready(function(){
     });
 
     // Alles auswählen Checkboxen
-    $(":checkbox.selectAll").change(function(){
-        var name = $(this).attr("name");
-        alert("name!");
+    $("body").on("change", ".selectAll", function(){
+        var cid = $(this).prop("id");
+        if(this.checked) {
+            $(":checkbox[name^="+cid+"]").each(function() {
+                this.checked = true;
+            });
+        }
+        else{
+            $(":checkbox[name^="+cid+"]").each(function() {
+                this.checked = false;
+            });
+        }
     });
 
     // Nur ausgewählten Menüpunkt anzeigen
@@ -201,7 +210,7 @@ $(document).ready(function(){
     $("body").on("click", ".sortable th[data-sort]", function(){
         var $table = $(this).closest(".sortable");
         var $tbody = $table.find("tbody");
-        var $controls = $table.find("th[data-sort]");
+        var $controls = $table.find("th");
         var rows = $tbody.find("tr:not(.no-sort)").toArray();
 
         var $header = $(this);
