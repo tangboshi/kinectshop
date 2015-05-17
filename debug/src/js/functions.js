@@ -158,9 +158,22 @@ $(document).ready(function(){
         $("#acc-balance .accdd").html(balance);
     });
 
+    // Usertabelle ausgeben
+    $("#listAllUsers").click(function(){
+        $("#user-administration").html(mySqlObj.listAllUsers());
+    });
+
+    // Alles auswählen Checkboxen
+    $(":checkbox.selectAll").change(function(){
+        var name = $(this).attr("name");
+        alert("name!");
+    });
+
     // Nur ausgewählten Menüpunkt anzeigen
     $("#left-nav ul li[title]").click(function(){
       var x = $(this).attr("title");
+      $("#left-nav ul li[title]").removeClass("current");
+      $(this).addClass("current");
       $("#content .section.active").toggleClass("active inactive");
       $("#" + x).toggleClass("active inactive");
     });
@@ -181,44 +194,42 @@ $(document).ready(function(){
         },
         number: function(a, b){
             return a-b;
-        }/*,
-        inputval: function(a, b){
-            return a-b;
-        }*/
+        }
     }
 
     // Sortierfunktion
-    $(".sortable").each(function(){
-        var $table = $(this);
+    $("body").on("click", ".sortable th[data-sort]", function(){
+        var $table = $(this).closest(".sortable");
         var $tbody = $table.find("tbody");
         var $controls = $table.find("th[data-sort]");
         var rows = $tbody.find("tr:not(.no-sort)").toArray();
-        var rest = $tbody.find("tr.no-sort").toArray();
 
-        $controls.click(function(){
-            var $header = $(this);
-            var order = $header.data("sort");
-            var column;
+        var $header = $(this);
+        var order = $header.data("sort");
+        var column;
 
-            if($header.is(".ascending")||$header.is(".descending")){
-                $header.toggleClass("ascending descending");
-                $tbody.append(rows.reverse());
+        // Testfunktion
+        // alert("$table:"+$table+"\n$tbody:"+$tbody+"\nrows:"+rows+"\n$header:"+$header+"\norder:"+order);
+
+        if($header.is(".ascending")||$header.is(".descending")){
+            $header.toggleClass("ascending descending");
+            $tbody.append(rows.reverse());
+        }
+        else{
+            $header.addClass("ascending");
+            $header.siblings().removeClass("ascending descending");
+            if(compare.hasOwnProperty(order)){
+                column = $controls.index(this);
+
+                rows.sort(function(a,b){
+                  a = $(a).find("td").eq(column).text();
+                  b = $(b).find("td").eq(column).text();
+                  return compare[order](a,b);
+                });
+
+                $tbody.append(rows);
             }
-            else{
-                $header.addClass("ascending");
-                $header.siblings().removeClass("ascending descending");
-                if(compare.hasOwnProperty(order)){
-                    column = $controls.index(this);
-
-                    rows.sort(function(a,b){
-                      a = $(a).find("td").eq(column).text();
-                      b = $(b).find("td").eq(column).text();
-                      return compare[order](a,b);
-                    });
-
-                    $tbody.append(rows);
-                }
-            }
-        });
+        }
     });
+    // Filterfunktion
 });

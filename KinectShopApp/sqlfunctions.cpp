@@ -62,7 +62,7 @@ QString sqlfunctions::listAllProducts(){
     stream  <<  "<table id='cartList' class='sortable'>"
             <<  "<thead>"
             <<  "<tr>"
-            <<  "<th data-sort='number'     class='sortByPid ascending'>"      <<  "Produkt-ID"    <<  "</th>"
+            <<  "<th data-sort='number'     class='sortByPid ascending'>"      <<  "PID"    <<  "</th>"
             <<  "<th data-sort='name'       class='sortByName'>"     <<  "Produktname"   <<  "</th>"
             <<  "<th data-sort='number'     class='sortByPrice'>"    <<  "Preis"         <<  "</th>"
             <<  "<th data-sort='number'     class='sortByStock'>"    <<  "Verfügbar"     <<  "</th>"
@@ -158,7 +158,7 @@ QString sqlfunctions::showCart(){
     stream  <<  "<table id='productList' class='sortable'>"
             <<  "<thead>"
             <<  "<tr>"
-            <<  "<th data-sort='number' class='sortByPid'>"         <<  "Produkt-ID"     <<  "</th>"
+            <<  "<th data-sort='number' class='sortByPid'>"         <<  "PID"     <<  "</th>"
             <<  "<th data-sort='name'   class='sortByName'>"        <<  "Produktname"    <<  "</th>"
             <<  "<th data-sort='number' class='sortByPrice'>"       <<  "Preis"          <<  "</th>"
             <<  "<th class='no-sort'>"                              <<  "Bestellmenge"   <<  "</th>"
@@ -338,7 +338,6 @@ bool sqlfunctions::purchase(){
                 double balance;
 
                 for(iter cursor = cart.begin(); cursor != cart.end(); ++cursor){
-                    // Variablen cost usw. brauchen nicht ressetet zu werden, da sie jedes mal neu ausgerechnet werden.
 
                     pid = cursor->getPid();
                     amount = cursor->getAmount();
@@ -511,13 +510,65 @@ void sqlfunctions::refillBalance(double amount){
     emit balanceChanged(amount);
 }
 
-// GIBT TABELLE MIT ALLEN USERN AUS
+// gibt Tabelle mit allen Usern für Adminstration aus
 QString sqlfunctions::listAllUsers(){
+
+    QSqlQuery query;
     stringstream stream;
 
-    stream << "abc";
+    stream  <<  "<table id='users' class='sortable'>"
+            <<  "<thead>"
+            <<  "<tr>"
+            <<  "<th class='no-sort'></th>"
+            <<  "<th data-sort='number'>"          <<  "ID"                <<  "</th>"
+            <<  "<th data-sort='name'>"            <<  "Benutzername"      <<  "</th>"
+            <<  "<th data-sort='name'>"            <<  "Passwort"          <<  "</th>"
+            <<  "<th data-sort='number'>"          <<  "Guthaben"          <<  "</th>"
+            <<  "<th data-sort='number'>"          <<  "Admin?"            <<  "</th>"
+            <<  "</tr>"
+            <<  "</thead>"
+            <<  "<tbody>"
+            << endl;
+
+    query.prepare("SELECT * FROM users ORDER BY users.id ASC");
+    query.exec();
+
+    int id, isAdmin;
+    double balance;
+    string username, password;
+
+    while(query.next()){
+        id          =   query.value(0).toInt();
+        username    =   query.value(1).toString().toStdString();
+        password    =   query.value(2).toString().toStdString();
+        balance     =   query.value(3).toDouble();
+        isAdmin     =   query.value(4).toInt();
+
+        stream  <<  "<tr>"
+                <<  "<td>"      <<  "<input type='checkbox' name='userSelect' id='user"
+                <<  id          <<  "' value='"  <<     id          <<  "'>"
+                <<  "</td>"
+                <<  "<td>"      <<  id           <<    "</td>"
+                <<  "<td>"      <<  username     <<    "</td>"
+                <<  "<td>"      <<  password     <<    "</td>"
+                <<  "<td>"      <<  balance      <<    "</td>"
+                <<  "<td>"      <<  isAdmin      <<    "</td>"
+                <<  "</tr>"
+                <<  endl;
+    }
+
+    stream  <<   "</tbody>"
+            <<   "</table>"
+            <<   "<p>"
+            <<   "<input type='checkbox' name='userSelect' class='selectAll'>"
+            <<   "Alle auswählen </p>"
+            <<   endl;
 
     string s = stream.str();
+
+    // Testfunktion
+    // cout    <<  s   <<  endl;
+
     QString htmlOutput = QString::fromStdString(s);
     return htmlOutput;
 }

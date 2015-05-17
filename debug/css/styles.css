@@ -8,12 +8,21 @@
     padding:0;
 }
 
+table{
+    width:100%;
+}
+
 .active{
     display:block;
 }
 
 .inactive{
     display:none;
+}
+
+.current{
+    background:rgb(250,120,60) !important;
+    color:#fff;
 }
 
 .sortable th:not(.descending):not(.ascending):not(.no-sort):after {
@@ -48,8 +57,15 @@ body{
 }
 
 #content-wrapper{
+    position:relative;
+    top: 100px;
+
+    height: 700px;
+    max-height: 700px;
+    overflow-y: auto;
+    overflow-x: hidden;
+
     display:inline-block;
-    margin:0;
     width:100%;
     background:#fff;
 }
@@ -57,12 +73,15 @@ body{
 #left-nav, #content{
     display:inline-block;
     vertical-align:top;
-    height:700px;
+    margin-bottom:20px;
 }
 
 #left-nav{
     width:30%;
     border-radius:5px;
+
+    position:fixed;
+    top:108px;
 }
 
 #left-nav ul#left-nav-menu{
@@ -103,10 +122,14 @@ body{
 }
 
 #content{
-    margin:0;
+    margin:0 0 0 30%;
     padding:20px 20px;
     width:70%;
 }
+
+.section{
+}
+
 
 #content ol, #content ul{
     margin: auto 30px;
@@ -116,14 +139,23 @@ body{
     height:100px;
     background:rgb(160,220,255);
     background:url("../img/chocolate.jpg");
-    position:relative;
+
+    position:fixed;
+    width:100%;
+    top:0;
+    z-index:1000;
 }
 
 #footer{
     padding:10px 10px;
     height:100px;
-    background:#555;
+    width:100%;
+    background:rgba(60,60,60,0.7);
     color:#fff;
+
+    position:fixed;
+    bottom:0;
+    z-index:1000;
 }
 
 #quit{
@@ -160,7 +192,7 @@ p{
 }
 
 #total-preview td{
-    background: rgb(230,120,60);
+    background: rgb(250,120,60);
     color:#fff;
     font-weight:bold;
 }
@@ -231,7 +263,7 @@ tbody tr:nth-child(odd) td{
 }
 
 .input-prepend.orange .fa{
-    background: rgb(230,120,60);
+    background: rgb(250,120,60);
     border:none;
     margin:0;
     color:#fff;
@@ -262,7 +294,7 @@ tbody tr:nth-child(odd) td{
     color:#fff;
     box-shadow: inset 0px 1px 0px 0px rgb(255,160,80);
     border: 1px solid rgb(150,70,30);
-    background: rgb(230,120,60);
+    background: rgb(250,120,60);
 }
 
 input[id^=cartItemAmount], input[id^=itemAmount]{
@@ -303,6 +335,12 @@ button[id^=buyCartItem], button[id^=removeItem]{
 
 /* ******************  BEGIN Test  *************** */
 
-
+.testblock-large{
+    height:2000px;
+    display:block;
+    padding:10px;
+    background:rgb(250,160,80);
+    color:#fff;
+}
 
 /* *******************  END Test  **************** */
