@@ -40,7 +40,8 @@ class sqlfunctions:public QObject{
         void        userLoggedOut();
 
     public slots:
-        // Warenmanagement
+        // SHOPFUNKTIONEN
+        // Einkaufsfunktion und ihre Hilfsfunktionen
         product     isAlreadyInCart(int pid, int amount, double price, QString title);
         QString     listAllProducts();
         void        addToCart(int pid, int amount, double price, QString title);
@@ -53,18 +54,47 @@ class sqlfunctions:public QObject{
         bool        purchase();
         bool        isCartEmpty();
 
-        // Usermanagement
+        // Login und Accountverwaltug
         void        registerUser(QString username, QString password, QString repeatedPassword);
         bool        login(QString username, QString password);
         bool        logout();
         void        refillBalance(double amount);
         void        timeout();
 
-        // Shopmanagement
-        void        empowerUser();
-        void        disempowerUser();
+        // ADMINISTRATORFUNKTIONEN ----> alle Funktionen dieser Kategorie noch zu implementieren
+        // Userverwaltung
         QString     listAllUsers();
+        // Accounts
+        /*void        createAccount();
+        void        editAccount(int id);*/
+        void        empowerUser(int id);
+        void        disempowerUser(int id);
+        /*void        blockAccount(int id);
+        void        blockAccount(int id, int hours);
+        void        terminateAccount(int id);
+        // Guthaben
+        void        changeBalance(int id, QString mode, double number); // soll RefillBalance ersetzen!!
+        // Passwort
+        void        changePassword(int id, QString mode);
+        void        changePassword(int id, QString mode, QString password); // soll User später auch verwenden dürfen
 
+        // Warenverwaltung
+        void        deleteWareRecord();
+        void        createWareRecord();
+        void        changeWareAmount(int id, QString mode);
+        void        changeStock();
+
+        // Userstatistik
+        void        showUserActivity();     // online Flag? Area User(Uhrzeit)
+        void        showUserInformation();  // Geschlecht Pie, Alter Bar ...
+
+        // Warenstatistik
+        void        popularityByGender();   // Female: Bar, Male: Bar
+        void        popularityByRevenue();  // Produkte: Bar
+        void        popularityByProfit();   // Produkte: Bar
+        */
+
+        // SONSTIGE FUNKTIONEN
         // Getter-Funktionen
         double      getCurrentCartValue();
         bool        getLogin();

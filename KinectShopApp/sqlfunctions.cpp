@@ -575,12 +575,12 @@ QString sqlfunctions::listAllUsers(){
 
 // GIBT USER ADMIN-PRIVILLEGIEN
 // Auswirkung: Zeige Admin-Menüpunkte und Optionen in App
-void sqlfunctions::empowerUser(){
+void sqlfunctions::empowerUser(int id){
 }
 
 // NIMMT USER ADMIN-PRIVILLEGIEN
 // Auswirkung: Verstecke Admin-Menüpunkte und Optionen in App
-void sqlfunctions::disempowerUser(){
+void sqlfunctions::disempowerUser(int id){
 }
 
 double sqlfunctions::getCurrentCartValue(){
