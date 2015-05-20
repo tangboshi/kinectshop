@@ -29,9 +29,10 @@ Liste der implementierten Features:
 
 Liste der zu lernenden/zum Laufen zu bringenden Techniken/Technologien/Sprachen:
 * QThreads
-* Qt Kinect Wrapper
+* Kinect Video auslesen (Video einbetten, evtl Ergebnis der Lokalisierungs zeigen)
+* Kinect Audio auslesen (speechCommands)
+* NUI, QPixmap, QImage
 * JSON + flot
-* libfreenect
 
 Momentane technische Schwierigkeiten:
 * Kinect-Daten auslesen und darstellen in Qt
