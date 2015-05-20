@@ -70,6 +70,15 @@ $(document).ready(function(){
             mySqlObj.changeAmount(pid, diff, mode);
              $("#product-display").html(mySqlObj.showCart());
             $("#acc-cart .accdd").html(mySqlObj.getCurrentCartValue());
+            if(mySqlObj.getLogin()){
+                var balance = mySqlObj.getBalance();
+                if(balance < currentCartValue){
+                    $("#acc-cart .accdd").addClass("red-font");
+                }
+                else{
+                    $("#acc-cart .accdd").removeClass("red-font");
+                }
+            }
             // Testfunktion
             // alert("\nDie Produkt ID ist: "+pid+"\nDie Menge ist: "+diff+"\nDer Modus ist: "+mode);
         }
@@ -146,7 +155,7 @@ $(document).ready(function(){
         var amount = $("#amount").val();
         // Testfunktion
         // alert("Der eingegebene Betrag war: "+amount+".");
-        mySqlObj.refillBalance(amount);
+        mySqlObj.changeBalance(mySqlObj.getUid(),"add",amount);
         var currentCartValue = mySqlObj.getCurrentCartValue();
         var balance = mySqlObj.getBalance();
         if(balance < currentCartValue){
@@ -158,10 +167,71 @@ $(document).ready(function(){
         $("#acc-balance .accdd").html(balance);
     });
 
+    // Warentabelle ausgeben
+    $("#listAllProducts, .productActionButton").click(function(){
+        $("#ware-administration").html(mySqlObj.listAllProducts("checkboxes"));
+    });
+
     // Usertabelle ausgeben
-    $("#listAllUsers").click(function(){
+    $("#listAllUsers, button").click(function(){
         $("#user-administration").html(mySqlObj.listAllUsers());
     });
+
+    // ids zu gecheckten Checkboxen ermitteln
+    function getIds(obj){
+        var $table = obj.closest("table");
+        var $cboxes = $table.find("input:checkbox").toArray();
+        alert($cboxes);
+        var checkedArray;
+        var pid;
+        for(i = 0;i < $cboxes.length(); i++){
+            if($cboxes[i].checked){
+                pid = $cboxes.parent().siblings().eq(0).text();
+                checkedArray.push(pid);
+                alert(pid);
+            }
+        }
+        return checkedArray;
+    }
+
+    // User zum Admin ernennen
+    $("#empowerUser").click(function(){
+        mySqlObj.empowerUser(35);
+    });
+
+    // User Admin-Status entziehen
+    $("#disempowerUser").click(function(){
+        mySqlObj.disempowerUser(35);
+        mySqlObj.disempowerUser(4);
+    });
+
+    // Account blocken
+    $("#blockAccount").click(function(){
+        var duration = $(this).find("#acc-admin-duration").val();
+        if(duration === "permanent"){
+             mySqlObj.blockAccountPermanently(35);
+        }
+        else{
+            mySqlObj.blockAccount(35, duration);
+        }
+    });
+
+    // Account entblocken
+    $("#unblockAccount").click(function(){
+        mySqlObj.unblockAccount(35);
+    });
+
+    // Account terminieren
+    $("#terminateAccount").click(function(){
+        var obj = $(this);
+        var ids = getIds(obj);
+        alert(ids);
+
+        for(i = 0; i < ids.length(); i++){
+            mySqlObj.terminateAccount(ids[i]);
+        }
+    });
+
 
     // Alles auswählen Checkboxen
     $("body").on("change", ".selectAll", function(){
@@ -222,7 +292,7 @@ $(document).ready(function(){
 
         if($header.is(".ascending")||$header.is(".descending")){
             $header.toggleClass("ascending descending");
-            $tbody.append(rows.reverse());
+            $tbody.prepend(rows.reverse());
         }
         else{
             $header.addClass("ascending");
@@ -236,7 +306,7 @@ $(document).ready(function(){
                   return compare[order](a,b);
                 });
 
-                $tbody.append(rows);
+                $tbody.prepend(rows);
             }
         }
     });
