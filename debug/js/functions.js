@@ -168,13 +168,19 @@ $(document).ready(function(){
     });
 
     // Warentabelle ausgeben
-    $("#listAllProducts, .productActionButton").click(function(){
+    $("#listAllProducts").click(function(){
         $("#ware-administration").html(mySqlObj.listAllProducts("checkboxes"));
     });
 
     // Usertabelle ausgeben
-    $("#listAllUsers, button").click(function(){
+    $("#listAllUsers").on("click", function(){
         $("#user-administration").html(mySqlObj.listAllUsers());
+    });
+
+    // FEHLERHAFT /////////////////////////////////////////////////////////////////
+    $("button.userActionButton").on("click", function(){
+        alert("This is called.");
+        $(this).closest("#user-administration").html(mySqlObj.listAllUsers());
     });
 
     // ids zu gecheckten Checkboxen ermitteln
@@ -193,6 +199,8 @@ $(document).ready(function(){
         }
         return checkedArray;
     }
+    // FEHLERHAFT /////////////////////////////////////////////////////////////////
+
 
     // User zum Admin ernennen
     $("#empowerUser").click(function(){
@@ -312,3 +320,15 @@ $(document).ready(function(){
     });
     // Filterfunktion
 });
+
+// Automatenfunktionen //////////////////////////////////////////////////////////////////
+
+$(document).ready(function(){
+    $("[id^=automCmd]").on("click", function(){
+        alert("Succesfull call!");
+        var input = $(this).prop("id").slice(15);
+        automaton.transitions(input);
+    });
+});
+
+// ------------------- //////////////////////////////////////////////////////////////////

@@ -22,8 +22,9 @@ sqlfunctions::sqlfunctions(){
         QMessageBox msgBox;
         msgBox.setText("Es konnte leider keine Verbindung zur SQL-Datenbank hergestellt werden!");
         msgBox.exec();
-    }// Ausgeben wenn Verbindung hergestellt wurde
-    /*
+    }
+
+    /* // Ausgabe wenn Verbindung hergestellt wurde
     else{
         QMessageBox msgBox;
         msgBox.setText("Die Verbindung zu " + db.hostName() + " wurde hergestellt.");
