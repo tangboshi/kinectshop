@@ -10,12 +10,6 @@ $(document).ready(function(){
 // Click-Events
 $(document).ready(function(){
 
-    /* Cleaner Code:
-     * mySqlObj.balanceChanged.connect($("#acc-balance .accdd").html(mySqlObj.getBalance()));
-     * mySqlObj.purchaseDone.connect(getBalance());
-     * mySqlObj.cartChanged.connect(showCart());
-     */
-
     /* // nicht mehr benötigt
     $("#showCart").click(function(){
         $("#product-display").html(mySqlObj.showCart());
@@ -83,10 +77,9 @@ $(document).ready(function(){
         var username = $("#username").val();
         var password = $("#password").val();
         // Testfunktion
-        // alert("Der eingegebene Username war: "+username+" Das eingegebene Passwort war: "+password);
+        alert("Der eingegebene Username war: "+username+" Das eingegebene Passwort war: "+password);
         mySqlObj.login(username, password);
-        if(mySqlObj.getLogin()){
-
+        if(mySqlObj.getLogin()){ // if-Abfrage Relikt aus vorheriger Version, eigentlich nicht benötigt!!
            $("#login-form").toggleClass("active inactive");
            $("#logout-form").toggleClass("active inactive");
            $("#acc-username .accdd").html(mySqlObj.getUsername());
@@ -173,18 +166,22 @@ $(document).ready(function(){
 
     // ids zu gecheckten Checkboxen ermitteln
     function getIds(obj){
-        var $table = obj.closest("table");
+        alert("I am called!");
+        var $table = $("#users");
+        alert($table.attr("id"));
         var $cboxes = $table.find("input:checkbox").toArray();
         alert($cboxes);
-        var checkedArray;
+
+        var checkedArray = [];// initialisiere leeres Array?
         var pid;
-        for(i = 0;i < $cboxes.length(); i++){
+        for(i = 0;i < $cboxes.length; i++){
             if($cboxes[i].checked){
                 pid = $cboxes.parent().siblings().eq(0).text();
                 checkedArray.push(pid);
                 alert(pid);
             }
         }
+        alert(checkedArray);
         return checkedArray;
     }
     // FEHLERHAFT /////////////////////////////////////////////////////////////////
@@ -198,7 +195,7 @@ $(document).ready(function(){
     // User Admin-Status entziehen
     $("#disempowerUser").click(function(){
         mySqlObj.disempowerUser(35);
-        mySqlObj.disempowerUser(4);
+        mySqlObj.disempowerUser(4);o
     });
 
     // Account blocken
@@ -221,10 +218,11 @@ $(document).ready(function(){
     $("#terminateAccount").click(function(){
         var obj = $(this);
         var ids = getIds(obj);
-        alert(ids);
+        alert("I am called, too!");
 
-        for(i = 0; i < ids.length(); i++){
+        for(i = 0; i < ids.length; i++){
             mySqlObj.terminateAccount(ids[i]);
+            alert("Account "+ids[i]+" wurde geblockt!");
         }
     });
 
@@ -306,14 +304,13 @@ $(document).ready(function(){
             }
         }
     });
-    // Filterfunktion
 });
 
 // Automatenfunktionen //////////////////////////////////////////////////////////////////
 
 $(document).ready(function(){
     $("[id^=automCmd]").on("click", function(){
-        alert("Succesfull call!");
+        // alert("Succesfull call!");
         var input = $(this).prop("id").slice(15);
         automaton.transitions(input);
     });
@@ -323,7 +320,7 @@ $(document).ready(function(){
 
 // Qt-Funktionen-Connect ////////////////////////////////////////////////////////////////
 
-function myFunc(){
+function cartChangedFunction(){
     alert("The cart changed!");
 
     $("#product-display").html(mySqlObj.showCart());
@@ -340,6 +337,42 @@ function myFunc(){
     $("#acc-cart .accdd").html(currentCartValue);
 }
 
-mySqlObj.cartChanged.connect(myFunc);
+function priceChangedFunction(){
+    alert("The price has changed!");
+}
+
+function stockChangedFunction(){
+    alert("The stock has changed!");
+}
+
+function balanceChangedFunction(){
+    alert("The balance has changed!");
+}
+
+function purchaseDoneFunction(){
+    alert("The purchase has been completed!");
+}
+
+function userLoggedInFunction(){
+    alert("Some message!");
+    // alert("The user "+ mySqlObj.getUsername()+" has logged in!");
+}
+
+function adminLoggedInFunction(){
+    alert("The user, who has logged in, is an administrator!");
+}
+
+function userLoggedOutFunction(){
+    alert("The user has logged out!");
+}
+
+mySqlObj.cartChanged.connect(cartChangedFunction);
+mySqlObj.priceChanged.connect(priceChangedFunction);
+mySqlObj.stockChanged.connect(stockChangedFunction);
+mySqlObj.balanceChanged.connect(balanceChangedFunction);
+mySqlObj.purchaseDone.connect(purchaseDoneFunction);
+mysqlObj.userLoggedIn.connect(userLoggedInFunction);
+mySqlObj.adminLoggedIn.connect(adminLoggedInFunction);
+mySqlObj.userLoggedOut.connect(userLoggedOutFunction);
 
 // ------------------- //////////////////////////////////////////////////////////////////

@@ -4,20 +4,26 @@ transition::transition()
 {
 }
 
-/*
-transition::transition(state initFrom, state initTo, int initInput, automaton* initConnectedAutomaton){
-    from = initFrom;
-    to = initTo;
+transition::transition(state* initFrom, state* initTo, int initInput, automaton* initConnectedAutomaton){
+    from = *initFrom;
+    to = *initTo;
     input = initInput;
     connectedAutomaton = initConnectedAutomaton;
-    connect(connectedAutomaton, SIGNAL(inputReceived(state, int)), this, SLOT(executeTransition()));
-}*/
+    connect(connectedAutomaton, SIGNAL(transitionToExecute(transition*)), this, SLOT(executeTransition(transition*)));
 
-/*
-void transition::executeTransition(){
-    this->connectedAutomaton->setState(this->getTo());
-    emit connectedAutomaton->stateChanged(this->getInput());
-}*/
+    // Testfunktion
+    qDebug() << "Eine Transition wurde erstellt!";
+}
+
+void transition::executeTransition(transition* toBeExecuted){
+    toBeExecuted->connectedAutomaton->setState(toBeExecuted->getTo());
+    emit connectedAutomaton->stateChanged(toBeExecuted->getInput());
+
+    // Testfunktion
+    qDebug() << "Eine Transition wurde ausgeführt!";
+}
+
+// Setter und getter
 
 state transition::getFrom(){
     return from;

@@ -10,6 +10,8 @@ automaton::automaton(QObject *parent) :
     idle.setStateInfo(0);
     currentState = idle;
 
+    //connect(this, SIGNAL(inputReceived(int,state)), this, SLOT(getTransition(int,state)));
+
     // Zu Testzwecken
     pid = 2;
 
@@ -132,11 +134,43 @@ void automaton::transitions(int input){
     }
 }
 
-
+/*
 void automaton::receiveInput(int input){
     receivedInput = input;
-    emit inputReceived(currentState, input);
+    transition* toBeExecuted= new transition();
+    emit transitionToExecute(toBeExecuted);
 }
+
+void automaton::addTransition(transition* toBeAdded){
+    transitions.push_back(toBeAdded);
+}
+
+int inputValue = 0;
+
+bool automaton::isCorrectTransition(transition* inputTransition){
+    if((inputTransition->getFrom().getId() == searchState.getId()) && (inputTransition->getInput() == searchInput)) return true;
+    return false;
+}
+
+struct isCorrectTransition : std::unary_function<transition*, bool> {
+    int inputValue;
+    state inputFrom;
+    isCorrectTransition(int inputValue):inputValue(inputValue){ }
+    bool operator()(transition* const& inputTransition) const {
+        return ((inputTransition->getInput() == inputValue) && (inputTransition->getFrom().getId() == inputFrom.getId()));
+    }
+};
+
+void automaton::getTransition(int inputValue, state inputFrom){
+    searchInput = inputValue;
+    searchState = inputFrom;
+    iterA cursor = find_if(transitions.begin(), transitions.end(), isCorrectTransition(inputValue));
+    if(cursor!=transitions.end()){
+        emit transitionToExecute(*cursor);
+        return;
+    }
+}
+*/
 
 // ///////////////////////////////////////////////////////
 

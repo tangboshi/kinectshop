@@ -19,7 +19,7 @@ int main(int argc, char *argv[])
     automaton automA;
     automA.setObj(&obj);
 
-    /*
+    /* Transitionen
     // Zustände
     #define START 0
     #define SELECTED 1
@@ -41,17 +41,28 @@ int main(int argc, char *argv[])
 
     // Transitionen des Automaten
     // Trasition im "Normalfall"
-    transition(start, selected, SELECT, &automA);
-    transition(selected, amountset, ONE, &automA);
-    transition(selected, amountset, TWO, &automA);
-    transition(amountset, end, PUTINCART, &automA);
+
+    transition *startSelected           = new transition(&start, &selected, SELECT, &automA);
+    transition *selectedAmountsetOne    = new transition(&selected, &amountset, ONE, &automA);
+    transition *selectedAmountsetTwo    = new transition(&selected, &amountset, TWO, &automA);
+    transition *amountsetEnd            = new transition(&amountset, &end, PUTINCART, &automA);
 
     // "Zurück-, Mehr- und Abbrechen-Transitionen"
-    transition(selected, start, BACK, &automA);
-    transition(amountset, selected, BACK, &automA);
-    transition(end, start, MORE, &automA);
-    transition(selected, start, CANCEL, &automA);
-    transition(amountset, start, CANCEL, &automA);
+    transition *selectedStartBack   = new transition(&selected, &start, BACK, &automA);
+    transition *amountsetSelected   = new transition(&amountset, &selected, BACK, &automA);
+    transition *endStart            = new transition(&end, &start, MORE, &automA);
+    transition *selectedStartCancel = new transition(&selected, &start, CANCEL, &automA);
+    transition *amountsetStart      = new transition(&amountset, &start, CANCEL, &automA);
+
+    automA.addTransition(startSelected);
+    automA.addTransition(selectedAmountsetOne);
+    automA.addTransition(selectedAmountsetTwo);
+    automA.addTransition(amountsetEnd);
+    automA.addTransition(selectedStartBack);
+    automA.addTransition(amountsetSelected);
+    automA.addTransition(endStart);
+    automA.addTransition(selectedStartCancel);
+    automA.addTransition(amountsetStart);
     */
 
     // ---------------------------- //////////////////////////////////////////////////////////////////

@@ -11,6 +11,7 @@
 
         <script type="text/javascript" src="js/jquery.min.js"></script>
         <script type="text/javascript" src="js/functions.js"></script>
+        <script type="text/javascript" src="js/list.min.js"></script>
     </head>
 
     <body>
@@ -194,11 +195,11 @@
                                          <span class="tab-text">WVerw</span>
                                      </label>
                                      <div id="tab-content1" class="tab-content">
-                                         <div class="input-prepend orange">
-                                             <span class="fa fa-search"></span>
-                                             <input type="text" placeholder="Filter" value required>
-                                         </div>
                                         <div id="ware-administration">
+                                            <div class="input-prepend orange">
+                                                <span class="fa fa-search"></span>
+                                                <input class="search" placeholder="Filter">
+                                            </div>
                                         </div>
                                         <div id="ware-administration-options">
                                             <h2> Waren </h2>
@@ -301,11 +302,11 @@
                                          <span class="tab-text">UVerw</span>
                                      </label>
                                      <div id="tab-content1" class="tab-content">
-                                         <div class="input-prepend orange">
-                                             <span class="fa fa-search"></span>
-                                             <input type="text" placeholder="Filter" value required>
-                                         </div>
                                          <div id="user-administration">
+                                             <div class="input-prepend orange">
+                                                 <span class="fa fa-search"></span>
+                                                 <input class="search" placeholder="Filter">
+                                             </div>
                                          </div>
                                          <div id="user-administration-options">
                                             <h2> Account </h2>
@@ -503,6 +504,19 @@
             </div>
         </div>
 
+        <script type="text/javascript">
+            var optionsListAllUsers = {
+              valueNames: [ 'sId', 'sUsername', 'sBalance', 'sIsAdmin', 'sIsBlockedPermanently' ]
+            };
+
+            var optionsListAllProducts = {
+              valueNames: [ 'sPid', 'sTitle', 'sPrice', 'sStock' ]
+            };
+
+            var userList = new List('user-administration', optionsListAllUsers);
+            var wareList = new List('ware-administration', optionsListAllProducts);
+            alert("This is executed! Booyah!");
+        </script>
     </body>
 
 </html>

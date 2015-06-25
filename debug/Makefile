@@ -1659,7 +1659,6 @@ state.o: ../KinectShopApp/state.cpp ../KinectShopApp/state.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o state.o ../KinectShopApp/state.cpp
 
 transition.o: ../KinectShopApp/transition.cpp ../KinectShopApp/transition.h \
-		../KinectShopApp/state.h \
 		../KinectShopApp/automaton.h \
 		/usr/include/qt5/QtCore/QObject \
 		/usr/include/qt5/QtCore/qobject.h \
@@ -1773,6 +1772,7 @@ transition.o: ../KinectShopApp/transition.cpp ../KinectShopApp/transition.h \
 		/usr/include/qt5/QtCore/qfiledevice.h \
 		/usr/include/qt5/QtGui/qvector2d.h \
 		/usr/include/qt5/QtGui/qtouchdevice.h \
+		../KinectShopApp/state.h \
 		../KinectShopApp/sqlfunctions.h \
 		/usr/include/qt5/QtSql/QSqlQuery \
 		/usr/include/qt5/QtSql/qsqlquery.h \

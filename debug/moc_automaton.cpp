@@ -19,8 +19,8 @@
 
 QT_BEGIN_MOC_NAMESPACE
 struct qt_meta_stringdata_automaton_t {
-    QByteArrayData data[9];
-    char stringdata[81];
+    QByteArrayData data[11];
+    char stringdata[113];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -36,12 +36,14 @@ QT_MOC_LITERAL(3, 24, 5),
 QT_MOC_LITERAL(4, 30, 13),
 QT_MOC_LITERAL(5, 44, 5),
 QT_MOC_LITERAL(6, 50, 4),
-QT_MOC_LITERAL(7, 55, 11),
-QT_MOC_LITERAL(8, 67, 12)
+QT_MOC_LITERAL(7, 55, 19),
+QT_MOC_LITERAL(8, 75, 11),
+QT_MOC_LITERAL(9, 87, 12),
+QT_MOC_LITERAL(10, 100, 11)
     },
     "automaton\0stateChanged\0\0input\0"
-    "inputReceived\0state\0from\0transitions\0"
-    "receiveInput\0"
+    "inputReceived\0state\0from\0transitionToExecute\0"
+    "transition*\0toBeExecuted\0transitions\0"
 };
 #undef QT_MOC_LITERAL
 
@@ -56,22 +58,22 @@ static const uint qt_meta_data_automaton[] = {
        0,    0, // enums/sets
        0,    0, // constructors
        0,       // flags
-       2,       // signalCount
+       3,       // signalCount
 
  // signals: name, argc, parameters, tag, flags
        1,    1,   34,    2, 0x06,
        4,    2,   37,    2, 0x06,
+       7,    1,   42,    2, 0x06,
 
  // slots: name, argc, parameters, tag, flags
-       7,    1,   42,    2, 0x0a,
-       8,    1,   45,    2, 0x0a,
+      10,    1,   45,    2, 0x0a,
 
  // signals: parameters
     QMetaType::Void, QMetaType::Int,    3,
-    QMetaType::Void, 0x80000000 | 5, QMetaType::Int,    6,    3,
+    QMetaType::Void, QMetaType::Int, 0x80000000 | 5,    3,    6,
+    QMetaType::Void, 0x80000000 | 8,    9,
 
  // slots: parameters
-    QMetaType::Void, QMetaType::Int,    3,
     QMetaType::Void, QMetaType::Int,    3,
 
        0        // eod
@@ -83,9 +85,9 @@ void automaton::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, v
         automaton *_t = static_cast<automaton *>(_o);
         switch (_id) {
         case 0: _t->stateChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
-        case 1: _t->inputReceived((*reinterpret_cast< state(*)>(_a[1])),(*reinterpret_cast< int(*)>(_a[2]))); break;
-        case 2: _t->transitions((*reinterpret_cast< int(*)>(_a[1]))); break;
-        case 3: _t->receiveInput((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 1: _t->inputReceived((*reinterpret_cast< int(*)>(_a[1])),(*reinterpret_cast< state(*)>(_a[2]))); break;
+        case 2: _t->transitionToExecute((*reinterpret_cast< transition*(*)>(_a[1]))); break;
+        case 3: _t->transitions((*reinterpret_cast< int(*)>(_a[1]))); break;
         default: ;
         }
     } else if (_c == QMetaObject::IndexOfMethod) {
@@ -98,9 +100,15 @@ void automaton::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, v
             }
         }
         {
-            typedef void (automaton::*_t)(state , int );
+            typedef void (automaton::*_t)(int , state );
             if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&automaton::inputReceived)) {
                 *result = 1;
+            }
+        }
+        {
+            typedef void (automaton::*_t)(transition * );
+            if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&automaton::transitionToExecute)) {
+                *result = 2;
             }
         }
     }
@@ -150,9 +158,16 @@ void automaton::stateChanged(int _t1)
 }
 
 // SIGNAL 1
-void automaton::inputReceived(state _t1, int _t2)
+void automaton::inputReceived(int _t1, state _t2)
 {
     void *_a[] = { 0, const_cast<void*>(reinterpret_cast<const void*>(&_t1)), const_cast<void*>(reinterpret_cast<const void*>(&_t2)) };
     QMetaObject::activate(this, &staticMetaObject, 1, _a);
+}
+
+// SIGNAL 2
+void automaton::transitionToExecute(transition * _t1)
+{
+    void *_a[] = { 0, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
+    QMetaObject::activate(this, &staticMetaObject, 2, _a);
 }
 QT_END_MOC_NAMESPACE

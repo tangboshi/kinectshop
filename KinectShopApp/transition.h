@@ -1,16 +1,15 @@
 #ifndef TRANSITION_H
 #define TRANSITION_H
 
-#include "state.h"
 #include "automaton.h"
 
-class transition
+class automaton;
+
+class transition : public QObject
 {
 public:
     transition();
-    //transition(state initFrom, state initTo, int initInput, automaton *initConnectedAutomaton);
-
-    void        executeTransition();
+    transition(state* initFrom, state* initTo, int initInput, automaton* initConnectedAutomaton);
 
     state       getFrom();
     void        setFrom(state newState);
@@ -18,11 +17,15 @@ public:
     void        setTo(state newState);
     int         getInput();
     void        setInput(int newInput);
+
+public slots:
+    void        executeTransition(transition* toBeExecuted);
+
 private:
     state       from;
     state       to;
     int         input;
-    //automaton*  connectedAutomaton;
+    automaton*  connectedAutomaton;
 };
 
 #endif // TRANSITION_H

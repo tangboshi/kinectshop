@@ -70,7 +70,7 @@ QString sqlfunctions::listAllProducts(){
             <<  "<th class='no-sort'>"   <<  "Menge"         <<  "</th>"
             <<  "</tr>"
             <<  "</thead>"
-            <<  "<tbody>"
+            <<  "<tbody class='list'>"
             <<  endl;
 
     while(query.next()){
@@ -79,10 +79,10 @@ QString sqlfunctions::listAllProducts(){
         price = query.value(2).toDouble();
         stock = query.value(3).toInt();
         stream  <<  "<tr>"
-                <<  "<td>"      <<  pid       <<    "</td>"
-                <<  "<td>"      <<  title     <<    "</td>"
-                <<  "<td>"      <<  price     <<    "</td>"
-                <<  "<td>"      <<  stock     <<    "</td>"
+                <<  "<td class='sPid'>"     <<  pid       <<    "</td>"
+                <<  "<td class='sTitle'>"   <<  title     <<    "</td>"
+                <<  "<td class='sPrice'>"   <<  price     <<    "</td>"
+                <<  "<td class='sStock'>"   <<  stock     <<    "</td>"
                 <<  "<td>"      <<  "<input type='text' value='0' id='cartItemAmount"  <<   pid  <<  "'>"
                 <<  "<button class='orange-button' id='buyCartItem"                    <<   pid  <<  "'>"
                 <<  "in den <span class='fa fa-shopping-cart'></span></button>"        <<   "</td>"
@@ -149,7 +149,7 @@ QString sqlfunctions::listAllProducts(QString mode){
 
     stream  <<  "</tr>"
             <<  "</thead>"
-            <<  "<tbody>"
+            <<  "<tbody class='list'>"
             <<  endl;
 
     while(query.next()){
@@ -165,10 +165,10 @@ QString sqlfunctions::listAllProducts(QString mode){
                     <<  "</td>"
                     <<  endl;
         }
-        stream  <<  "<td>"      <<  pid       <<    "</td>"
-                <<  "<td>"      <<  title     <<    "</td>"
-                <<  "<td>"      <<  price     <<    "</td>"
-                <<  "<td>"      <<  stock     <<    "</td>"
+        stream  <<  "<td class='sPid'>"        <<  pid       <<    "</td>"
+                <<  "<td class='sTitle'>"      <<  title     <<    "</td>"
+                <<  "<td class='sPrice'>"      <<  price     <<    "</td>"
+                <<  "<td class='sStock'>"      <<  stock     <<    "</td>"
                 <<  endl;
 
         if(mode == " "){
@@ -260,14 +260,14 @@ QString sqlfunctions::showCart(){
     stream  <<  "<table id='productList' class='sortable'>"
             <<  "<thead>"
             <<  "<tr>"
-            <<  "<th data-sort='number' class='sortByPid'>"         <<  "PID"     <<  "</th>"
-            <<  "<th data-sort='name'   class='sortByName'>"        <<  "Produktname"    <<  "</th>"
-            <<  "<th data-sort='number' class='sortByPrice'>"       <<  "Preis"          <<  "</th>"
-            <<  "<th class='no-sort'>"                              <<  "Bestellmenge"   <<  "</th>"
-            <<  "<th data-sort='number' class='sortByTotal'>"       <<  "Gesamtpreis"    <<  "</th>"
+            <<  "<th data-sort='number' class='sortByPid'>"         <<  "PID"            <<  "</th>"
+            <<  "<th data-sort='name'   class='sortByName'>"       <<  "Produktname"    <<  "</th>"
+            <<  "<th data-sort='number' class='sortByPrice'>"     <<  "Preis"          <<  "</th>"
+            <<  "<th class='no-sort'>"                                  <<  "Bestellmenge"   <<  "</th>"
+            <<  "<th data-sort='number' class='sortByTotal'>"     <<  "Gesamtpreis"    <<  "</th>"
             <<  "</tr>"
             <<  "</thead>"
-            <<  "<tbody>"
+            <<  "<tbody class='list'>"
             <<  endl;
 
     int pid, amount;
@@ -284,10 +284,10 @@ QString sqlfunctions::showCart(){
         currentCartValue += subtotal;
 
         stream  <<  "<tr>"
-                <<  "<td>"      <<  pid       <<    "</td>"
-                <<  "<td>"      <<  title     <<    "</td>"
-                <<  "<td>"      <<  price     <<    "</td>"
-                <<  "<td>"      <<  amount
+                <<  "<td class='sPid'>"         <<  pid       <<    "</td>"
+                <<  "<td class='sTitle'>"       <<  title     <<    "</td>"
+                <<  "<td class='sPrice'>"       <<  price     <<    "</td>"
+                <<  "<td class='sAmount'>"      <<  amount
                 <<  "<input type='text' value='0' id='itemAmount"  <<   pid  <<  "'>"
                 <<  "<button class='orange-button' id='removeItem" <<   pid  <<  "'>"
                 <<  "entfernen aus <span class='fa fa-shopping-cart'></span></button>"
@@ -307,7 +307,7 @@ QString sqlfunctions::showCart(){
     string s = stream.str();
 
     // Testfunnktion
-    cout << s << endl;
+    // cout << s << endl;
 
     QString htmlOutput = QString::fromStdString(s);
     return htmlOutput;
@@ -370,6 +370,12 @@ void sqlfunctions::changeAmount(int pid, int diff, QString modeQString){
 
 // Prüft für jede Ware im Warenkorb, ob noch genug Waren vorhanden sind
 int sqlfunctions::checkStock(){
+
+    // Zu Offline-Testzwecken, mit uid: 0, un: off und pw:off
+    if(uid == 0){
+        return 0;
+    }
+
     QSqlQuery query;
     int diff, stock;
     for(iter cursor = cart.begin();cursor!=cart.end();cursor++){
@@ -604,7 +610,7 @@ QString sqlfunctions::listAllUsers(){
             <<  "<th data-sort='number'>"          <<  "PermBl?"            <<  "</th>"
             <<  "</tr>"
             <<  "</thead>"
-            <<  "<tbody>"
+            <<  "<tbody class='list'>"
             << endl;
 
     query.prepare("SELECT id,username,balance,isAdmin,isBlockedPermanently FROM users ORDER BY users.id ASC");
@@ -627,12 +633,12 @@ QString sqlfunctions::listAllUsers(){
                 <<  "<td>"      <<  "<input type='checkbox' name='userSelect' id='user"
                 <<  id          <<  "' value='"  <<     id          <<  "'>"
                 <<  "</td>"
-                <<  "<td>"      <<  id           <<    "</td>"
-                <<  "<td>"      <<  username     <<    "</td>"
-                //<<  "<td>"      <<  password     <<    "</td>"
-                <<  "<td>"      <<  balance      <<    "</td>"
-                <<  "<td>"      <<  isAdmin      <<    "</td>"
-                <<  "<td>"      <<  isBlockedPermanently      <<    "</td>"
+                <<  "<td class='sId'>"                      <<  id                          <<    "</td>"
+                <<  "<td class='sUsername'>"                <<  username                    <<    "</td>"
+                //<<  "<td class='sPassword'>"              <<  password                    <<    "</td>"
+                <<  "<td  class='sBalance'>"                <<  balance                     <<    "</td>"
+                <<  "<td  class='sIsAdmin'>"                <<  isAdmin                     <<    "</td>"
+                <<  "<td  class='sIsBlockedPermanently'>"   <<  isBlockedPermanently        <<    "</td>"
                 <<  "</tr>"
                 <<  endl;
     }
@@ -978,9 +984,20 @@ double sqlfunctions::getBalance(){
 }
 
 bool sqlfunctions::login(QString username, QString password){
+
     // Timeout bei mehrfach falscher Eingabe
     time_t timeNow = time(0);
 
+    // Zu Offline-Testzwecken!!
+    if(username.toStdString() == "off" && password.toStdString() == "off"){
+        isLogin = 1;
+        isAdminLoggedIn = 1;
+        uid = 0;
+        emit userLoggedIn();
+        emit adminLoggedIn();
+        testCpp();
+        return true;
+    }
 
     if(allowedAgain > timeNow && badTries > 2){
         time_t difference = allowedAgain - timeNow;
