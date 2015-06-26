@@ -913,7 +913,8 @@ void sqlfunctions::changeStock(int id, QString mode, double number){
     query.bindValue(":id", id);
     query.exec();
     query.next();
-    double stock = query.value(0).toDouble();
+    int stock = query.value(0).toInt();
+    int oldStock = stock;
     QString title = query.value(1).toString();
 
     QMessageBox msgBox;
@@ -921,22 +922,23 @@ void sqlfunctions::changeStock(int id, QString mode, double number){
         stock += number;
         msgBox.setText("Die Menge von "+ title +" wurde um "+QString::number(number)+" erhöht. Es beträgt nun insgesamt "+QString::number(stock)+".");
         msgBox.exec();
-        emit stockChanged(number);
     }
     else if(mode == "set"){
-        int oldStock = stock;
-        stock= number;
+        stock = number;
         msgBox.setText("Die Menge von "+ title +" wurde auf "+QString::number(number)+" gesetzt.");
         msgBox.exec();
-        emit stockChanged(oldStock - stock);
     }
     else if(mode == "scale"){
-        int oldStock = stock;
         stock *= number;
         msgBox.setText("Die Menge von"+ title +" wurde um den Faktor "+ QString::number(number)+" skaliert. Er beträgt nun insgesamt "+QString::number(stock)+".");
-        msgBox.exec();
-        emit stockChanged(oldStock - stock);
+        msgBox.exec();    
     }
+
+    query.prepare("UPDATE products SET stock=:stock WHERE id=:pid");
+    query.bindValue(":stock", stock);
+    query.bindValue(":pid", id);
+    query.exec();
+    emit stockChanged(oldStock - stock);
 }
 
 void sqlfunctions::changeWarePrice(int id, QString mode, double number){

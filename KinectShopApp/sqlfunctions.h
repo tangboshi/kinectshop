@@ -29,7 +29,6 @@ class sqlfunctions:public QObject{
     public:
         sqlfunctions();
 
-    // Werden zur Zeit nicht wirklich genutzt, Umstellung auf Signale könnte den js-Code verkürzen
     signals:
         void        purchaseDone(vector<product> cart);
 
@@ -65,7 +64,7 @@ class sqlfunctions:public QObject{
         bool        logout();
         void        timeout();
 
-        // ADMINISTRATORFUNKTIONEN ----> alle Funktionen dieser Kategorie noch zu implementieren
+        // ADMINISTRATORFUNKTIONEN
         // Userverwaltung
         QString     listAllUsers();
         // Accounts

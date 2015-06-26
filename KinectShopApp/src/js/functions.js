@@ -227,6 +227,41 @@ $(document).ready(function(){
         $("#user-administration").html(mySqlObj.listAllUsers());
     });
 
+    // Zwingen den User sein Passwort zu ändern
+    $("#changePassword").click(function(){
+        var mode = $("#password-admin-mode").val();
+        // Testfunktion
+        alert(mode);
+        userActionEvent(mySqlObj.changeBalance, $(this).closest("table"), mode);
+    });
+
+
+    // Warenbestand ändern
+    $("#changeStock").click(function(){
+        var mode = $("#stock-admin-mode").val();
+        var amount = $("#stock-admin-amount").val();
+
+        // Testfunktion
+        //alert(mode+","+amount);
+
+        userActionEvent(mySqlObj.changeStock, $(this).closest("table"), mode, amount);
+        $("#ware-administration").html(mySqlObj.listAllProducts("checkboxes"));
+    });
+
+    // Warenpreis ändern
+    $("#changeWarePrice").click(function(){
+        var mode = $("#price-admin-mode").val();
+        var amount = $("#price-admin-amount").val();
+
+        // Testfunktion
+        //alert(mode+","+amount);
+
+        userActionEvent(mySqlObj.changeWarePrice, $(this).closest("table"), mode, amount);
+        $("#ware-administration").html(mySqlObj.listAllProducts("checkboxes"));
+    });
+
+
+
 
     // Alles auswählen Checkboxen
     $("body").on("change", ".selectAll", function(){
