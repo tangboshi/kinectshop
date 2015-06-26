@@ -8,6 +8,12 @@ $(document).ready(function(){
     $("#product-display").html(mySqlObj.showCart());
 });
 
+// Shopverwaltung
+$(document).ready(function(){
+    $("#user-administration").html(mySqlObj.listAllUsers());
+    $("#ware-administration").html(mySqlObj.listAllProducts("checkboxes"));
+});
+
 // ------------------- //////////////////////////////////////////////////////////////////
 
 function refreshAccountData(){
@@ -80,8 +86,10 @@ $(document).ready(function(){
     $("#login").click(function(){
         var username = $("#username").val();
         var password = $("#password").val();
+
         // Testfunktion
-        alert("Der eingegebene Username war: "+username+" Das eingegebene Passwort war: "+password);
+        //alert("Der eingegebene Username war: "+username+" Das eingegebene Passwort war: "+password);
+
         mySqlObj.login(username, password);
         if(mySqlObj.getLogin()){ // if-Abfrage Relikt aus vorheriger Version, eigentlich nicht benötigt!!
            $("#login-form").toggleClass("active inactive");
@@ -203,10 +211,7 @@ $(document).ready(function(){
 
     // Account terminieren
     $("#terminateAccount").click(function(){
-        var ids = getIds($(this));
-        for(i = 0; i < ids.length; i++){
-            //mySqlObj.terminateAccount(ids[i]);
-        }
+        userActionEvent(mySqlObj.terminateAccount, $(this));
         alert("Folgende Accounts wurden terminiert: " + ids);
     });
 
@@ -237,7 +242,7 @@ $(document).ready(function(){
 });
 
 // Hilfsfunktionen
-// Sortierfunktionen
+// Sortierfunktion
 $(document).ready(function(){
     // Verschiedene Datentypen miteinander vergleichen
     var compare = {
@@ -292,10 +297,12 @@ $(document).ready(function(){
 
 // Automatenfunktionen //////////////////////////////////////////////////////////////////
 
+// "Simulation der Spracherkennung"
+
 $(document).ready(function(){
     $("[id^=automCmd]").on("click", function(){
         // alert("Succesfull call!");
-        var input = $(this).prop("id").slice(15);
+        var input = $(this).prop("id").slice(8);
         automaton.transitions(input);
     });
 });

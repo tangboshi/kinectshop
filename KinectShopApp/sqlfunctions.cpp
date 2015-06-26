@@ -131,6 +131,12 @@ QString sqlfunctions::listAllProducts(QString mode){
 
     stringstream stream;
 
+    stream <<   "<div class='input-prepend orange'>"
+           <<   "<span class='fa fa-search'></span>"
+           <<   "<input class='search' placeholder='Filter'>"
+           <<   "</div>"
+           <<   endl;
+
     // Alles darstellen
     stream  <<  "<table id='cartList' class='sortable'>"
             <<  "<thead>"
@@ -753,24 +759,25 @@ void sqlfunctions::unblockAccount(int id){
 
 // löscht Account
 void sqlfunctions::terminateAccount(int id){
-    QMessageBox msgBox;
-    msgBox.setText("Achtung Account-Terminierung!");
-    msgBox.setInformativeText("Wollen Sie diese(n) Account(s) wirklick terminieren? Diese Aktion ist endgültig.");
-    msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
-    msgBox.setDefaultButton(QMessageBox::No);
+    QMessageBox confirm;
+    QMessageBox informative;
+    confirm.setText("Achtung Account-Terminierung!");
+    confirm.setInformativeText("Wollen Sie diese(n) Account(s) wirklick terminieren? Diese Aktion ist endgültig.");
+    confirm.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+    confirm.setDefaultButton(QMessageBox::No);
 
-    int answer = msgBox.exec();
+    int answer = confirm.exec();
     if(answer == QMessageBox::Yes){
-        msgBox.setText("Yes was clicked");
-        msgBox.exec();
+        informative.setText("Account(s) wurde(n) terminiert!");
+        informative.exec();
         QSqlQuery query;
         query.prepare("DELETE FROM users WHERE id=:uid");
         query.bindValue(":uid", id);
         query.exec();
     }
-    else if(answer == QMessageBox::No){
-        msgBox.setText("Nichts ausgeführt.");
-        msgBox.exec();
+    else{
+        informative.setText("Nichts ausgeführt.");
+        informative.exec();
     }
 }
 
@@ -872,24 +879,26 @@ bool sqlfunctions::userChangesPassword(int id, QString password, QString passwor
 }
 
 void sqlfunctions::deleteWareRecord(int id){
-    QMessageBox msgBox;
-    msgBox.setText("Achtung Waren-Löschung!");
-    msgBox.setInformativeText("Wollen Sie diese Waren(n) wirklick löschen? Diese Aktion ist endgültig.");
-    msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
-    msgBox.setDefaultButton(QMessageBox::No);
+    QMessageBox confirm;
+    QMessageBox informative;
 
-    int answer = msgBox.exec();
+    confirm.setText("Achtung Waren-Löschung!");
+    confirm.setInformativeText("Wollen Sie diese Waren(n) wirklick löschen? Diese Aktion ist endgültig.");
+    confirm.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+    confirm.setDefaultButton(QMessageBox::No);
+
+    int answer = confirm.exec();
     if(answer == QMessageBox::Yes){
-        msgBox.setText("Das Produkt wurde erfolgreich gelöscht.");
-        msgBox.exec();
+        informative.setText("Produkt(e) wurden erfolgreich gelöscht.");
+        informative.exec();
         QSqlQuery query;
         query.prepare("DELETE FROM products WHERE id=:id");
         query.bindValue(":id", id);
         query.exec();
     }
     else if(answer == QMessageBox::No){
-        msgBox.setText("Aktion vom Benutzer abgebrochen.");
-        msgBox.exec();
+        informative.setText("Aktion vom Benutzer abgebrochen.");
+        informative.exec();
     }
 }
 
