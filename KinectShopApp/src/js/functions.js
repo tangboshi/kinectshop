@@ -117,6 +117,7 @@ $(document).ready(function(){
            $("li[title='admin-area']").addClass("inactive");
            $("li[title='admin-area']").removeClass("active");
         }
+        $("#navStart").click().addClass("active").removeClass("inactive");
     });
 
     // User registrieren
