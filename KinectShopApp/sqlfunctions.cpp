@@ -241,6 +241,8 @@ void sqlfunctions::addToCart(int pid, int amount, double price, QString title){
     msgBox.setText(QString::number(myProduct.getAmount()));
     msgBox.exec();
     */
+
+    currentCartValue += amount*price;
     emit cartChanged();
 }
 
@@ -1085,12 +1087,15 @@ bool sqlfunctions::login(QString username, QString password){
         // Member uid für Einkauf setzen
         query.prepare("SELECT id FROM users WHERE username =:username");
         query.bindValue(":username", username);
-        if(query.exec()){
-            emit userLoggedIn();
+        if(query.exec()){         
             isLogin = true;
         }
         query.next();
         uid = query.value(0).toInt();
+
+        if(isLogin){
+            emit userLoggedIn();
+        }
 
         /*// Testfunktion
         QMessageBox msgBox;
