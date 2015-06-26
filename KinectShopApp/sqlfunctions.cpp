@@ -59,6 +59,12 @@ QString sqlfunctions::listAllProducts(){
 
     stringstream stream;
 
+    stream <<   "<div class='input-prepend orange'>"
+           <<   "<span class='fa fa-search'></span>"
+           <<   "<input class='search' placeholder='Filter'>"
+           <<   "</div>"
+           <<   endl;
+
     // Alles darstellen
     stream  <<  "<table id='cartList' class='sortable'>"
             <<  "<thead>"
@@ -598,6 +604,12 @@ QString sqlfunctions::listAllUsers(){
     QSqlQuery query;
     stringstream stream;
 
+    stream <<   "<div class='input-prepend orange'>"
+           <<   "<span class='fa fa-search'></span>"
+           <<   "<input class='search' placeholder='Filter'>"
+           <<   "</div>"
+           << endl;
+
     stream  <<  "<table id='users' class='sortable'>"
             <<  "<thead>"
             <<  "<tr>"
@@ -990,8 +1002,8 @@ bool sqlfunctions::login(QString username, QString password){
 
     // Zu Offline-Testzwecken!!
     if(username.toStdString() == "off" && password.toStdString() == "off"){
-        isLogin = 1;
-        isAdminLoggedIn = 1;
+        isLogin = true;
+        isAdminLoggedIn = true;
         uid = 0;
         emit userLoggedIn();
         emit adminLoggedIn();

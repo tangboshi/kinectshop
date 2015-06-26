@@ -1,4 +1,5 @@
-// Wird beim Start des Programms ausgeführt
+// Shop initialisieren ///////////////////////////////////////////////////////////////////
+
 $(document).ready(function(){
     // Liste alle Produkte im Shop auf
     $("#shop-items").html(mySqlObj.listAllProducts());
@@ -7,21 +8,32 @@ $(document).ready(function(){
     $("#product-display").html(mySqlObj.showCart());
 });
 
+// ------------------- //////////////////////////////////////////////////////////////////
+
+function refreshAccountData(){
+    var currentBalance = mySqlObj.getBalance();
+    var currentCartValue = mySqlObj.getCurrentCartValue();
+
+    $("#acc-balance .accdd").html(currentBalance+"("+(currentBalance-currentCartValue)+")");
+    $("#acc-cart .accdd").html(currentCartValue);
+    $("#product-display").html(mySqlObj.showCart());
+    $("#shop-items").html(mySqlObj.listAllProducts());
+    if(mySqlObj.getLogin()){
+        var balance = mySqlObj.getBalance();
+        if(balance < currentCartValue){
+            $("#acc-cart .accdd").addClass("red-font");
+        }
+        else{
+            $("#acc-cart .accdd").removeClass("red-font");
+        }
+    }
+}
+
 // Click-Events
 $(document).ready(function(){
-
-    /* // nicht mehr benötigt
-    $("#showCart").click(function(){
-        $("#product-display").html(mySqlObj.showCart());
-    });
-    */
-
     $("#purchase").on('click', function(){
         if(mySqlObj.purchase()){
-            $("#acc-balance .accdd").html(mySqlObj.getBalance());
-            $("#acc-cart .accdd").html(mySqlObj.getCurrentCartValue());
-            $("#product-display").html(mySqlObj.showCart());
-            $("#shop-items").html(mySqlObj.listAllProducts());
+            refreshAccountData();
         }
     });
 
@@ -33,8 +45,9 @@ $(document).ready(function(){
         var title = $(this).parent().siblings().eq(1).text();
         if(amount > 0){
             mySqlObj.addToCart(pid, amount, price, title);
+            refreshAccountData();
             // Testfunktion
-            alert("Das Produkt ist: "+title+"\nDie Produkt ID ist: "+pid+"\nDie Menge ist: "+amount+"\nDer Preis pro Stück ist: "+price);
+            // alert("Das Produkt ist: "+title+"\nDie Produkt ID ist: "+pid+"\nDie Menge ist: "+amount+"\nDer Preis pro Stück ist: "+price);
         }
         else{
             alert("Die eingekaufte Menge muss größer als 0 sein.");
@@ -50,17 +63,8 @@ $(document).ready(function(){
             // Testfunktion
             // alert(pid+" "+diff+" "+mode);
             mySqlObj.changeAmount(pid, diff, mode);
-             $("#product-display").html(mySqlObj.showCart());
-            $("#acc-cart .accdd").html(mySqlObj.getCurrentCartValue());
-            if(mySqlObj.getLogin()){
-                var balance = mySqlObj.getBalance();
-                if(balance < currentCartValue){
-                    $("#acc-cart .accdd").addClass("red-font");
-                }
-                else{
-                    $("#acc-cart .accdd").removeClass("red-font");
-                }
-            }
+            refreshAccountData();
+
             // Testfunktion
             // alert("\nDie Produkt ID ist: "+pid+"\nDie Menge ist: "+diff+"\nDer Modus ist: "+mode);
         }
@@ -83,17 +87,6 @@ $(document).ready(function(){
            $("#login-form").toggleClass("active inactive");
            $("#logout-form").toggleClass("active inactive");
            $("#acc-username .accdd").html(mySqlObj.getUsername());
-           $("#acc-balance .accdd").html(mySqlObj.getBalance());
-
-           var currentCartValue = mySqlObj.getCurrentCartValue();
-           var balance = mySqlObj.getBalance();
-           if(balance < currentCartValue){
-               $("#acc-cart .accdd").addClass("red-font");
-           }
-           else{
-               $("#acc-cart .accdd").removeClass("red-font");
-           }
-           $("#acc-cart .accdd").html(mySqlObj.getCurrentCartValue());
 
            if(mySqlObj.getIsAdminLoggedIn()){
                $("#acc-isAdmin .accdd").html("Admin");
@@ -102,8 +95,11 @@ $(document).ready(function(){
            else{
                $("#acc-isAdmin .accdd").html("Kunde");
            }
+
+           refreshAccountData();
         }
     });
+
 
     // Logout
     $("#logout").click(function(){
@@ -137,15 +133,7 @@ $(document).ready(function(){
         // Testfunktion
         // alert("Der eingegebene Betrag war: "+amount+".");
         mySqlObj.changeBalance(mySqlObj.getUid(),"add",amount);
-        var currentCartValue = mySqlObj.getCurrentCartValue();
-        var balance = mySqlObj.getBalance();
-        if(balance < currentCartValue){
-            $("#acc-cart .accdd").addClass("red-font");
-        }
-        else{
-            $("#acc-cart .accdd").removeClass("red-font");
-        }
-        $("#acc-balance .accdd").html(balance);
+        refreshAccountData();
     });
 
     // Warentabelle ausgeben
@@ -158,72 +146,68 @@ $(document).ready(function(){
         $("#user-administration").html(mySqlObj.listAllUsers());
     });
 
-    // FEHLERHAFT /////////////////////////////////////////////////////////////////
-    $("button.userActionButton").on("click", function(){
-        alert("This is called.");
-        $(this).closest("#user-administration").html(mySqlObj.listAllUsers());
-    });
+    // User Action Events ////////////////////////////////////////////////////////////
 
     // ids zu gecheckten Checkboxen ermitteln
     function getIds(obj){
-        alert("I am called!");
-        var $table = $("#users");
-        alert($table.attr("id"));
-        var $cboxes = $table.find("input:checkbox").toArray();
-        alert($cboxes);
+        var $table = obj.parent().siblings().find("table");
+        // alert($table.attr("id"));
 
-        var checkedArray = [];// initialisiere leeres Array?
-        var pid;
-        for(i = 0;i < $cboxes.length; i++){
-            if($cboxes[i].checked){
-                pid = $cboxes.parent().siblings().eq(0).text();
-                checkedArray.push(pid);
-                alert(pid);
+        return $table.find('input:checkbox:checked').map(function(){
+            return $(this).parent().next().text();
+        }).toArray();
+    }
+
+    function userActionEvent(callback, obj, argument){
+        var ids = getIds(obj);
+        if(typeof argument !== 'undefined'){
+            for(i=0; i < ids.length; i++){
+                callback(ids[i], argument);
             }
         }
-        alert(checkedArray);
-        return checkedArray;
-    }
-    // FEHLERHAFT /////////////////////////////////////////////////////////////////
+        for(i=0; i < ids.length; i++){
+            callback(ids[i]);
+        }
 
+        alert("Folgende Accounts wurden bearbeitet: " + ids);
+
+        $("#user-administration").html(mySqlObj.listAllUsers());
+    }
 
     // User zum Admin ernennen
     $("#empowerUser").click(function(){
-        mySqlObj.empowerUser(35);
+        userActionEvent(mySqlObj.empowerUser, $(this));
     });
 
     // User Admin-Status entziehen
     $("#disempowerUser").click(function(){
-        mySqlObj.disempowerUser(35);
-        mySqlObj.disempowerUser(4);o
+        userActionEvent(mySqlObj.disempowerUser, $(this));
     });
 
     // Account blocken
     $("#blockAccount").click(function(){
         var duration = $(this).find("#acc-admin-duration").val();
+
         if(duration === "permanent"){
-             mySqlObj.blockAccountPermanently(35);
+             userActionEvent(mySqlObj.blockAccountPermanently, $(this));
         }
         else{
-            mySqlObj.blockAccount(35, duration);
+            userActionEvent(mySqlObj.blockAccount, $(this), duration);
         }
     });
 
     // Account entblocken
     $("#unblockAccount").click(function(){
-        mySqlObj.unblockAccount(35);
+        userActionEvent(mySqlObj.unblockAccount, $(this));
     });
 
     // Account terminieren
     $("#terminateAccount").click(function(){
-        var obj = $(this);
-        var ids = getIds(obj);
-        alert("I am called, too!");
-
+        var ids = getIds($(this));
         for(i = 0; i < ids.length; i++){
-            mySqlObj.terminateAccount(ids[i]);
-            alert("Account "+ids[i]+" wurde geblockt!");
+            //mySqlObj.terminateAccount(ids[i]);
         }
+        alert("Folgende Accounts wurden terminiert: " + ids);
     });
 
 
@@ -320,59 +304,47 @@ $(document).ready(function(){
 
 // Qt-Funktionen-Connect ////////////////////////////////////////////////////////////////
 
-function cartChangedFunction(){
+function cartChangedEvent(){
     alert("The cart changed!");
-
-    $("#product-display").html(mySqlObj.showCart());
-    var currentCartValue = mySqlObj.getCurrentCartValue();
-    if(mySqlObj.getLogin()){
-        var balance = mySqlObj.getBalance();
-        if(balance < currentCartValue){
-            $("#acc-cart .accdd").addClass("red-font");
-        }
-        else{
-            $("#acc-cart .accdd").removeClass("red-font");
-        }
-    }
-    $("#acc-cart .accdd").html(currentCartValue);
+    refreshAccountData();
 }
 
-function priceChangedFunction(){
+function priceChangedEvent(){
     alert("The price has changed!");
 }
 
-function stockChangedFunction(){
+function stockChangedEvent(){
     alert("The stock has changed!");
 }
 
-function balanceChangedFunction(){
+function balanceChangedEvent(){
     alert("The balance has changed!");
 }
 
-function purchaseDoneFunction(){
+function purchaseDoneEvent(){
     alert("The purchase has been completed!");
 }
 
-function userLoggedInFunction(){
+function userLoggedInEvent(){
     alert("Some message!");
     // alert("The user "+ mySqlObj.getUsername()+" has logged in!");
 }
 
-function adminLoggedInFunction(){
+function adminLoggedInEvent(){
     alert("The user, who has logged in, is an administrator!");
 }
 
-function userLoggedOutFunction(){
+function userLoggedOutEvent(){
     alert("The user has logged out!");
 }
 
-mySqlObj.cartChanged.connect(cartChangedFunction);
-mySqlObj.priceChanged.connect(priceChangedFunction);
-mySqlObj.stockChanged.connect(stockChangedFunction);
-mySqlObj.balanceChanged.connect(balanceChangedFunction);
-mySqlObj.purchaseDone.connect(purchaseDoneFunction);
-mysqlObj.userLoggedIn.connect(userLoggedInFunction);
-mySqlObj.adminLoggedIn.connect(adminLoggedInFunction);
-mySqlObj.userLoggedOut.connect(userLoggedOutFunction);
+mySqlObj.cartChanged.connect(cartChangedEvent);
+mySqlObj.priceChanged.connect(priceChangedEvent);
+mySqlObj.stockChanged.connect(stockChangedEvent);
+mySqlObj.balanceChanged.connect(balanceChangedEvent);
+mySqlObj.purchaseDone.connect(purchaseDoneEvent);
+mysqlObj.userLoggedIn.connect(userLoggedInEvent);
+mySqlObj.adminLoggedIn.connect(adminLoggedInEvent);
+mySqlObj.userLoggedOut.connect(userLoggedOutEvent);
 
 // ------------------- //////////////////////////////////////////////////////////////////
