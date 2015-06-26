@@ -4,10 +4,32 @@
 #include <QWebFrame>
 #include <QtWebKit>
 
+#include <QFuture>
+#include <QtConcurrent/QtConcurrentRun>
+#include <QCoreApplication>
+
 #include "html5applicationviewer.h"
 
 #include "sqlfunctions.h"
 #include "automaton.h"
+
+void delay(int n)
+{
+    QTime dieTime= QTime::currentTime().addSecs(n);
+    while( QTime::currentTime() < dieTime )
+    QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
+}
+
+void myCounter(automaton* A){
+    int i = 0;
+    while(1){
+        i++;
+        if(i>1000) i=0;
+        delay(1);
+        A->setPid(i%9+1);
+        qDebug() << A->getPid();
+    }
+}
 
 int main(int argc, char *argv[])
 {
@@ -18,6 +40,8 @@ int main(int argc, char *argv[])
     // Automat für Sprachsteuerung //////////////////////////////////////////////////////////////////
     automaton automA;
     automA.setObj(&obj);
+
+    QFuture<void> counterThread = QtConcurrent::run(myCounter, &automA);
 
     /* Transitionen
     // Zustände
