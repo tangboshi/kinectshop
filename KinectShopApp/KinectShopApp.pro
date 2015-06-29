@@ -22,7 +22,8 @@ SOURCES += main.cpp \
     product.cpp \
     automaton.cpp \
     state.cpp \
-    transition.cpp
+    transition.cpp \
+    kinectio.cpp
 
 # Please do not modify the following two lines. Required for deployment.
 include(html5applicationviewer/html5applicationviewer.pri)
@@ -40,4 +41,5 @@ HEADERS += \
     product.h \
     automaton.h \
     state.h \
-    transition.h
+    transition.h \
+    kinectio.h

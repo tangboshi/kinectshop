@@ -2,6 +2,10 @@
 #define PRODUCT_H
 
 #include <QString>
+#include <QSql>
+#include <QSqlDatabase>
+#include <QSqlQuery>
+#include <QVariant>
 
 using namespace std;
 
@@ -11,13 +15,18 @@ class product{
 
         int getPid();
         int getAmount();
-        int getPrice();
+        double getPrice();
         QString getTitle();
+        double getMargin();
+        double getRevenue();
+        double getProfit();
 
         void setPid(int newPid);
         void setAmount(int newAmount);
         void setTitle(QString newTitle);
-        void setPrice(int newPrice);
+        void setPrice(double newPrice);
+        void setMargin(double newMargin);
+        // setRevenue() und setProfit() werden nicht benötigt
 
         bool operator == (const int theProduct) const;
         void operator = (const product &theProduct);
@@ -25,7 +34,7 @@ class product{
     private:
         int pid;
         int amount;
-        int price;
+        double price;
         QString title;
 };
 

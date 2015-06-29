@@ -210,7 +210,7 @@
                                                  <tbody>
                                                     <tr class="orange">
                                                         <td>
-                                                            <select id="stock-admin-mode" name="id="stock-admin-mode">
+                                                            <select id="stock-admin-mode" name="stock-admin-mode">
                                                                 <option value="add">addieren</option>
                                                                 <option value="set">setzen</option>
                                                                 <option value="scale">skalieren</option>
@@ -244,7 +244,7 @@
                                                  <tbody>
                                                     <tr class="orange">
                                                         <td>
-                                                            <select id="price-admin-mode" name="id="price-admin-mode">
+                                                            <select id="price-admin-mode" name="price-admin-mode">
                                                                 <option value="add">addieren</option>
                                                                 <option value="set">setzen</option>
                                                                 <option value="scale">skalieren</option>
@@ -258,6 +258,40 @@
                                                         </td>
                                                         <td>
                                                             <button class="blue-button" id="changeWarePrice" class="productActionButton">
+                                                                <span class="fa fa-chevron-right"></span>
+                                                                ausführen
+                                                            </button>
+                                                        </td>
+                                                    </tr>
+                                                 </tbody>
+                                            </table>
+
+                                            <h3> Gewinnmarge ändern </h3>
+                                            <table>
+                                                <thead>
+                                                    <tr>
+                                                        <th> Modus </th>
+                                                        <th> arithmetischer Ausdruck </th>
+                                                        <th> ausführen </th>
+                                                    </tr>
+                                                 </thead>
+                                                 <tbody>
+                                                    <tr class="orange">
+                                                        <td>
+                                                            <select id="margin-admin-mode" name="margin-admin-mode">
+                                                                <option value="add">addieren</option>
+                                                                <option value="set">setzen</option>
+                                                                <option value="scale">skalieren</option>
+                                                            </select>
+                                                        </td>
+                                                        <td>
+                                                            <div class="input-prepend">
+                                                                <span class="fa fa-money"></span>
+                                                                <input type="text" id="margin-admin-amount" name="margin-admin-amount">
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <button class="blue-button" id="changeMargin" class="productActionButton">
                                                                 <span class="fa fa-chevron-right"></span>
                                                                 ausführen
                                                             </button>
@@ -301,7 +335,7 @@
                                             </button>
 
                                             <h3> Accounts (ent)blocken, terminieren </h3>
-                                            <button class="blue-button" id="blockAccount" class="userActionButton"">
+                                            <button class="blue-button" id="blockAccount" class="userActionButton">
                                                 <span class="fa fa-lock"></span>
                                                 für
                                                 <select id="acc-admin-duration" name="acc-admin-duration">
@@ -335,7 +369,7 @@
                                                  <tbody>
                                                     <tr class="orange">
                                                         <td>
-                                                            <select id="balance-admin-mode" name="id="balance-admin-mode">
+                                                            <select id="balance-admin-mode" name="balance-admin-mode">
                                                                 <option value="add">addieren</option>
                                                                 <option value="set">setzen</option>
                                                                 <option value="scale">skalieren</option>
@@ -513,3 +547,4 @@
     </body>
 
 </html>
+

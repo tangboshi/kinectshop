@@ -32,9 +32,12 @@ class sqlfunctions:public QObject{
     signals:
         void        purchaseDone(vector<product> cart);
 
-        double      balanceChanged(double amount);
-        double      priceChanged(double price);
-        double      stockChanged(double stock);
+        void        balanceChanged(double amount);
+        void        priceChanged(double price);
+        void        marginChanged(double margin);
+        void        revenueMade(double revenue);    //nicht emittiert
+        void        profitMade(double profit);      //nicht emittiert
+        void        stockChanged(double stock);
         void        cartChanged();
 
         void        adminLoggedIn();
@@ -88,6 +91,7 @@ class sqlfunctions:public QObject{
         void        createWareRecord();
         void        changeStock(int id, QString mode, double number);
         void        changeWarePrice(int id, QString mode, double number);
+        void        changeMargin(int id, QString mode, double number);
 
         /*
         // Userstatistik

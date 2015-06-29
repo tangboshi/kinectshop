@@ -12,27 +12,28 @@
 
 #include "sqlfunctions.h"
 #include "automaton.h"
+#include "kinectio.h"
 
-void delay(int n)
-{
+void delay(int n){
     QTime dieTime= QTime::currentTime().addSecs(n);
     while( QTime::currentTime() < dieTime )
     QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
 }
 
-void myCounter(automaton* A){
+void kinectInputSimulation(automaton* A, kinectio* K){
     int i = 0;
     while(1){
         i++;
+        int simulatedDetectedPid = i%9+1;
         if(i>1000) i=0;
-        delay(1);
-        A->setPid(i%9+1);
+        delay(10);
+        A->setPid(simulatedDetectedPid);
+        emit K->kinectProductDetected(simulatedDetectedPid);
         qDebug() << A->getPid();
     }
 }
 
-int main(int argc, char *argv[])
-{
+int main(int argc, char *argv[]){
     QApplication app(argc, argv);
 
     sqlfunctions obj;
@@ -41,7 +42,9 @@ int main(int argc, char *argv[])
     automaton automA;
     automA.setObj(&obj);
 
-    QFuture<void> counterThread = QtConcurrent::run(myCounter, &automA);
+    kinectio kinect;
+
+    QFuture<void> counterThread = QtConcurrent::run(kinectInputSimulation, &automA, &kinect);
 
     /* Transitionen
     // Zustände
@@ -104,8 +107,10 @@ int main(int argc, char *argv[])
     QWebFrame *frame = viewer.webView()->page()->mainFrame();
     QString sqlObjName = "mySqlObj";
     QString automatonObjName = "automaton";
+    QString kinectObjName = "kinect";
     frame->addToJavaScriptWindowObject(sqlObjName, &obj);
     frame->addToJavaScriptWindowObject(automatonObjName, &automA);
+    frame->addToJavaScriptWindowObject(kinectObjName, &kinect);
 
     return app.exec();
 }

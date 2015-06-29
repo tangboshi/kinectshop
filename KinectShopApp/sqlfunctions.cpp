@@ -122,12 +122,12 @@ QString sqlfunctions::listAllProducts(QString mode){
     QSqlQuery query;
 
     // Alles Abfragen
-    query.prepare("SELECT id, title, price, stock FROM products ORDER BY products.id ASC");
+    query.prepare("SELECT id, title, price, stock, margin, revenue, profit FROM products ORDER BY products.id ASC");
     query.exec();
 
     int pid, stock;
     string title;
-    double price;
+    double price, margin, revenue, profit;
 
     stringstream stream;
 
@@ -159,6 +159,13 @@ QString sqlfunctions::listAllProducts(QString mode){
                 <<  endl;
     }
 
+    if(mode == "checkboxes"){
+        stream  <<  "<th data-sort='number'     class='sortByMargin'>"      <<  "M"    <<  "</th>"
+                <<  "<th data-sort='number'     class='sortByRevenue'>"     <<  "US"         <<  "</th>"
+                <<  "<th data-sort='number'     class='sortByProfit'>"      <<  "PFT"     <<  "</th>"
+                <<  endl;
+    }
+
     stream  <<  "</tr>"
             <<  "</thead>"
             <<  "<tbody class='list'>"
@@ -169,6 +176,10 @@ QString sqlfunctions::listAllProducts(QString mode){
         title = query.value(1).toString().toStdString();
         price = query.value(2).toDouble();
         stock = query.value(3).toInt();
+        margin = query.value(4).toDouble();
+        revenue = query.value(5).toDouble();
+        profit = query.value(6).toDouble();
+
         stream  <<  "<tr>"
                 <<  endl;
         if(mode == "checkboxes"){
@@ -187,6 +198,13 @@ QString sqlfunctions::listAllProducts(QString mode){
             stream  <<  "<td>"      <<  "<input type='text' value='0' id='cartItemAmount"  <<   pid  <<  "'>"
                     <<  "<button class='orange-button' id='buyCartItem"                    <<   pid  <<  "'>"
                     <<  "in den <span class='fa fa-shopping-cart'></span></button>"        <<   "</td>"
+                    <<  endl;
+        }
+
+        if(mode == "checkboxes"){
+            stream  <<  "<td class='sMargin'>"       <<  margin       <<    "</td>"
+                    <<  "<td class='sRevenue'>"      <<  revenue      <<    "</td>"
+                    <<  "<td class='sProfit'>"       <<  profit       <<    "</td>"
                     <<  endl;
         }
 
@@ -457,7 +475,7 @@ bool sqlfunctions::purchase(){
             if(diff >= 0){
 
                 int pid, amount, insertId, stock;
-                double balance;
+                double balance, margin, revenue, profit, price, oldRevenue, oldProfit;
 
                 for(iter cursor = cart.begin(); cursor != cart.end(); ++cursor){
 
@@ -492,6 +510,23 @@ bool sqlfunctions::purchase(){
                     query.bindValue(":newStock", stock);
                     query.bindValue(":pid", pid);
                     query.exec();
+
+                    // Umsatz und Profit steigern
+                    margin = cursor->getMargin();
+                    price = cursor->getPrice();
+                    revenue = price*amount;
+                    profit = margin*amount;
+                    query.prepare("SELECT revenue, profit FROM products WHERE id=:pid");
+                    query.bindValue(":pid", pid);
+                    query.exec();
+                    query.next();
+                    oldRevenue = query.value(0).toDouble();
+                    oldProfit = query.value(1).toDouble();
+                    query.prepare("UPDATE products SET revenue=:newRevenue, profit=:newProfit WHERE id =:pid");
+                    query.bindValue(":newRevenue", revenue+oldRevenue);
+                    query.bindValue(":newProfit", profit+oldProfit);
+                    query.bindValue(":pid", pid);
+                    query.exec();
                 }
 
                 // Geld von Useraccount abheben
@@ -511,6 +546,8 @@ bool sqlfunctions::purchase(){
                 // Signal: Einkauf abgeschlossen, Einkaufswagen leeren
                 emit purchaseDone(cart);
                 emit balanceChanged((-1)*currentCartValue);
+                //emit revenueMade(currentCartValue);
+                //emit profitMade(currentCartValue);
 
                 QMessageBox msgBox;
                 QString thankYou ="<p><b> Vielen Dank für Ihren Einkauf! Sie kauften: </b><br></p>";
@@ -805,21 +842,21 @@ void sqlfunctions::changeBalance(int id, QString mode, double number){
     if(mode == "add"){
         balance += number;
         msgBox.setText("Ihr Guthaben wurde erfolgreich um "+QString::number(number)+" aufgelden. Es beträgt nun insgesamt "+QString::number(balance)+".");
-        msgBox.exec();
+        //msgBox.exec();
         emit balanceChanged(number);
     }
     else if(mode == "set"){
         int oldBalance = balance;
         balance = number;
         msgBox.setText("Ihr Guthaben wurde erfolgreich auf"+QString::number(number)+" aufgeladen.");
-        msgBox.exec();
+        //msgBox.exec();
         emit balanceChanged(oldBalance - balance);
     }
     else if(mode == "scale"){
         int oldBalance = balance;
         balance *= number;
         msgBox.setText("Ihr Guthaben wurde erfolgreich um den Faktor"+QString::number(number)+" skaliert. Es beträgt nun insgesamt "+QString::number(balance)+".");
-        msgBox.exec();
+        //msgBox.exec();
         emit balanceChanged(oldBalance - balance);
     }
 
@@ -948,29 +985,65 @@ void sqlfunctions::changeWarePrice(int id, QString mode, double number){
     query.exec();
     query.next();
     double price = query.value(0).toDouble();
+    double oldPrice = price;
     QString title = query.value(1).toString();
 
     QMessageBox msgBox;
     if(mode == "add"){
         price += number;
-        msgBox.setText("Der Preis von "+ title +" wurde um "+QString::number(number)+" erhöht. Es beträgt nun insgesamt "+QString::number(price)+".");
+        msgBox.setText("Der Preis von "+ title +" wurde um "+QString::number(number)+" erhöht. Er beträgt nun insgesamt "+QString::number(price)+".");
         msgBox.exec();
-        emit priceChanged(number);
     }
     else if(mode == "set"){
-        int oldPrice = price;
         price= number;
         msgBox.setText("Der Preis von "+ title +" wurde auf "+QString::number(number)+" gesetzt.");
         msgBox.exec();
-        emit priceChanged(oldPrice - price);
     }
     else if(mode == "scale"){
-        int oldPrice = price;
         price *= number;
         msgBox.setText("Der Preis von"+ title +" wurde um den Faktor "+ QString::number(number)+" skaliert. Er beträgt nun insgesamt "+QString::number(price)+".");
         msgBox.exec();
-        emit priceChanged(oldPrice - price);
     }
+
+    query.prepare("UPDATE products SET price=:price WHERE id=:pid");
+    query.bindValue(":price", price);
+    query.bindValue(":pid", id);
+    query.exec();
+    emit priceChanged(oldPrice - price);
+}
+
+void sqlfunctions::changeMargin(int id, QString mode, double number){
+    QSqlQuery query;
+    query.prepare("SELECT margin, title FROM products WHERE id=:id");
+    query.bindValue(":id", id);
+    query.exec();
+    query.next();
+    double margin = query.value(0).toDouble();
+    double oldmargin = margin;
+    QString title = query.value(1).toString();
+
+    QMessageBox msgBox;
+    if(mode == "add"){
+        margin += number;
+        msgBox.setText("Die Gewinnspanne von "+ title +" wurde um "+QString::number(number)+" erhöht. Sie beträgt nun insgesamt "+QString::number(margin)+".");
+        msgBox.exec();
+    }
+    else if(mode == "set"){
+        margin= number;
+        msgBox.setText("Die Gewinnspanne von "+ title +" wurde auf "+QString::number(number)+" gesetzt.");
+        msgBox.exec();
+    }
+    else if(mode == "scale"){
+        margin *= number;
+        msgBox.setText("Die Gewinnspanne von"+ title +" wurde um den Faktor "+ QString::number(number)+" skaliert. Sie beträgt nun insgesamt "+QString::number(margin)+".");
+        msgBox.exec();
+    }
+
+    query.prepare("UPDATE products SET margin=:margin WHERE id=:pid");
+    query.bindValue(":margin", margin);
+    query.bindValue(":pid", id);
+    query.exec();
+    emit marginChanged(oldmargin - margin);
 }
 
 

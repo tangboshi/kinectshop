@@ -261,8 +261,17 @@ $(document).ready(function(){
         $("#ware-administration").html(mySqlObj.listAllProducts("checkboxes"));
     });
 
+    // Warenmarge ändern
+    $("#changeMargin").click(function(){
+        var mode = $("#margin-admin-mode").val();
+        var amount = $("#margin-admin-amount").val();
 
+        // Testfunktion
+        //alert(mode+","+amount);
 
+        userActionEvent(mySqlObj.changeMargin, $(this).closest("table"), mode, amount);
+        $("#ware-administration").html(mySqlObj.listAllProducts("checkboxes"));
+    });
 
     // Alles auswählen Checkboxen
     $("body").on("change", ".selectAll", function(){
@@ -373,8 +382,22 @@ function stockChangedEvent(){
 }
 
 function balanceChangedEvent(){
-    alert("The balance has changed!");
+    //alert("The balance has changed!");
     refreshAccountData();
+}
+
+function marginChangedEvent(){
+    //alert("The margin of a product has been changed.");
+}
+
+// Signal wird in sqlfunction.cpp niemals emittiert
+function revenueMadeEvent(){
+    alert("Revenue has been made.");
+}
+
+// Signal wird in sqlfunctions.cpp niemals emittiert
+function profitMadeEvent(){
+    alert("Profit has been made.");
 }
 
 function purchaseDoneEvent(){
@@ -394,12 +417,15 @@ function userLoggedOutEvent(){
     alert("The user has logged out!");
 }
 
-mySqlObj.userLoggedIn.connect(userLoggedInEvent);
 mySqlObj.cartChanged.connect(cartChangedEvent);
 mySqlObj.priceChanged.connect(priceChangedEvent);
 mySqlObj.stockChanged.connect(stockChangedEvent);
 mySqlObj.balanceChanged.connect(balanceChangedEvent);
+mySqlObj.marginChanged.connect(marginChangedEvent);
+mySqlObj.revenueMade.connect(revenueMadeEvent);
+mySqlObj.profitMade.connect(profitMadeEvent);
 mySqlObj.purchaseDone.connect(purchaseDoneEvent);
+mySqlObj.userLoggedIn.connect(userLoggedInEvent);
 mySqlObj.adminLoggedIn.connect(adminLoggedInEvent);
 mySqlObj.userLoggedOut.connect(userLoggedOutEvent);
 
