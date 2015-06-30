@@ -27,9 +27,9 @@ void kinectInputSimulation(automaton* A, kinectio* K){
         int simulatedDetectedPid = i%9+1;
         if(i>1000) i=0;
         delay(10);
-        A->setPid(simulatedDetectedPid);
+        K->setDetectedPid(simulatedDetectedPid);
         emit K->kinectProductDetected(simulatedDetectedPid);
-        qDebug() << A->getPid();
+        qDebug() << K->getDetectedPid();
     }
 }
 
@@ -37,12 +37,12 @@ int main(int argc, char *argv[]){
     QApplication app(argc, argv);
 
     sqlfunctions obj;
+    kinectio kinect;
 
     // Automat für Sprachsteuerung //////////////////////////////////////////////////////////////////
     automaton automA;
     automA.setObj(&obj);
-
-    kinectio kinect;
+    automA.setKinect(&kinect);
 
     QFuture<void> counterThread = QtConcurrent::run(kinectInputSimulation, &automA, &kinect);
 

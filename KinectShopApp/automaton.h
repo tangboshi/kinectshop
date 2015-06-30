@@ -8,6 +8,7 @@
 #include "state.h"
 #include "transition.h"
 #include "sqlfunctions.h"
+#include "kinectio.h"
 
 class transition;
 typedef vector<transition*>::iterator iterA;
@@ -36,6 +37,7 @@ public:
     void    setPid(unsigned int newPid);
 
     void    setObj(sqlfunctions* mySqlObj);
+    void    setKinect(kinectio* kinect);
     //void    addTransition(transition* toBeAdded);
 
     state            getState();
@@ -47,6 +49,7 @@ private:
     unsigned int            pid;
     unsigned int            amount;
     sqlfunctions*           connectedObj;
+    kinectio*               connectedKinect;
     int                     receivedInput;
 
     /* Transitionen für mehr Automaten als nur diesen einen ermöglichen!

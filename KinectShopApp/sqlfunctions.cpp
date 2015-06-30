@@ -546,8 +546,8 @@ bool sqlfunctions::purchase(){
                 // Signal: Einkauf abgeschlossen, Einkaufswagen leeren
                 emit purchaseDone(cart);
                 emit balanceChanged((-1)*currentCartValue);
-                //emit revenueMade(currentCartValue);
-                //emit profitMade(currentCartValue);
+                emit revenueMade(currentCartValue);
+                emit profitMade(currentCartValue);
 
                 QMessageBox msgBox;
                 QString thankYou ="<p><b> Vielen Dank für Ihren Einkauf! Sie kauften: </b><br></p>";

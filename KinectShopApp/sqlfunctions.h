@@ -35,8 +35,8 @@ class sqlfunctions:public QObject{
         void        balanceChanged(double amount);
         void        priceChanged(double price);
         void        marginChanged(double margin);
-        void        revenueMade(double revenue);    //nicht emittiert
-        void        profitMade(double profit);      //nicht emittiert
+        void        revenueMade(double revenue);
+        void        profitMade(double profit);
         void        stockChanged(double stock);
         void        cartChanged();
 

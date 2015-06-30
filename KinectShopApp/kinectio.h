@@ -3,6 +3,9 @@
 
 #include <QObject>
 
+// #define gesture ...
+// #define command ...
+
 class kinectio :public QObject
 {
     Q_OBJECT
@@ -17,7 +20,11 @@ class kinectio :public QObject
         //void      kinectGestureDetected(gesture gst);
 
     public slots:
+        void        setDetectedPid(int pid);
+        int         getDetectedPid();
+
     private:
+        int         detectedPid;
 };
 
 #endif // KINECTIO_H

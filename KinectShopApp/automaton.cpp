@@ -198,6 +198,10 @@ void automaton::setObj(sqlfunctions *obj){
     connectedObj = obj;
 }
 
+void automaton::setKinect(kinectio *kinect){
+    connectedKinect = kinect;
+}
+
 state automaton::getState(){
     return currentState;
 }

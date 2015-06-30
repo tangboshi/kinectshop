@@ -382,26 +382,25 @@ function stockChangedEvent(){
 }
 
 function balanceChangedEvent(){
-    //alert("The balance has changed!");
+    alert("The balance has changed!");
     refreshAccountData();
 }
 
 function marginChangedEvent(){
-    //alert("The margin of a product has been changed.");
+    alert("The margin of a product has been changed.");
 }
 
-// Signal wird in sqlfunction.cpp niemals emittiert
 function revenueMadeEvent(){
     alert("Revenue has been made.");
 }
 
-// Signal wird in sqlfunctions.cpp niemals emittiert
 function profitMadeEvent(){
     alert("Profit has been made.");
 }
 
 function purchaseDoneEvent(){
     alert("The purchase has been completed!");
+    $("#ware-administration").html(mySqlObj.listAllProducts("checkboxes"));
 }
 
 function userLoggedInEvent(){
