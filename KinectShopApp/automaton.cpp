@@ -58,6 +58,7 @@ void automaton::transitions(int input){
         case SELECT:
             // neue pid hier setzen
             setState(selected);
+            this->setPid(connectedKinect->getDetectedPid());
             break;
         default:
             qDebug() << "FEHLER: case IDLE";
@@ -134,6 +135,59 @@ void automaton::transitions(int input){
     }
 }
 
+QString automaton::updateStatusViewer(){
+    stringstream stream;
+
+    int currentId = currentState.getId();
+    string currentStateName;
+
+    switch(currentId){
+        case 0:
+            currentStateName = "Idle";
+            break;
+        case 1:
+            currentStateName = "Selected";
+            break;
+        case 2:
+            currentStateName = "Amountset";
+            break;
+        case 3:
+            currentStateName = "Finished";
+            break;
+        default:
+            currentStateName = "Fehler!";
+    }
+
+    stream << "<p>Sie befinden sich in folgenden Zustand: " << currentStateName << " </p>" << endl;
+
+    string s = stream.str();
+    QString htmlOutput = QString::fromStdString(s);
+
+    return htmlOutput;
+}
+
+QString automaton::updateAmountViewer(){
+    stringstream stream;
+
+    stream << "<p>Die Anzahl der im Automaten festgelegten Einheiten: " << amount << " </p>" << endl;
+
+    string s = stream.str();
+    QString htmlOutput = QString::fromStdString(s);
+
+    return htmlOutput;
+}
+
+QString automaton::updateIdViewer(){
+    stringstream stream;
+
+    stream << "<p>Die Produkt-ID, die im Automaten gespeichert ist: " << pid << " </p>" << endl;
+
+    string s = stream.str();
+    QString htmlOutput = QString::fromStdString(s);
+
+    return htmlOutput;
+}
+
 /*
 void automaton::receiveInput(int input){
     receivedInput = input;
@@ -176,6 +230,7 @@ void automaton::getTransition(int inputValue, state inputFrom){
 
 void automaton::setState(state newState){
     currentState = newState;
+    emit stateChanged(newState.getId());
 
     // Testfunktion
     QMessageBox msgBox;
@@ -188,10 +243,12 @@ void automaton::setState(state newState){
 
 void automaton::setAmount(unsigned int newAmount){
     amount = newAmount;
+    emit amountChanged(newAmount);
 }
 
 void automaton::setPid(unsigned int newPid){
     pid = newPid;
+    emit idChanged(newPid);
 }
 
 void automaton::setObj(sqlfunctions *obj){

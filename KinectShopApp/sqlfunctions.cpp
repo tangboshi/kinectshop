@@ -837,33 +837,31 @@ void sqlfunctions::changeBalance(int id, QString mode, double number){
     query.exec();
     query.next();
     double balance = query.value(0).toDouble();
+    int oldBalance = balance;
 
     QMessageBox msgBox;
     if(mode == "add"){
         balance += number;
         msgBox.setText("Ihr Guthaben wurde erfolgreich um "+QString::number(number)+" aufgelden. Es beträgt nun insgesamt "+QString::number(balance)+".");
         //msgBox.exec();
-        emit balanceChanged(number);
     }
     else if(mode == "set"){
-        int oldBalance = balance;
         balance = number;
         msgBox.setText("Ihr Guthaben wurde erfolgreich auf"+QString::number(number)+" aufgeladen.");
         //msgBox.exec();
-        emit balanceChanged(oldBalance - balance);
     }
     else if(mode == "scale"){
-        int oldBalance = balance;
         balance *= number;
         msgBox.setText("Ihr Guthaben wurde erfolgreich um den Faktor"+QString::number(number)+" skaliert. Es beträgt nun insgesamt "+QString::number(balance)+".");
         //msgBox.exec();
-        emit balanceChanged(oldBalance - balance);
-    }
 
+    }
     query.prepare("UPDATE users SET balance=:balance WHERE id=:id");
     query.bindValue(":balance", balance);
     query.bindValue(":id", id);
     query.exec();
+
+    emit balanceChanged(oldBalance - balance);
 }
 
 // Passwort ändern

@@ -21,15 +21,17 @@ void delay(int n){
 }
 
 void kinectInputSimulation(automaton* A, kinectio* K){
+    Q_UNUSED(A);
+
     int i = 0;
     while(1){
         i++;
         int simulatedDetectedPid = i%9+1;
         if(i>1000) i=0;
-        delay(10);
+        delay(5);
         K->setDetectedPid(simulatedDetectedPid);
         emit K->kinectProductDetected(simulatedDetectedPid);
-        qDebug() << K->getDetectedPid();
+        // qDebug() << K->getDetectedPid();
     }
 }
 

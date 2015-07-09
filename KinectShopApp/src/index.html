@@ -8,6 +8,7 @@
         <link rel="stylesheet" type="text/css" href="css/styles.css">
         <link rel="stylesheet" type="text/css" href="css/tabs.css">
         <link rel="stylesheet" type="text/css" href="css/font-awesome.min.css">
+        <link rel="stylesheet" type="text/css" href="css/cdp-viewmodeswitch.css">
 
         <script type="text/javascript" src="js/jquery.min.js"></script>
         <script type="text/javascript" src="js/functions.js"></script>
@@ -131,23 +132,103 @@
                     </nav><!--
                  --><div id="content">
                          <div class="section active" id="start">
-                            <p>
+                            <h3>
                                 Willkommen im Kinect-Süßigkeiten-Shop!<br>
-                                Fast alle Features müssen noch implementiert werden!
-                            </p>
+                            </h3>
                             <p>
-                                <ol>Prioritäten:
-                                    <li>Funktionierendes Einkaufssystem per Klick</li>
-                                    <li>Funktionierendes Einkaufssystem via beliebiger Kinectfunktion</li>
-                                    <li>Kinect-Daten einbinden</li>
-                                    <li>Einkaufstatistiken mit SQL+flot (jQuery-Plugin)</li>
-                                </ol>
+                                Dieses Bild soll die grobe Struktur der Funktiosweise dieses Programms erläutern:
                             </p>
+                            <img src="img/structure.png" style="width:800px;">
+
                          </div>
                          <div class="section inactive" id="products">
-                            <p>
+                             <p>
                                 Dies ist eine Übersicht mit Produkten, die sie kaufen können.
                              </p>
+
+                            <!--- ############################################## -->
+
+                                <div id="cbp-vm" class="cbp-vm-switcher cbp-vm-view-grid">
+                                        <div class="cbp-vm-options">
+                                                <a href="#" class="cbp-vm-icon cbp-vm-grid cbp-vm-selected" data-view="cbp-vm-view-grid">Grid View</a>
+                                                <a href="#" class="cbp-vm-icon cbp-vm-list" data-view="cbp-vm-view-list">List View</a>
+                                        </div>
+                                        <ul>
+                                                <li>
+                                                        <a class="cbp-vm-image" href="#"><img src="img/1.png"></a>
+                                                        <h3 class="cbp-vm-title">Alpenmilch</h3>
+                                                        <div class="cbp-vm-details">
+                                                                Feinste Schokolade mit zartem Schmelz aus bester Alpenmilch
+                                                                von glücklichen Almkühen.
+                                                        </div>
+                                                </li>
+                                                <li>
+                                                        <a class="cbp-vm-image" href="#"><img src="img/2.jpg"></a>
+                                                        <h3 class="cbp-vm-title">Fritt</h3>
+                                                        <div class="cbp-vm-details">
+                                                                Wow ist Fritt ein Kau! Jetzt mit verbesserter Rezeptur für noch
+                                                                längeres Kauvergnügen.
+                                                        </div>
+                                                </li>
+                                                <li>
+                                                        <a class="cbp-vm-image" href="#"><img src="img/3.jpg"></a>
+                                                        <h3 class="cbp-vm-title">Joghurt</h3>
+                                                        <div class="cbp-vm-details">
+                                                                Was ist leckerer als ein Becher randvoll von edlem Joghurt?
+                                                        </div>
+                                                </li>
+                                                <li>
+                                                        <a class="cbp-vm-image" href="#"><img src="img/4.jpg"></a>
+                                                        <h3 class="cbp-vm-title">Katzenohren</h3>
+                                                        <div class="cbp-vm-details">
+                                                                Lakritze in Form von Katzenohren! Was will man mehr?
+                                                        </div>
+                                                </li>
+                                                <li>
+                                                        <a class="cbp-vm-image" href="#"><img src="img/5.jpg"></a>
+                                                        <h3 class="cbp-vm-title">KitKat</h3>
+                                                        <div class="cbp-vm-details">
+                                                                Der Klassiker unter den Schoko-Riegeln. Ein KitKat geht immer!
+                                                        </div>
+                                                </li>
+                                                <li>
+                                                        <a class="cbp-vm-image" href="#"><img src="img/6.jpg"></a>
+                                                        <h3 class="cbp-vm-title">Knusperflakes</h3>
+                                                        <div class="cbp-vm-details">
+                                                                Knusperflakes für die extra Portion Cerealien!
+                                                                Ein knuspriges Vergnügen im praktischen Quadrat.
+                                                        </div>
+                                                </li>
+                                                <li>
+                                                        <a class="cbp-vm-image" href="#"><img src="img/7.jpg"></a>
+                                                        <h3 class="cbp-vm-title">Lakritz</h3>
+                                                        <div class="cbp-vm-details">
+                                                                Manche mögen keinen Lakritz, die anderen lieben ihn!
+                                                                Wir gehören zu den letzteren Liebhabern der edlen Süßspeise.
+                                                        </div>
+                                                </li>
+                                                <li>
+                                                        <a class="cbp-vm-image" href="#"><img src="img/8.jpg"></a>
+                                                        <h3 class="cbp-vm-title">Schlümpfe</h3>
+                                                        <div class="cbp-vm-details">
+                                                                Schlümpfe zum Vernaschen, wäre Gargamel noch am Leben,
+                                                                sein Traum wäre in Erfüllung gegangen.
+                                                        </div>
+                                                </li>
+                                                <li>
+                                                        <a class="cbp-vm-image" href="#"><img src="img/9.jpg"></a>
+                                                        <h3 class="cbp-vm-title">Yogurette</h3>
+                                                        <div class="cbp-vm-details">
+                                                                Sie mögen Joghurt? Sie mögen auch Schokolade und können sich nicht recht
+                                                                entscheiden? Nehmen Sie doch 2-in-1, nehmen Sie die Yogurette!
+                                                        </div>
+                                                </li>
+                                        </ul>
+                                </div>
+
+                            <!-- ############################################### -->
+
+
                          </div>
                          <div class="section inactive" id="shop">
                             <p>
@@ -456,9 +537,16 @@
                          </div>
 
                          <div class="section inactive" id="account-profile">
-                            <div class="testblock-large">
-                                <p> Testtext </p>
-                            </div>
+                            <p>
+                                Dies ist das Accountprofil des Kunden
+                            </p>
+                            <p>
+                                Diese Funktion zur statischen Auswertung sowie diese selbst
+                                wurden aus Zeitgründen nicht fertiggestellt. </p>
+                            <p>
+                                Grundsätzlich wäre dies mithilfe von chart.js, aber
+                                relativ schnell umsetzbar.
+                            </p>
                          </div>
 
                          <div class="section inactive" id="kinect">
@@ -466,18 +554,34 @@
                                 Ausgabe der Sensoren und Produkterkennung.
                             </p>
 
+                            <div id="automaton-status">
+                                <p>Sie befinden sich in folgenden Zustand: Idle</p>
+                            </div>
+
+                            <div id="automaton-id">
+                                <p>Die Produkt-ID, die im Automaten gespeichert ist: keine</p>
+                            </div>
+
+                            <div id="automaton-amount">
+                                <p>Die Anzahl der im Automaten festgelegten Einheiten: 0</p>
+                            </div>
+
+                            <div id="kinect-detected-id">
+                                <p>Folgendes Produkt wurde erkannt: 2</p>
+                            </div>
+
                             <h2> Sprachsteuerung setzen </h2>
                             <button class="blue-button" id="automCmd100">
                                 <span class="fa fa-plus"></span>
                                 selektieren
                             </button>
-                            <button class="blue-button" id="automCmd101">
-                                <span class="fa fa-shopping-cart"></span>
-                                Cart
-                            </button>
                             <button class="blue-button" id="automCmd2">
                                 <span class="fa fa-plus"></span>
                                 TWO
+                            </button>
+                            <button class="blue-button" id="automCmd101">
+                                <span class="fa fa-shopping-cart"></span>
+                                Cart
                             </button>
                             <button class="blue-button" id="automCmd102">
                                 <span class="fa fa-plus"></span>
@@ -491,6 +595,10 @@
                                 <span class="fa fa-plus"></span>
                                 MORE
                             </button>
+
+                            <br><br>
+                            <img src="img/automaton.png" style="margin:auto">
+
                         </div>
                     </div>
                 </div><!--
@@ -544,6 +652,9 @@
             var wareList = new List('ware-administration', optionsListAllProducts);
             alert("This is executed! Booyah!");
         </script>
+        <script type="text/javascript" src="js/classie.js"></script>
+        <script type="text/javascript" src="js/modernizr.custom.js"></script>
+        <script type="text/javascript" src="js/cbpViewModeSwitch.js"></script>
     </body>
 
 </html>

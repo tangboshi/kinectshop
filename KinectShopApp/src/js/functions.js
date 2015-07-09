@@ -61,6 +61,7 @@ $(document).ready(function(){
     $("#product-display").on('click', '[id^=removeItem]', function(){
         var pid = $(this).attr("id").slice(10);
         var diff =  $("#itemAmount"+pid).val();
+        if (isNaN(diff) === true){alert("Error: NaN!"); return};
         var mode = "sub";
         if(diff > 0){
             // Testfunktion
@@ -133,6 +134,7 @@ $(document).ready(function(){
     // Guthaben aufladen
     $("#refillBalance").click(function(){
         var amount = $("#amount").val();
+        if (isNaN(amount) === true){alert("Error: NaN!"); return};
         // Testfunktion
         // alert("Der eingegebene Betrag war: "+amount+".");
         mySqlObj.changeBalance(mySqlObj.getUid(),"add",amount);
@@ -220,6 +222,7 @@ $(document).ready(function(){
     $("#changeBalance").click(function(){
         var mode = $("#balance-admin-mode").val();
         var amount = $("#balance-admin-amount").val();
+        if (isNaN(amount) === true){alert("Error: NaN!"); return};
 
         // Testfunktion
         //alert(mode+","+amount);
@@ -241,6 +244,7 @@ $(document).ready(function(){
     $("#changeStock").click(function(){
         var mode = $("#stock-admin-mode").val();
         var amount = $("#stock-admin-amount").val();
+        if (isNaN(amount) === true){alert("Error: NaN!"); return};
 
         // Testfunktion
         //alert(mode+","+amount);
@@ -253,6 +257,7 @@ $(document).ready(function(){
     $("#changeWarePrice").click(function(){
         var mode = $("#price-admin-mode").val();
         var amount = $("#price-admin-amount").val();
+        if (isNaN(amount) === true){alert("Error: NaN!"); return};
 
         // Testfunktion
         //alert(mode+","+amount);
@@ -265,6 +270,7 @@ $(document).ready(function(){
     $("#changeMargin").click(function(){
         var mode = $("#margin-admin-mode").val();
         var amount = $("#margin-admin-amount").val();
+        if (isNaN(amount) === true){alert("Error: NaN!"); return};
 
         // Testfunktion
         //alert(mode+","+amount);
@@ -375,7 +381,7 @@ function cartChangedEvent(){
 
 function priceChangedEvent(){
     alert("The price has changed!");
-}
+}alert("The state has changed!");
 
 function stockChangedEvent(){
     alert("The stock has changed!");
@@ -416,6 +422,25 @@ function userLoggedOutEvent(){
     alert("The user has logged out!");
 }
 
+function stateChangedEvent(){
+    alert("The state of the automaton has changed!");
+    $("#automaton-status").html(automaton.updateStatusViewer());
+}
+
+function idChangedEvent(){
+    alert("The product id saved in the automaton has changed!");
+    $("#automaton-id").html(automaton.updateIdViewer());
+}
+
+function amountChangedEvent(){
+    alert("The amount in the automaton has changed!");
+    $("#automaton-amount").html(automaton.updateAmountViewer());
+}
+
+function productDetectedEvent(){
+    $("#kinect-detected-id").html(kinect.updateDetectedPidViewer());
+}
+
 mySqlObj.cartChanged.connect(cartChangedEvent);
 mySqlObj.priceChanged.connect(priceChangedEvent);
 mySqlObj.stockChanged.connect(stockChangedEvent);
@@ -427,5 +452,10 @@ mySqlObj.purchaseDone.connect(purchaseDoneEvent);
 mySqlObj.userLoggedIn.connect(userLoggedInEvent);
 mySqlObj.adminLoggedIn.connect(adminLoggedInEvent);
 mySqlObj.userLoggedOut.connect(userLoggedOutEvent);
+
+automaton.stateChanged.connect(stateChangedEvent);
+automaton.idChanged.connect(idChangedEvent);
+automaton.amountChanged.connect(amountChangedEvent);
+kinect.kinectProductDetected.connect(productDetectedEvent);
 
 // ------------------- //////////////////////////////////////////////////////////////////

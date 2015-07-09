@@ -11,6 +11,8 @@
 #include "kinectio.h"
 
 class transition;
+class kinectio;
+
 typedef vector<transition*>::iterator iterA;
 
 class automaton : public QObject{
@@ -20,16 +22,24 @@ public:
 
 signals:
     void      stateChanged(int input);
+    void      idChanged(int id);
+    void      amountChanged(int amount);
     void      inputReceived(int input, state from);
     void      transitionToExecute(transition* toBeExecuted);
 
 public slots:
     // Notfalls mit dieser Klasse nur einen einzigen, den benötigten Automaten realisieren
-    void        transitions(int input);
+    void       transitions(int input);
+
     //void        receiveInput(int input);
     // Keine getter-Funktion, schlägt Transition im Vektor nach und emittet transitionToExecute(transition*)
     //bool      isCorrectTransition(transition* inputTransition);
     //void      getTransition(int input, state from);
+
+    // Aktualisiere Ansicht in Kinect-Tab
+    QString     updateStatusViewer();
+    QString     updateIdViewer();
+    QString     updateAmountViewer();
 
 public:
     void    setState(state newState);
@@ -57,9 +67,6 @@ private:
     int                     searchInput;
     state                   searchState;
     */
-
-    // Plan: receivedInput wird erhalten, indem die Funktion receiveInput() ausgelöst wird. receiveInput emittet ein SIGNAL inputReceived(state from, int input)
-    // executeTransition(transition myTransition) wird im Konstruktor der Transition mit SIGNAL inputReceived connectet.
 };
 
 #endif // AUTOMATON_H

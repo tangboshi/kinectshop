@@ -2,9 +2,14 @@
 #define KINECTIO_H
 
 #include <QObject>
+#include <QString>
+
+#include "automaton.h"
 
 // #define gesture ...
 // #define command ...
+
+class automaton;
 
 class kinectio :public QObject
 {
@@ -22,6 +27,7 @@ class kinectio :public QObject
     public slots:
         void        setDetectedPid(int pid);
         int         getDetectedPid();
+        QString     updateDetectedPidViewer();
 
     private:
         int         detectedPid;
