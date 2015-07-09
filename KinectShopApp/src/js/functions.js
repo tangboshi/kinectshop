@@ -456,6 +456,7 @@ mySqlObj.userLoggedOut.connect(userLoggedOutEvent);
 automaton.stateChanged.connect(stateChangedEvent);
 automaton.idChanged.connect(idChangedEvent);
 automaton.amountChanged.connect(amountChangedEvent);
+
 kinect.kinectProductDetected.connect(productDetectedEvent);
 
 // ------------------- //////////////////////////////////////////////////////////////////
