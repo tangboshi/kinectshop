@@ -5,6 +5,12 @@
 
 class automaton;
 
+/**
+ * @class transition Class
+ * @brief von QObject erbende Klasse
+ * Diese Klasse stellt Funktionen zur Verfuegung um Transitionen (eines Automaten) zu verwalten.
+ * Sie besteht aus Funktionen, Slots und privaten Membern.
+ */
 class transition : public QObject
 {
 public:
@@ -22,10 +28,10 @@ public slots:
     void        executeTransition(transition* toBeExecuted);
 
 private:
-    state       from;
-    state       to;
-    int         input;
-    automaton*  connectedAutomaton;
+    state       from;				///< Ausgangszustand
+    state       to;					///< Zustand nach der Transition
+    int         input;				///< Eingabe
+    automaton*  connectedAutomaton;	///< Zugehoeriger Automat
 };
 
 #endif // TRANSITION_H

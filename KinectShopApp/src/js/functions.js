@@ -1,5 +1,10 @@
 // Shop initialisieren ///////////////////////////////////////////////////////////////////
 
+/*
+  * @brief Fügt bei #shop-items den return von listAllProducts ein
+  * @return void
+  */
+
 $(document).ready(function(){
     // Liste alle Produkte im Shop auf
     $("#shop-items").html(mySqlObj.listAllProducts());
@@ -8,6 +13,12 @@ $(document).ready(function(){
     $("#product-display").html(mySqlObj.showCart());
 });
 
+/*
+  * @brief Fügt bei #user-administration den return von listAllUsers ein
+  * Fügt bei #ware-administration den return von listAllProducts ein
+  * @return void
+  */
+
 // Shopverwaltung
 $(document).ready(function(){
     $("#user-administration").html(mySqlObj.listAllUsers());
@@ -15,6 +26,13 @@ $(document).ready(function(){
 });
 
 // ------------------- //////////////////////////////////////////////////////////////////
+
+/*
+  * @brief Funktion zur Aktualisierung der Account-Anzeige
+  * (Name, Geld, Admin/Kunde, Warenkorbwert)
+  * wird von diversen eventbasierten Funktionen aufgerufen.
+  * @return void
+  */
 
 function refreshAccountData(){
     var currentBalance = mySqlObj.getBalance();
@@ -37,10 +55,28 @@ function refreshAccountData(){
 
 // Click-Events
 $(document).ready(function(){
+
+    /*
+      * @brief Beim Klick auf #purchase wird die
+      * Funktion purchase() aufgerufen.
+      * @return void
+      */
+
     $("#purchase").on('click', function(){
         mySqlObj.purchase();
     });
 
+    /*
+      * @brief Beim Klick auf #^buyCartItem wird die
+      * Funktion addToCart(pid, amount, price, title) aufgerufen (delegiert).
+      * Die angegebenen Parameter beziehen sich nicht auf die Funktion,
+      * sondern auf die in der Funktion aufgerufenen FUnktion.
+      * @param pid ist der Produkt-Id
+      * @param amount ist die dem Warenkorb hinzugefügte Menge
+      * @param price ist der Preis einer Einheit dieses Produkts
+      * @param title ist der Name des Produkts
+      * @return void
+      */
     // Produkt in den Warenkorb legen
     $("#shop-items").on('click', '[id^=buyCartItem]', function(){
         var pid = $(this).attr("id").slice(11);
@@ -58,6 +94,17 @@ $(document).ready(function(){
     });
 
     // Produktanzahl im Warenkorb reduzieren
+    /*
+      * @brief Beim Klick auf #^removeItem wird die
+      * Funktion changeAmount(pid, diff, mode) mit mode="sub" aufgerufen (delegiert).
+      * Die angegebenen Parameter beziehen sich nicht auf die Funktion,
+      * sondern auf die in der Funktion aufgerufenen FUnktion.
+      * @param pid Produkt-ID
+      * @param diff Anzahl der zu entfernenden Produkteinheiten
+      * @param mode Modus, hier nur sub
+      * @return void
+      */
+
     $("#product-display").on('click', '[id^=removeItem]', function(){
         var pid = $(this).attr("id").slice(10);
         var diff =  $("#itemAmount"+pid).val();
@@ -76,9 +123,23 @@ $(document).ready(function(){
         }
     });
 
+    /*
+      *@brief Logout-Funktion wird beim Klick auf das X aufgerufen.
+      *@return void.
+    */
     // Verlassen-Button
     $("#quit").click(Qt.quit);
 
+    /*
+      * @brief Beim Klick auf #^login wird die
+      * Funktion login(usernamem password) aufgerufen. Anschließend wird der
+      * erfolgreiche Login überprüft und ggf. Anpassungen am UI vorgenommen.
+      * Die angegebenen Parameter beziehen sich nicht auf die Funktion,
+      * sondern auf die in der Funktion aufgerufenen FUnktion.
+      * @param username Benutzername
+      * @param password Passwort
+      * @return void
+      */
     // Login
     $("#login").click(function(){
         var username = $("#username").val();
@@ -103,7 +164,10 @@ $(document).ready(function(){
         }
     });
 
-
+    /*
+     * @brief Logout-Funktion (wird beim Klick auf #logout aufgerufen)
+     * @return void
+     */
     // Logout
     $("#logout").click(function(){
         mySqlObj.logout();
@@ -121,6 +185,16 @@ $(document).ready(function(){
         $("#navStart").click().addClass("active").removeClass("inactive");
     });
 
+    /*
+      * @brief Beim Klick auf #register wird die
+      * Funktion login(usernamem password, repeatedPassword) aufgerufen.
+      * Die angegebenen Parameter beziehen sich nicht auf die Funktion,
+      * sondern auf die in der Funktion aufgerufenen Funktion.
+      * @param username Benutzername
+      * @param password Passwort
+      * @param repeatedPassword wiederholtes Passwort
+      * @return void
+      */
     // User registrieren
     $("#register").click(function(){
         var username = $("#rUsername").val();
@@ -131,6 +205,16 @@ $(document).ready(function(){
         mySqlObj.registerUser(username, password, repeatedPassword);
     });
 
+    /*
+     * @brief Beim Klick auf #refillBalance wird die Funktion
+     * changeBalance(id,mode,amount) aufgerufen
+     * Die angegebenen Parameter beziehen sich nicht auf die Funktion,
+     * sondern auf die in der Funktion aufgerufenen Funktion.
+     * @param id User-Id
+     * @param mode hier nur "add" zum hinzufügen von Userguthaben
+     * @param amount Geldmenge
+     * @return void
+     */
     // Guthaben aufladen
     $("#refillBalance").click(function(){
         var amount = $("#amount").val();
@@ -140,11 +224,25 @@ $(document).ready(function(){
         mySqlObj.changeBalance(mySqlObj.getUid(),"add",amount);
     });
 
+    /*
+     * @brief Beim Klick auf #listAllProducts wird die Funktion
+     * listAllProducts() aufgerufen
+     * Die angegebenen Parameter beziehen sich nicht auf die Funktion,
+     * sondern auf die in der Funktion aufgerufenen Funktion.
+     * @return QString (Produkttabelle in HTML-Format)
+     */
     // Warentabelle ausgeben
     $("#listAllProducts").click(function(){
         $("#ware-administration").html(mySqlObj.listAllProducts("checkboxes"));
     });
 
+    /*
+     * @brief Beim Klick auf #listAllUsers wird die Funktion
+     * listAllUsers() aufgerufen
+     * Die angegebenen Parameter beziehen sich nicht auf die Funktion,
+     * sondern auf die in der Funktion aufgerufenen Funktion.
+     * @return QString (Usertabelle in HTML-Format)
+     */
     // Usertabelle ausgeben
     $("#listAllUsers").on("click", function(){
         $("#user-administration").html(mySqlObj.listAllUsers());
@@ -153,6 +251,12 @@ $(document).ready(function(){
     // User Action Events ////////////////////////////////////////////////////////////
 
     // ids zu gecheckten Checkboxen ermitteln
+    /*
+     * @brief Liefert den Inhalt von von Tabellenzellen direkt neben gecheckten
+     * Checkboxen zurück (ids)
+     * @param ein Objekt in der "Nähe" eines <table> (siehe Funktion)
+     * @return Array mit ids
+     */
     function getIds(obj){
         var $table = obj.parent().siblings().find("table");
         // alert($table.attr("id"));
@@ -162,6 +266,16 @@ $(document).ready(function(){
         }).toArray();
     }
 
+    /*
+     * @brief Codesparfunktion! Da hier viele Funktionen hier ähnlich aufgabeuat
+     * sind hier eine Funktion die eine Callback, ein Objekt, sowie bis zu zwei
+     * Funktionsparameter annimmt.
+     * @param callback Rückruffunktion
+     * @param obj Objekt (hier meist Objekt in der "Nähe" einer Tabelle), auf die sich die Funktion bezieht
+     * @param argument1 (optionales) erstes Funktionsargument des Callbacks
+     * @param argument2 (optionales) zweites Funktionsargument des Callbacks
+     * @return void
+     */
     function userActionEvent(callback, obj, argument1, argument2){
         var ids = getIds(obj);
         if(typeof argument2 !== 'undefined'){
@@ -186,17 +300,31 @@ $(document).ready(function(){
         $("#user-administration").html(mySqlObj.listAllUsers());
     }
 
+    /*
+     * @brief Beim Klick auf #empowerUser wird die (indirekt) Funktion
+     * empowerUser() aufgerufen, genauere Beschreibung im C++ Teil (analog zu
+     * fast allen anderen Funktionen von oben), macht User zum Admin.
+     * @return void
+     */
     // User zum Admin ernennen
     $("#empowerUser").click(function(){
         userActionEvent(mySqlObj.empowerUser, $(this));
     });
 
-    // User Admin-Status entziehen
+    /*
+     * @brief Beim Klick auf #disempowerUser wird die (indirekt) Funktion
+     * disempowerUser() aufgerufen, genauere Beschreibung im C++ Teil (analog zu
+     * fast allen anderen Funktionen von oben), entzieht User Adminprivilegien.
+     * @return void
+     */
     $("#disempowerUser").click(function(){
         userActionEvent(mySqlObj.disempowerUser, $(this));
     });
 
-    // Account blocken
+    /*
+     * @brief ... blockt Account.
+     * @return void
+     */
     $("#blockAccount").click(function(){
         var duration = $(this).find("#acc-admin-duration").val();
 
@@ -208,16 +336,28 @@ $(document).ready(function(){
         }
     });
 
+    /*
+     * @brief ... entblockt Account.
+     * @return void
+     */
     // Account entblocken
     $("#unblockAccount").click(function(){
         userActionEvent(mySqlObj.unblockAccount, $(this));
     });
 
+    /*
+     * @brief ... löscht Account.
+     * @return void
+     */
     // Account terminieren
     $("#terminateAccount").click(function(){
         userActionEvent(mySqlObj.terminateAccount, $(this));
     });
 
+    /*
+     * @brief analog zu refillBalance (aber nur Admins haben Zugriff).
+     * @return void
+     */
     // User-Guthaben ändern
     $("#changeBalance").click(function(){
         var mode = $("#balance-admin-mode").val();
@@ -231,7 +371,10 @@ $(document).ready(function(){
         $("#user-administration").html(mySqlObj.listAllUsers());
     });
 
-    // Zwingen den User sein Passwort zu ändern
+    /*
+     * @brief ... zwingt den User sein Passwort zu ändern (nur Admins).
+     * @return void
+     */
     $("#changePassword").click(function(){
         var mode = $("#password-admin-mode").val();
         // Testfunktion
@@ -240,7 +383,10 @@ $(document).ready(function(){
     });
 
 
-    // Warenbestand ändern
+    /*
+     * @brief ... verändert Warenbestand (nur Admins).
+     * @return void
+     */
     $("#changeStock").click(function(){
         var mode = $("#stock-admin-mode").val();
         var amount = $("#stock-admin-amount").val();
@@ -253,7 +399,10 @@ $(document).ready(function(){
         $("#ware-administration").html(mySqlObj.listAllProducts("checkboxes"));
     });
 
-    // Warenpreis ändern
+    /*
+     * @brief ... verändert Preise (nur Admins).
+     * @return void
+     */
     $("#changeWarePrice").click(function(){
         var mode = $("#price-admin-mode").val();
         var amount = $("#price-admin-amount").val();
@@ -266,7 +415,10 @@ $(document).ready(function(){
         $("#ware-administration").html(mySqlObj.listAllProducts("checkboxes"));
     });
 
-    // Warenmarge ändern
+    /*
+     * @brief ... verändert Gewinnmarge (nur Admins).
+     * @return void
+     */
     $("#changeMargin").click(function(){
         var mode = $("#margin-admin-mode").val();
         var amount = $("#margin-admin-amount").val();
@@ -279,7 +431,10 @@ $(document).ready(function(){
         $("#ware-administration").html(mySqlObj.listAllProducts("checkboxes"));
     });
 
-    // Alles auswählen Checkboxen
+    /*
+     * @brief ... wählt alle Checkboxen des nächsten <table> aus (nur Admins, delegiert).
+     * @return void
+     */
     $("body").on("change", ".selectAll", function(){
         var cid = $(this).prop("id");
         if(this.checked) {
@@ -294,6 +449,11 @@ $(document).ready(function(){
         }
     });
 
+    /*
+     * @brief ... sorgt dafür, dass nur der aktuell in der Navigation ausgewählte
+     * Menüpunkt auf der rechten Seite angezeigt wird.
+     * @return void
+     */
     // Nur ausgewählten Menüpunkt anzeigen
     $("#left-nav ul li[title]").click(function(){
       var x = $(this).attr("title");
@@ -305,7 +465,10 @@ $(document).ready(function(){
 });
 
 // Hilfsfunktionen
-// Sortierfunktion
+/*
+ * @brief ... Sortierfunktion für Tabelle (delegiert)
+ * @return void
+ */
 $(document).ready(function(){
     // Verschiedene Datentypen miteinander vergleichen
     var compare = {
@@ -362,6 +525,10 @@ $(document).ready(function(){
 
 // "Simulation der Spracherkennung"
 
+/*
+ * @brief ... Automatenbefehls# aus HTML# auslesen und dann entsprechende Transition ausführen.
+ * @return void
+ */
 $(document).ready(function(){
     $("[id^=automCmd]").on("click", function(){
         // alert("Succesfull call!");
@@ -374,6 +541,11 @@ $(document).ready(function(){
 
 // Qt-Funktionen-Connect ////////////////////////////////////////////////////////////////
 
+/*
+ * @brief ... Alle folgenden Funktionen werden durch entsprechende gleichnamige SIGNALS()
+ * im cpp-Teil aufgerufen, siehe connects weiter unten!
+ * @return void
+ */
 function cartChangedEvent(){
     alert("The cart changed!"+" Current Value:"+mySqlObj.getCurrentCartValue());
     refreshAccountData();

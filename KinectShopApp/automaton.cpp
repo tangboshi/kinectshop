@@ -1,5 +1,10 @@
 #include "automaton.h"
 
+/**
+ * @brief Constructor
+ * Setzt den Ausgangszustand zu "IDLE", id=0, stateInfo=0
+ * @param parent Zeiger auf ein QObject (sqlfunctions)
+ */
 automaton::automaton(QObject *parent) :
     QObject(parent)
 {
@@ -22,6 +27,60 @@ automaton::automaton(QObject *parent) :
 // ///////////////////// Transitions /////////////////////
 
 // Zustände
+/**
+ * @def IDLE 0
+ * @brief untaetiger Zustand
+ */
+
+/**
+ * @def SELECTED 1
+ * @brief es wurde ein Produkt ausgewaehlt
+ */
+
+/**
+ * @def AMOUNTSET 2
+ * @brief es wurde eine Anzahl festgelegt
+ */
+
+/**
+ * @def FINISHED 3
+ * @brief der Prozess wurde abgeschlossen
+ */
+
+/**
+ * @def ONE 1
+ * @brief Anzahl Produkte = 1
+ */
+
+/**
+ * @def TWO 2
+ * @brief Anzahl Produkte = 2
+ */
+
+/**
+ * @def SELECT 100
+ * @brief ein Produkt wird ausgewaehlt. Der zugehoerige Status ist SELECTED.
+ */
+
+/**
+ * @def PUTINCART 101
+ * @brief das Produkt wird in den Einkaufswagen abgelegt
+ */
+
+/**
+ * @def BACK 102
+ * @brief der Prozess wird auf den Anfangszustand zurueckgesetzt
+ */
+
+/**
+ * @def CANCEL 103
+ * @brief der Prozess wird auf den Anfangszustand zurueckgesetzt
+ */
+
+/**
+ * @def MORE 104
+ * @brief der Prozess wurde abgeschlossen
+ */
 #define IDLE 0
 #define SELECTED 1
 #define AMOUNTSET 2
@@ -40,6 +99,42 @@ state idle, selected, amountset, finished;
 #define CANCEL 103
 #define MORE 104
 
+/**
+ * @brief eine Transition wird anhand der Eingabe durchgefuehrt
+ * Die IDs der Zustaende idle(IDLE), selected(SELECTED), amountset(AMOUNTSET) und finished(FINISHED) werden gesetzt.
+ * 
+ * Anhand der ID des aktuellen Zustandes wird entschieden:
+ * -IDLE: Anhand der Eingabe wird entschieden:
+ *		 *SELECT: Der neue Zustand ist selected. Die Produkt ID wird (Aufruf getDetectedPid()) bestimmt.
+ *		 *sonst: Fehlermeldung
+ * -SELECTED: Anhand der Eingabe wird entschieden:
+ *		 *ONE: Der neue Zustand ist amountset. Die Produkt Menge ist 1.
+ *		 *TWO: Der neue Zustand ist amountset. Die Produkt Menge ist 2.
+ *		 *BACK: Der neue Zustand ist idle.
+ *		 *CANCEL: Der neue Zustand ist idle.
+ *		 *sonst: Fehlermeldung
+ * -AMOUNTSET: Anhand der Eingabe wird entschieden:
+ *		 *PUTINCART: der neue Zustand ist finished. Das Produkt wird in den Warenkorb abgelegt.
+ *		 *BACK: der neue Zustand ist selected. Die Produkt Menge wird zurueckgesetzt.
+ *		 *CANCEL: der neue Zustand ist idle. Die Produkt Menge wird zurueckgesetzt.
+ *		 *sonst: Fehlermeldung
+ * -FINISHED: Anhand der Eingabe wird entschieden:
+ *		 *MORE: der neue Zustand ist idle. Die Produkt Menge wird zurueckgesetzt.
+ *		 *sonst: Fehlermeldung
+ * @param input Eine Zahl, von der abhaengig ist, welche Aktion als naechstes ausgefuehrt wird.
+ * @return void
+ * @see IDLE 0
+ * @see SELECTED 1
+ * @see AMOUNTSET 2
+ * @see FINISHED 3
+ * @see ONE 1
+ * @see TWO 2
+ * @see SELECT 100
+ * @see PUTINCART 101
+ * @see BACK 102
+ * @see CANCEL 103
+ * @see MORE 104
+ */
 void automaton::transitions(int input){
 
     idle.setId(IDLE);
@@ -166,6 +261,11 @@ QString automaton::updateStatusViewer(){
     return htmlOutput;
 }
 
+/**
+ * @brief Ausgabe der vom Automaten gespeicherten Produktmenge
+ * Eine Nachricht mit der Produktmenge wird in einen Stream geladen, dieser wird in einen String umgewandelt und dann in einem QString gespeichert und ausgegeben.
+ * @return QString: Nachricht mit Produktmenge
+ */
 QString automaton::updateAmountViewer(){
     stringstream stream;
 
@@ -177,6 +277,11 @@ QString automaton::updateAmountViewer(){
     return htmlOutput;
 }
 
+/**
+ * @brief Ausgabe der vom Automaten gespeicherten Produkt ID
+ * Eine Nachricht mit der Produkt ID wird in einen Stream geladen, dieser wird in einen String umgewandelt und dann in einem QString gespeichert und ausgegeben.
+ * @return QString: Nachricht mit Produkt ID
+ */
 QString automaton::updateIdViewer(){
     stringstream stream;
 
@@ -228,6 +333,12 @@ void automaton::getTransition(int inputValue, state inputFrom){
 
 // ///////////////////////////////////////////////////////
 
+/**
+ * @brief setter
+ * Der aktuelle Zustand wird geaendert. Das Signal stateChanged(newState.getID()) wird ausgeloest.
+ * @param newState neuer Zustand 
+ * @return void
+ */
 void automaton::setState(state newState){
     currentState = newState;
     emit stateChanged(newState.getId());
@@ -241,32 +352,66 @@ void automaton::setState(state newState){
     msgBox.exec();
 }
 
+/**
+ * @brief setter
+ * Die Produktmenge wird geaendert. Das Signal amountChanged(newAmount) wird ausgeloest.
+ * @param newAmount neue Produktmenge
+ * @return void
+ */
 void automaton::setAmount(unsigned int newAmount){
     amount = newAmount;
     emit amountChanged(newAmount);
 }
 
+/**
+ * @brief setter
+ * Die Produkt ID wird geaendert. Das Signal idChanged(newPid) wird ausgeloest.
+ * @param newPid neue Produkt ID
+ * @return void
+ */
 void automaton::setPid(unsigned int newPid){
     pid = newPid;
     emit idChanged(newPid);
 }
 
+/**
+ * @brief setter
+ * @param obj Zeiger auf ein sqlfunctions Objekt
+ * @return void
+ */
 void automaton::setObj(sqlfunctions *obj){
     connectedObj = obj;
 }
 
+/**
+ * @brief setter
+ * @param kinect Zeiger auf ein kinectio Objekt
+ * @return void
+ */
 void automaton::setKinect(kinectio *kinect){
     connectedKinect = kinect;
 }
 
+/**
+ * @brief getter
+ * @return state: der aktuelle Zustand
+ */
 state automaton::getState(){
     return currentState;
 }
 
+/**
+ * @brief getter
+ * @return unsigned int: Produktmenge
+ */
 unsigned int automaton::getAmount(){
     return amount;
 }
 
+/**
+ * @brief getter
+ * @return unsigned int: Produkt ID
+ */
 unsigned int automaton::getPid(){
     return pid;
 }

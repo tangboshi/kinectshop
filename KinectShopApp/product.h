@@ -9,6 +9,12 @@
 
 using namespace std;
 
+/**
+ * @class product Class
+ * @brief Nicht erbende Klasse
+ * Diese Klasse stellt Funktionen zur Verfuegung um Produkte zu verwalten.
+ * Sie besteht aus Funktionen und privaten Membern.
+ */
 class product{
     public:
         product();
@@ -32,10 +38,10 @@ class product{
         void operator = (const product &theProduct);
 
     private:
-        int pid;
-        int amount;
-        double price;
-        QString title;
+        int pid;		///< Produkt ID
+        int amount;		///< Menge 
+        double price;	///< Preis	
+        QString title;	///< Name
 };
 
 #endif // PRODUCT_H

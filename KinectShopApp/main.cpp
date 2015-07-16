@@ -14,19 +14,33 @@
 #include "automaton.h"
 #include "kinectio.h"
 
+/**
+ * @brief wartet n Sekunden
+ * @param n zu wartende Anzahl Sekunden
+ * @return void
+ */
 void delay(int n){
     QTime dieTime= QTime::currentTime().addSecs(n);
     while( QTime::currentTime() < dieTime )
     QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
 }
 
+/**
+ * @brief Simulation der Kinect
+ * Simuliert die Erkunnung eines Produktes. Es werden nacheinander Produkt IDs von 1 bis 13 erzeugt.
+ *
+ * Das Signal kinectProductDetected(simulatedDetectedPid) wird ausgeloest.
+ * @param K Zeiger auf kinectio
+ * @param A Zeiger auf automaton
+ * @return void
+ */
 void kinectInputSimulation(automaton* A, kinectio* K){
     Q_UNUSED(A);
 
     int i = 0;
     while(1){
         i++;
-        int simulatedDetectedPid = i%9+1;
+        int simulatedDetectedPid = i%13+1;
         if(i>1000) i=0;
         delay(5);
         K->setDetectedPid(simulatedDetectedPid);

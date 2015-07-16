@@ -15,6 +15,12 @@ class kinectio;
 
 typedef vector<transition*>::iterator iterA;
 
+/**
+ * @class automaton Class
+ * @brief von QObject erbende Klasse
+ * Diese Klasse stellt Funktionen zur Verfuegung um einen Automaten zu verwalten.
+ * Sie besteht aus Funktionen, Slots, Signalen und privaten Membern.
+ */
 class automaton : public QObject{
     Q_OBJECT
 public:
@@ -55,12 +61,12 @@ public:
     unsigned int     getPid();
 
 private:
-    state                   currentState;
-    unsigned int            pid;
-    unsigned int            amount;
-    sqlfunctions*           connectedObj;
-    kinectio*               connectedKinect;
-    int                     receivedInput;
+    state                   currentState;		///< aktueller Zustand
+    unsigned int            pid;				///< Produkt ID des ausgewaehlten Produktes (initialisiert mit 2)
+    unsigned int            amount;				///< Menge des ausgewaehlten Produkts
+    sqlfunctions*           connectedObj;		///< Zeiger auf das zugehoerige sqlfunctions Object
+    kinectio*               connectedKinect;	///< Zeiger auf die verbundene Kinect
+    int                     receivedInput;		///< Test
 
     /* Transitionen für mehr Automaten als nur diesen einen ermöglichen!
     vector<transition*>     transitions;

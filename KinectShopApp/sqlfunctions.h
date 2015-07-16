@@ -23,6 +23,20 @@ using namespace std;
 
 typedef vector<product>::iterator iter;
 
+/**
+ * @class sqlfunctions Class
+ * @brief von QObject erbende Klasse
+ * Diese Klasse stellt Funktionen zur Verfuegung um mit der SQL Datenbank zu kommunizieren.
+ * Sie besteht aus Signalen, zb. purchaseDone(vector<product> cart) oder cartChanged(), 
+ * Slots, zb. listAllProducts(), logout(), 
+ * und privaten Membern.
+ * 
+ * Es gibt Funktionen um den Einkauf im Shop, die Accountverwaltung und den Login, die Nutzerverwaltung und die Warenverwaltung zu regeln.
+ * @see purchaseDone(vector<product> cart)
+ * @see cartChanged()
+ * @see listAllProducts()
+ * @see logout()
+ */
 class sqlfunctions:public QObject{
     Q_OBJECT
 
@@ -121,15 +135,15 @@ class sqlfunctions:public QObject{
 
     private:
         // Accountmanagement --- des eingeloggten Users
-        vector<product>     cart;
-        bool                isLogin;
-        bool                isAdminLoggedIn;
-        int                 uid;
-        QSqlDatabase        db;
-        int                 badTries;
-        time_t              lastTry;
-        time_t              allowedAgain;
-        double              currentCartValue;
+        vector<product>     cart;				///< der Einkaufswagen - gespeichert in einem Vektor
+        bool                isLogin;			///< true (Nutzer angemeldet), false (kein Nutzer angemeldet)
+        bool                isAdminLoggedIn;	///< true (Nutzer ist Admin), false (Nutzer ist nicht Admin)
+        int                 uid;				///< Nutzer ID
+        QSqlDatabase        db;					///< SQL Datenbank (LfB)
+        int                 badTries;			///< Anzahl Fehlversuche bei der Anmeldung
+        time_t              lastTry;			///< Zeit des letzten Anmeldeversuchs
+        time_t              allowedAgain;		///< Zeit des nächsten erlaubten Logins	
+        double              currentCartValue;	///< Gesamtwert des Einkaufswagens
 };
 
 #endif // SQLFUNCTIONS_H

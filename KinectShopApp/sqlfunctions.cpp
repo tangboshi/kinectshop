@@ -1,5 +1,9 @@
 #include "sqlfunctions.h"
 
+/**
+ * @brief Constructor
+ * Baut die Verbindung zur SQL-Datenbank her. Einige Membervariablen werden gesetzt.
+ */
 sqlfunctions::sqlfunctions(){
     // LfB-Datenbank
     db = QSqlDatabase::addDatabase("QMYSQL");
@@ -46,6 +50,12 @@ sqlfunctions::sqlfunctions(){
 // ----------------------------------------------------------------------------------
 
 // Zeige die im Shop verfügbaren Produkte an
+/**
+ * @brief Alle Produkte werden aufgelistet.
+ * Ausgabe einer Tabelle aller vorhandener Produkte (ID, Name, Preis, Verfuegbarkeit(Menge), Menge im Einkaufswagen).
+ * Die Daten werden aus der SQL Datenbank ausgelesen, in einen Stream geladen, dieser wird in einen String umgewandelt und dann in einem QString gespeichert und ausgegeben.
+ * @return QString: Tabelle der Produkte
+ */
 QString sqlfunctions::listAllProducts(){
     QSqlQuery query;
 
@@ -118,6 +128,14 @@ QString sqlfunctions::listAllProducts(){
     return htmlOutput;
 }
 
+
+/**
+ * @brief Alle Produkte werden aufgelistet.
+ * Ausgabe einer Tabelle aller vorhandener Produkte (ID, Name, Preis, Verfuegbarkeit(Menge), Menge im Einkaufswagen).
+ * Die Daten werden aus der SQL Datenbank ausgelesen, in einen Stream geladen, dieser wird in einen String umgewandelt und dann in einem QString gespeichert und ausgegeben.
+ * @param mode Art der Auflistung ("  ", "checkboxes")
+ * @return QString: Tabelle der Produkte
+ */
 QString sqlfunctions::listAllProducts(QString mode){
     QSqlQuery query;
 
@@ -242,7 +260,18 @@ QString sqlfunctions::listAllProducts(QString mode){
     return htmlOutput;
 }
 
+
 // Füge Element in den Warenkorb ein
+/**
+ * @brief ein Produkt wird dem Warenkorb hinzugefuegt.
+ * Ueberprueft, ob ein Produkt bereits im Warenkorb ist (Aufruf isAlreadyInCart(...)) und fuegt das Produkt dem Warenkorb hinzu.
+ * @param pid Produkt ID
+ * @param amount Menge
+ * @param price Preis
+ * @param title Name des Produkts
+ * @return void
+ * @see isAlreadyInCart(int pid, int amount, double price, QString title)
+ */
 void sqlfunctions::addToCart(int pid, int amount, double price, QString title){
 
     product myProduct;
@@ -266,6 +295,17 @@ void sqlfunctions::addToCart(int pid, int amount, double price, QString title){
 
 // Überprüft, ob ein Element bereits im Warenkorb ist, falls ja erhöhe nur die Menge
 // Gibt hinzuzufügendes Produkt an addToCart() zurück.
+/**
+ * @brief ueberprueft, ob ein Produkt bereits im Warenkorb ist.
+ * Durchsucht den Warenkorb nach Produkten mit der angegeben Produkt ID. 
+ * Wird ein entsprechendes Produkt gefunden, so wird die Menge um den Wert erhoeht, der schon im Einkaufswagen abgelegt war. Die restlichen Daten werden beibehalten.
+ * Wird keines gefunden, so wird ein Produkt zurueckgegeben, das die uebergebenen Daten beinhaltet.
+ * @param pid Produkt ID
+ * @param amount Menge
+ * @param price Preis
+ * @param title Name des Produkts
+ * @return product: Klasse, die die uebergebenen Daten (ggf. erhoehte Menge) als Member enthaelt.
+ */
 product sqlfunctions::isAlreadyInCart(int pid, int amount, double price, QString title){
 
     product myProduct;
@@ -284,6 +324,12 @@ product sqlfunctions::isAlreadyInCart(int pid, int amount, double price, QString
 }
 
 // Gibt den Inhalt des Einkaufswagens aus
+/**
+ * @brief Ausgabe des Inhaltes des Einkaufswagens
+ * Ausgabe einer Tabelle aller Produkte (ID, Name, Preis, Menge im Einkaufswagen, Gesamtpreis).
+ * Die Daten werden ueber einen Iterator aus dem Einkaufswagen(vector<product>) ausgelesen, in einen Stream geladen, dieser wird in einen String umgewandelt und dann in einem QString gespeichert und ausgegeben.
+ * @return QString: Tabelle des Inhaltes des Einkaufswagens
+ */
 QString sqlfunctions::showCart(){
 
     stringstream stream;
@@ -347,6 +393,11 @@ QString sqlfunctions::showCart(){
 
 
 // Leert den Einkaufswagen
+/**
+ * @brief Leert den Einkaufswagen
+ * Der Einkaufswagen (vector<product>) wird mithilfe von pop_back() geleert.
+ * @return void
+ */
 void sqlfunctions::clearCart(){
     int size = cart.size();
     while(size){
@@ -358,6 +409,14 @@ void sqlfunctions::clearCart(){
 
 // Wenn man unzufrieden ist mit der Menge an eingekauften Waren, kann man diese ändern.
 // Überladene Funktion
+/**
+ * @brief Das Produkt mit ID pid wird aus dem Warenkorb geloescht
+ * Es wird das Signal cartChanged() ausgeloest.
+ * @param pid Produkt ID
+ * @param mode nur "clear" moeglich.
+ * @return void
+ * @see
+ */
 void sqlfunctions::changeAmount(int pid, QString mode){
         if(mode=="clear"){
             iter cursor = find(cart.begin(), cart.end(), pid);
@@ -368,6 +427,20 @@ void sqlfunctions::changeAmount(int pid, QString mode){
         emit cartChanged();
 }
 
+/**
+ * @brief Das Produkt mit ID pid wird geaendert.
+ * In Abhaengigkeit von mode wird eine Menge hinzugefuegt ("add") oder abgezogen ("sub").
+ * Soll mehr abgezogen werden, als im Einkaufswagen ist, so wird eine Fehlermeldung ausgegeben.
+ * Soll die Menge abgezogen werden, die im Einkaufswagen ist, so wird das Produkt geloescht (Aufruf changeAmount(...)). 
+ *
+ * Es wird das Signal cartChanged() ausgeloest.
+ * @param pid Produkt ID
+ * @param diff Menge, die hinzugefuegt oder abgezogen wird
+ * @param modeQString "add" oder "sub"
+ * @return void
+ * @see changeAmount(int pid, QString mode)
+ * @see 
+ */
 void sqlfunctions::changeAmount(int pid, int diff, QString modeQString){
 
     string mode = modeQString.toStdString();
@@ -401,6 +474,11 @@ void sqlfunctions::changeAmount(int pid, int diff, QString modeQString){
 }
 
 // Prüft für jede Ware im Warenkorb, ob noch genug Waren vorhanden sind
+/**
+ * @brief Prueft fuer jede Ware im Warenkorb, ob noch genug Waren im Shop vorhanden sind.
+ * die Menge des Produkts im Einkaufswagen wird ermittelt und mit dem stock (SQL: stock) verglichen.
+ * @return int: Differenz zwischen stock und Menge im Warenkorb
+ */
 int sqlfunctions::checkStock(){
 
     // Zu Offline-Testzwecken, mit uid: 0, un: off und pw:off
@@ -422,6 +500,11 @@ int sqlfunctions::checkStock(){
 }
 
 // Prüft, ob der Benutzer ausreichend Guthaben zum Kauf hat.
+/**
+ * @brief Prueft, ob der Benutzer ausreichend Guthaben zum Kauf hat.
+ * der Gesamtpreis des Einkaufswagens wird ermittelt und mit dem Guthaben (SQL: balance) des Benutzers verglichen.
+ * @return double: Differenz zwischen balance und Gesamtpreis des Warenkorbes
+ */
 double sqlfunctions::checkBalance(){
     QSqlQuery query;
     // ermittelt Gesamtkosten des Warenkorbs
@@ -444,6 +527,10 @@ double sqlfunctions::checkBalance(){
     return balance - total;
 }
 
+/**
+ * @brief Prueft, ob der Einkaufswagen leer ist.
+ * @return bool: true (der Einkaufswagen ist leer), false (es sind Produkte im Einkaufswagen)
+ */
 bool sqlfunctions::isCartEmpty(){
     if(cart.empty()){
         return true;
@@ -455,6 +542,21 @@ bool sqlfunctions::isCartEmpty(){
 
 // Die Bezahlfunktion
 // zu checken: User eingeloggt, Einkaufswagen nicht leer, genug Waren vorhanden, genug Guthaben
+/**
+ * @brief Es wird ein Einkauf getaetigt.
+ * Es wird ueberprueft, ob der Einkaufswagen leer ist (Fehlermeldung, return false) oder nicht (fortfahren).
+ * Es wird ueberprueft, ob ein Benutzer angemeldet ist (fortfahren) oder nicht (Fehlermeldung, return false).
+ * Es wird ueberprueft, ob der Benutzer genuegend Geld zur Verfuegung hat (fortfahren) oder nicht (Fehlermeldung (fehlende Geldeinheiten), return false). - checkBalance()
+ * Es wird ueberprueft, ob genuegend Waren im Shop zur Verfuegung stehen (fortfahren) oder nicht (Fehlermeldung (zu verringerndes Produkt), return false). - checkStock()
+ * 
+ * Erstellt neue Buchungsnummer fuer jedes Produkt mit ID, UserID, ProductID, Menge, reduziert die Menge des Produkts im Shop um die Menge im Einkaufswagen, 
+ * steigert Umsatz und Profit des jeweiligen Produktes und verringert schließlich das Guthaben des Nutzers um den Gesamtwert des Einkaufswagens. (SQL Datenbank)
+ * 
+ * Es werden die Signale purchaseDone(cart), balanceChanged(-(currentCartValue)), revenueMade(currentCartValue) und profitMade(currentCartValue) ausgeloest.
+ * @return bool: false (Der Einkauf kann nicht getaetigt werden), true (Der Einkauf kann getaetigt werden)
+ * @see checkBalance()
+ * @see checkStock()
+ */
 bool sqlfunctions::purchase(){
 
     if(isCartEmpty()){
@@ -465,7 +567,7 @@ bool sqlfunctions::purchase(){
     }
 
     QSqlQuery query;
-    // Überprüfe, ob User eingeloogt ist.
+    // Überprüfe, ob User eingeloggt ist.
     if(isLogin){
         int hasEnoughMoney = checkBalance();
         // Überprüfe ob User genug Guthaben hat.
@@ -588,7 +690,18 @@ bool sqlfunctions::purchase(){
 // ---------------------------------------USERMGMT-----------------------------------
 // ----------------------------------------------------------------------------------
 
-// erfordert auf Javascript-Seite noch einiges an Arbeit!
+/**
+ * @brief Ein Nutzer wird hinzugefuegt.
+ * Es wird ueberprueft, ob die Angaben vollstaendig sind (fortfahren) oder nicht (Fehlermeldung return).
+ * Es wird ueberprueft, ob die eingegebenen Passwoerter uebereinstimmen (fortfahren) oder nicht (Fehlermeldung return).
+ * Es wird ueberprueft, ob es bereits einen Nutzer mit dem eingegebenen Namen in der Datenbank gibt (Fehlermeldung return) oder nicht (fortfahren).
+ *
+ * Es wird ein neuer Nutzer mit den eingegebenen Daten und einer neuen ID in der Datenbank angelegt.
+ * @param username Nutzername
+ * @param password gewaehltes Passwort
+ * @param repeatedPassword wiederholte Eingabe des gewaehlten Passwortes
+ * @return void
+ */
 void sqlfunctions::registerUser(QString username, QString password, QString repeatedPassword){
 
     if(password.toStdString() == "" || username.toStdString() == "" || repeatedPassword.toStdString() == ""){
@@ -644,6 +757,12 @@ void sqlfunctions::registerUser(QString username, QString password, QString repe
 }
 
 // gibt Tabelle mit allen Usern für Adminstration aus
+/**
+ * @brief Eine Tabelle mit allen Nutzern wird ausgegeben.
+ * Ausgabe einer Tabelle aller Nutzer (ID, Name, Guthaben, Adminrechte?, Permanent Geblockt?).
+ * Die Daten werden aus der SQL Datenbank ausgelesen, in einen Stream geladen, dieser wird in einen String umgewandelt und dann in einem QString gespeichert und ausgegeben.
+ * @return QString: Tabelle aller Nutzer
+ */
 QString sqlfunctions::listAllUsers(){
 
     QSqlQuery query;
@@ -718,6 +837,12 @@ QString sqlfunctions::listAllUsers(){
 
 // Gibt User Admin-Privillegien
 // Auswirkung: Zeige Admin-Menüpunkte und Optionen in App
+/**
+ * @brief Einem Nutzer werden Admin-Privilegien zugeteilt.
+ * Der Nutzer kann nun Admin-Menuepunkte und Optionen der App nutzen.
+ * @param id Nutzer ID
+ * @return void
+ */
 void sqlfunctions::empowerUser(int id){
     QSqlQuery query;
     query.prepare("UPDATE users SET isAdmin=1 WHERE id=:uid");
@@ -727,6 +852,14 @@ void sqlfunctions::empowerUser(int id){
 
 // Nimmt User Admin-Privillegien
 // Auswirkung: Verstecke Admin-Menüpunkte und Optionen in App
+/**
+ * @brief Einem Nutzer werden Admin-Privilegien genommen.
+ * Es wird ueberprueft, ob der gewaehlte Nutzer "Superadmin" ist (Fehlermeldung, return) oder nicht (fortfahren).
+ *
+ * Der Nutzer kann Admin-Menuepunkte und Optionen der App nicht mehr nutzen.
+ * @param id Nutzer ID
+ * @return void
+ */
 void sqlfunctions::disempowerUser(int id){
     QSqlQuery query;
     query.prepare("SELECT isSuperAdmin FROM users WHERE id = :uid");
@@ -751,6 +884,14 @@ void sqlfunctions::disempowerUser(int id){
 }
 
 // blockt Account temporär
+/**
+ * @brief Ein Nutzer wird temporär blockiert.
+ * Es wird das Datum berechnet, wann sich der Nutzer wieder anmelden kann.
+ * Dieses Datum wird in der SQL Datenbank gespeichert.
+ * @param id Nutzer ID
+ * @param hours so viele Stunden soll der Nutzer gesperrt werden
+ * @return void
+ */
 void sqlfunctions::blockAccount(int id, int hours){
     QDateTime blockedUntil = QDateTime::currentDateTime().addSecs(3600*hours);
     QSqlQuery query;
@@ -765,6 +906,12 @@ void sqlfunctions::blockAccount(int id, int hours){
 }
 
 // blockt Account dauerhaft
+/**
+ * @brief Ein Nutzer wird dauerhaft blockiert.
+ * In der SQL Datenbank wird gespeichert, dass der Nutzer permanent blockiert ist.
+ * @param id Nutzer ID
+ * @return void
+ */
 void sqlfunctions::blockAccountPermanently(int id){
     QSqlQuery query;
     query.prepare("UPDATE users SET isBlockedPermanently = 1 WHERE id = :id");
@@ -777,6 +924,13 @@ void sqlfunctions::blockAccountPermanently(int id){
 }
 
 // entblockt Account
+/**
+ * @brief Ein blockierter Nutzer wird wieder freigeschaltet.
+ * Das heutige Datum ueberschreibt den Eintrag in der SQL Datenbank, wann sich der Nutzer wieder anmelden darf.
+ * Es wird zusaetzlich in der Datenbank gespeichert, dass der Nutzer nicht permanent blockiert ist.
+ * @param id Nutzer ID
+ * @return void
+ */
 void sqlfunctions::unblockAccount(int id){
     QDateTime blockedUntil = QDateTime::currentDateTime();
     // temporären Block entfernen
@@ -797,6 +951,14 @@ void sqlfunctions::unblockAccount(int id){
 }
 
 // löscht Account
+/**
+ * @brief Ein Nutzer wird geloescht.
+ * Es wird abgefragt, ob der Account wirklich geloescht werden soll.
+ * Der Button "Yes" wird gedrueckt: Der Nutzer wird aus der SQL Datenbank geloescht.
+ * Der Button "No" wird gedrueckt: Es wird nichts ausgefuehrt.
+ * @param id Nutzer ID
+ * @return void
+ */
 void sqlfunctions::terminateAccount(int id){
     QMessageBox confirm;
     QMessageBox informative;
@@ -821,7 +983,18 @@ void sqlfunctions::terminateAccount(int id){
 }
 
 // ändert Guthaben eines Accounts
-
+/**
+ * @brief Das Guthaben eines Nutzers wird aktualisiert.
+ * Es wird abgefragt, ob ein Nutzer eingeloggt ist (fortfahren) oder nicht (Fehlermeldung, return)
+ * 
+ * Das Guthaben des Nutzers wird in Abhaengigkeit von mode ("add" erhoehen um, "set" setzen auf, "scale" skalieren um einen Wert number) veraendert und in der Datenbank aktualisiert.
+ *
+ * Das Signal balanceChanged(oldBalance - balance) wird ausgeloest.
+ * @param id Nutzer ID
+ * @param mode "add", "set" oder "scale" moeglich
+ * @param number Wert um den das Guthaben veraendert wird
+ * @return void
+ */
 void sqlfunctions::changeBalance(int id, QString mode, double number){
 
     if(!isLogin){
@@ -865,7 +1038,13 @@ void sqlfunctions::changeBalance(int id, QString mode, double number){
 }
 
 // Passwort ändern
-
+/**
+ * @brief Der changePasswordMode eines Nutzers wird geaendert.
+ * der neue Modus wird in der Datenbank gespeichert ("r" fuer "request", "f" fue "force").
+ * @param id Nutzer ID
+ * @param mode "request" oder "force" moeglich
+ * @return void
+ */
 void sqlfunctions::changePassword(int id, QString mode){
     QString newMode;
     QSqlQuery query;
@@ -881,6 +1060,15 @@ void sqlfunctions::changePassword(int id, QString mode){
     query.exec();
 }
 
+/**
+ * @brief Das Passwort eines Nutzers wird geaendert.
+ * Das neue Passwort wird in der Datenbank gespeichert. 
+ * der changePasswordMode wird zu "n" gesetzt.
+ * @param id Nutzer ID
+ * @param mode "set" moeglich
+ * @param password neues Passwort
+ * @return void
+ */
 void sqlfunctions::changePassword(int id, QString mode, QString password){
     QString newMode;
     QSqlQuery query;
@@ -899,6 +1087,16 @@ void sqlfunctions::changePassword(int id, QString mode, QString password){
     query.exec();
 }
 
+/**
+ * @brief Ein Nutzer aendert sein eigenes Passwort.
+ * Es wird ueberprueft, ob die eingegebenen Passwoerter uebereinstimmen (fortfahren) oder nicht (Fehlermeldung, return false)
+ * 
+ * Das neue Passwort wird in der Datenbank gespeichert.
+ * @param id Nutzer ID
+ * @param password neues Passwort
+ * @param passwordRepeated Wiederholung des neuen Passworts
+ * @return bool: false (die beiden Passwoerter stimmen nicht ueberein), true (das Passwort konnte geaendert werden)
+ */
 bool sqlfunctions::userChangesPassword(int id, QString password, QString passwordRepeated){
     if(password != passwordRepeated){
         QMessageBox msgBox;
@@ -915,6 +1113,14 @@ bool sqlfunctions::userChangesPassword(int id, QString password, QString passwor
     }
 }
 
+/**
+ * @brief Ware wird aus dem Shop geloescht
+ * Es wird abgefragt, ob die Waren wirklich geloescht werden sollen.
+ * Der Button Yes wird gedrueckt: das Produkt wird aus der Datenbank geloescht.
+ * Der Button No wird gedrueckt: das Produkt wird nicht geloescht.
+ * @param id Produkt ID
+ * @return void
+ */
 void sqlfunctions::deleteWareRecord(int id){
     QMessageBox confirm;
     QMessageBox informative;
@@ -942,6 +1148,18 @@ void sqlfunctions::deleteWareRecord(int id){
 void sqlfunctions::createWareRecord(){
 }
 
+/**
+ * @brief die Menge einer Ware im Shop wird veraendert.
+ * Die Menge einer Ware wird in Abhaengigkeit von mode ("add" erhoeht um, "set" gesetzt durch, "scale" skaliert um einen Wert number) veraendert.
+ *
+ * Der neue stock des Produkts wird in der Datenbank gespeichert.
+ *
+ * Das Signal stockChanged(oldStock - stock) wird ausgeloest.
+ * @param id Produkt ID
+ * @param mode moeglich "add", "set", "scale"
+ * @param numer Wert um den der stock veraendert wird
+ * @return void
+ */
 void sqlfunctions::changeStock(int id, QString mode, double number){
     QSqlQuery query;
     query.prepare("SELECT stock, title FROM products WHERE id=:id");
@@ -976,6 +1194,17 @@ void sqlfunctions::changeStock(int id, QString mode, double number){
     emit stockChanged(oldStock - stock);
 }
 
+/**
+ * @brief der Preis einer Ware wird veraendert.
+ * Der Preis einer Ware wird in Abhaengigkeit von mode ("add" erhoeht um, "set" gesetzt durch, "scale" skaliert um einen Wert number) veraendert.
+ *
+ * Der neue Preis des Produkts wird in der Datenbank gespeichert.
+ *
+ * Das Signal priceChanged(oldPrice - price) wird ausgeloest.
+ * @param id Produkt ID
+ * @param mode moeglich "add", "set", "scale"
+ * @return void
+ */
 void sqlfunctions::changeWarePrice(int id, QString mode, double number){
     QSqlQuery query;
     query.prepare("SELECT price, title FROM products WHERE id=:id");
@@ -1010,6 +1239,17 @@ void sqlfunctions::changeWarePrice(int id, QString mode, double number){
     emit priceChanged(oldPrice - price);
 }
 
+/**
+ * @brief die Gewinnspanne einer Ware wird veraendert.
+ * Die Gewinnspanne einer Ware wird in Abhaengigkeit von mode ("add" erhoeht um, "set" gesetzt durch, "scale" skaliert um einen Wert number) veraendert.
+ *
+ * Die neue Gewinnspanne des Produkts wird in der Datenbank gespeichert.
+ *
+ * Das Signal marginChanged(oldmargin - margin) wird ausgeloest.
+ * @param id Produkt ID
+ * @param mode moeglich "add", "set", "scale"
+ * @return void
+ */
 void sqlfunctions::changeMargin(int id, QString mode, double number){
     QSqlQuery query;
     query.prepare("SELECT margin, title FROM products WHERE id=:id");
@@ -1044,23 +1284,42 @@ void sqlfunctions::changeMargin(int id, QString mode, double number){
     emit marginChanged(oldmargin - margin);
 }
 
-
+/**
+ * @brief getter
+ * @return double Gesamtwert des Einkaufswagens
+ */
 double sqlfunctions::getCurrentCartValue(){
     return currentCartValue;
 }
 
+/**
+ * @brief getter
+ * @return bool true(ein Nutzer ist eingeloggt), false (es ist niemand eingeloggt)
+ */
 bool sqlfunctions::getLogin(){
     return isLogin;
 }
 
+/**
+ * @brief getter
+ * @return bool true(ein Admin ist eingeloggt), false (es ist kein Admin eingeloggt)
+ */
 bool sqlfunctions::getIsAdminLoggedIn(){
     return isAdminLoggedIn;
 }
 
+/**
+ * @brief getter
+ * @return int Nutzer ID
+ */
 int sqlfunctions::getUid(){
     return uid;
 }
 
+/**
+ * @brief getter
+ * @return QString Nutzer Name
+ */
 QString sqlfunctions::getUsername(){
     QSqlQuery query;
     query.prepare("SELECT username FROM users WHERE id = :uid");
@@ -1070,6 +1329,10 @@ QString sqlfunctions::getUsername(){
     return query.value(0).toString();
 }
 
+/**
+ * @brief getter
+ * @return double Kontostand des Nutzers
+ */
 double sqlfunctions::getBalance(){
     QSqlQuery query;
     query.prepare("SELECT balance FROM users WHERE id =:uid");
@@ -1079,6 +1342,25 @@ double sqlfunctions::getBalance(){
     return query.value(0).toDouble();
 }
 
+/**
+ * @brief Ein Nutzer wird angemeldet.
+ * Es gibt einen geheimen Offline-Testaccount (falls username = "off" und password = "off")
+ *
+ * Falls zu oft (3x) ein falscher Nutzername / ein falsches Passwort eingegeben wurde, kann man sich in einer bestimmten Zeit erst wieder einloggen.
+ *
+ * Es wird ueberprueft, ob der Nutzer permanent oder temporär blockiert ist (Fehlermeldung, return false).
+ * Es wird ueberprueft, ob es in der Datenbank einen Nutzer mit Namen username gibt (fortfahren) oder nicht (Aufruf timeout()).
+ *
+ * Es wird ueberprueft, ob es in der Datenbank einen Nutzer (username) mit dem Passwort (password) gibt und username nichtleer ist (fortfahren) oder nicht (Fehlermeldung, return false).
+ * In Abhaengigkeit von changePasswordMode aus der Datenbank wird der Benutzer aufgerufen sein Passwort zu aendern("f", "r"), oder nicht("n").
+ * Falls es einen Nutzer mit dem Nutzernamen gibt wird isLogin=true gesetzt und das Signal userLoggedIn() ausgeloest.
+ * Falls der Nutzer ein Admin ist, wird isAdminLoggedIn=true gesetzt und das Signal adminLoggedIn() ausgeloest.
+ * return = true.
+ * @param username Nutzername
+ * @param password Passwort
+ * @return bool: true (Ein Nutzer konnte angemeldet werden), false (Nutzername und Passwort sind nicht in Datenbank gespeichert)
+ * @see timeout()
+ */
 bool sqlfunctions::login(QString username, QString password){
 
     // Timeout bei mehrfach falscher Eingabe
@@ -1212,11 +1494,23 @@ bool sqlfunctions::login(QString username, QString password){
 }
 
 // Login-Strafe ausrechnen
+/**
+ * @brief Login-Strafe ausrechnen
+ * allowedAgain wird auf eine Zeit abhaengig von badTries gesetzt.
+ * @return void
+ */
 void sqlfunctions::timeout(){
     allowedAgain = 30*(badTries-2) + time(0);
 }
 
 // User ausloggen
+/**
+ * @brief ein Nutzer wird abgemeldet.
+ * Der Nutzer wird abgemeldet.
+ * Der Einkaufswagen wird geloescht (Aufruf clearCart()) und das Signal userLoggedOut() wird ausgeloest.
+ * @return bool: true (Logout erfolgreich)
+ * @see clearCart()
+ */
 bool sqlfunctions::logout(){
     /* USER FRAGEN, OB ER SICH WIRKLICH AUSLOGGEN WILL, DA SEIN WARENKORB GELÖSCHT WIRD!
     bool areYouSure = false;
@@ -1250,24 +1544,45 @@ bool sqlfunctions::logout(){
 // -----------------------------------------TEST-------------------------------------
 // ----------------------------------------------------------------------------------
 
+/**
+ * @brief Testfunktion
+ * Test zu listAllProducts()
+ * @return void
+ * @see listAllProducts()
+ */
 void sqlfunctions::testJs(){
     QMessageBox msgBox;
     msgBox.setText(listAllProducts());
     msgBox.exec();
 }
 
+/**
+ * @brief Testfunktion
+ * Ausgabe einer Messagebox
+ * @return void
+ */
 void sqlfunctions::testCpp(){
     QMessageBox msgBox;
     msgBox.setText("Dieser Code wurde ausgeführt!");
     msgBox.exec();
 }
 
+/**
+ * @brief Testfunktion
+ * Ausgabe einer Messagebox.
+ * @return void
+ */
 void sqlfunctions::testCpp2(){
     QMessageBox msgBox;
     msgBox.setText("Dieser andere Code wurde ausgeführt!");
     msgBox.exec();
 }
 
+/**
+ * @brief Testfunktion
+ * Ausgabe dreier Argumente in einer Messagebox.
+ * @return void
+ */
 void sqlfunctions::testSql(QString a, QString b, QString c){
     QMessageBox msgBox;
     msgBox.setText("Erstes Argument: "+a +"\nZweites Argument: "+b + "\nDrittes Argument: "+c);

@@ -11,6 +11,14 @@
 
 class automaton;
 
+/**
+ * @class kinectio Class
+ * @brief von QObject erbende Klasse
+ * Diese Klasse stellt Funktionen zur Verfuegung um die Erkennung eines Produkts (durch die Kinect) zu verwalten.
+ * Sie besteht aus Slots, Signalen und privaten Membern.
+ *
+ * Anbindung an eine tatsächliche Kinect nicht vorhanden. Diese Klasse simuliert diese nur.
+ */
 class kinectio :public QObject
 {
     Q_OBJECT
@@ -30,7 +38,7 @@ class kinectio :public QObject
         QString     updateDetectedPidViewer();
 
     private:
-        int         detectedPid;
+        int         detectedPid;	///< erkannte Produkt ID
 };
 
 #endif // KINECTIO_H
