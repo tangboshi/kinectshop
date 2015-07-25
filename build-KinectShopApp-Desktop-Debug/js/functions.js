@@ -43,7 +43,8 @@ function refreshAccountData(){
     $("#product-display").html(mySqlObj.showCart());
     $("#shop-items").html(mySqlObj.listAllProducts());
     if(mySqlObj.getLogin()){
-        if(currentBalance < currentCartValue){
+        var balance = mySqlObj.getBalance();
+        if(balance < currentCartValue){
             $("#acc-cart .accdd").addClass("red-font");
         }
         else{

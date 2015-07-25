@@ -69,7 +69,7 @@ automaton::automaton(QObject *parent) :
 
 /**
  * @def BACK 102
- * @brief der Prozess wird auf den Anfangszustand zurueckgesetzt
+ * @brief der Prozess wird einen Schritt zurueckgesetzt
  */
 
 /**
@@ -108,8 +108,8 @@ state idle, selected, amountset, finished;
  *		 *SELECT: Der neue Zustand ist selected. Die Produkt ID wird (Aufruf getDetectedPid()) bestimmt.
  *		 *sonst: Fehlermeldung
  * -SELECTED: Anhand der Eingabe wird entschieden:
- *		 *ONE: Der neue Zustand ist amountset. Die Produkt Menge ist 1.
- *		 *TWO: Der neue Zustand ist amountset. Die Produkt Menge ist 2.
+ *		 *ONE: Der neue Zustand ist amountset. Die Produktmenge ist 1.
+ *		 *TWO: Der neue Zustand ist amountset. Die Produktmenge ist 2.
  *		 *BACK: Der neue Zustand ist idle.
  *		 *CANCEL: Der neue Zustand ist idle.
  *		 *sonst: Fehlermeldung
